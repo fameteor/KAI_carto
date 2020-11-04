@@ -7,13 +7,19 @@ let center = [46.589187,15.0133661];
 let state = "MAP";
 let currentPosition = null;
 
-const menuItems = ["INFO_GPS","WAYPOINTS","TRACKS"];
+const menuItems = ["INFO_GPS","WAYPOINTS","TRACKS","OTHERS"];
 let currentMenuIndex = 0;
 
 const activateMenu = function(currentMenuIndex) {
 	menuItems.map(function(item, index) {
-		if (index === currentMenuIndex) $("#" + item).addClass("active");
-		else							$("#" + item).removeClass("active");
+		if (index === currentMenuIndex) {
+			$("#" + item).addClass("active");
+			$("#TARGET_" + item).show();
+		}
+		else {
+			$("#" + item).removeClass("active");
+				$("#TARGET_" + item).hide();
+		}
 	});
 }
 
@@ -34,12 +40,18 @@ let init = function() {
 	L.tileLayer(
 		'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png', 
 		{
-			attribution:  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+			attribution:  '',
 			maxZoom: 	19,
 			minZoom:	2,
 			id: 		'openStreetMap'
 		}
 	).addTo(myMap);
+	// We add the scale --------------------------------------------
+	L.control.scale({
+		metric:true,
+		imperial:false,
+		position:'bottomleft'
+	}).addTo(myMap);
 	// We add the drau radweg --------------------------------------
 	L.polyline(drauRadweg,{color:'red'}).addTo(myMap);
 	L.polyline(drauSlovenia,{color:'orange'}).addTo(myMap);
@@ -164,6 +176,7 @@ document.addEventListener("keydown", event => {
 					state = "MENU";
 					$("#map").hide();
 					$("#menu").show();
+					activateMenu(currentMenuIndex);
 					displayGpsInfo();
 					break;
 				case "MENU":

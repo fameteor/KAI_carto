@@ -37,23 +37,32 @@
 	
 		<header>
 			<div class="tab">
-			  <button id = "INFO_GPS" class="tablinks active">Infos GPS</button>
-			  <button id = "WAYPOINTS" class="tablinks">Waypoints</button>
-			  <button id = "TRACKS" class="tablinks">Tracks</button>
+			  <span id = "INFO_GPS" class="active">Infos GPS</span>
+			  <span id = "WAYPOINTS">Waypoints</span>
+			  <span id = "TRACKS">Tracks</span>
+			  <span id = "OTHERS">Others</span>
 			</div>
 		</header>
 	  
-		<div id="mapid">
-			<h2>Informations GPS</h2><br/>
-			<ul>
-				<li>Latitude : <span id="latitude"></span></li>
-				<li>Longitude : <span id="longitude"></span></li>
-				<li>Altitude : <span id="altitude"></span></li>
-				<li>Heading : <span id="heading"></span></li>
-				<li>Speed : <span id="speed"></span></li>
-				<li>Waypoint</li>
-				<li>ETA</li>
-			</ul>
+		<div id="TARGET_INFO_GPS">
+			<div id="mapid">
+				<ul>
+					<li>Latitude : <span id="latitude"></span></li>
+					<li>Longitude : <span id="longitude"></span></li>
+					<li>Altitude : <span id="altitude"></span></li>
+					<li>Heading : <span id="heading"></span></li>
+					<li>Speed : <span id="speed"></span></li>
+					<li>Waypoint</li>
+					<li>ETA</li>
+				</ul>
+			</div>
+		</div>
+		
+		<div id="TARGET_WAYPOINTS">
+			Waypoints
+		</div>
+		<div id="TARGET_TRACKS">
+			Tracks
 		</div>
 
 		<div id="softkey">
