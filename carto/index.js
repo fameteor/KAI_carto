@@ -6,6 +6,18 @@ let zoomLevel = 13;
 let center = [46.589187,15.0133661];
 let state = "MAP";
 let currentPosition = null;
+
+const menuItems = ["INFO_GPS","WAYPOINTS","TRACKS"];
+let currentMenuIndex = 0;
+
+const activateMenu = function(currentMenuIndex) {
+	menuItems.map(function(item, index) {
+		if (index === currentMenuIndex) $("#" + item).addClass("active");
+		else							$("#" + item).removeClass("active");
+	});
+}
+
+
 // Functions -------------------------------------------------------
 let init = function() {
 	$("#menu").hide();
@@ -66,40 +78,82 @@ document.addEventListener("keydown", event => {
 		// For emulation on Firefox PC 
 		case "PageDown":
 			event.preventDefault();
-			if (zoomLevel > 0) {
-				zoomLevel = zoomLevel - 1;
-				myMap.setZoom(zoomLevel);
-			}
+			switch(state) {
+				case "MAP":
+					if (zoomLevel > 0) {
+						zoomLevel = zoomLevel - 1;
+						myMap.setZoom(zoomLevel);
+					}
+					break;
+				case "MENU":
+					break;
+			};
 			break;
 		case "SoftRight":
 		// For emulation on Firefox PC 
 		case "PageUp":
 			event.preventDefault();
-			if (zoomLevel < 19) {
-				zoomLevel = zoomLevel + 1;
-				myMap.setZoom(zoomLevel);
-			}
+			switch(state) {
+				case "MAP":
+					if (zoomLevel < 19) {
+						zoomLevel = zoomLevel + 1;
+						myMap.setZoom(zoomLevel);
+					}
+					break;
+				case "MENU":
+					break;
+			};
 			break;
 		case "ArrowLeft":
 			event.preventDefault();
-			myMap.panBy([-100,0]);
+			switch(state) {
+				case "MAP":
+					myMap.panBy([-100,0]);
+					break;
+				case "MENU":
+					if (currentMenuIndex != 0) 	currentMenuIndex -= 1;
+					else 						currentMenuIndex = menuItems.length - 1;
+					activateMenu(currentMenuIndex);
+					break;
+			};
 			event.stopPropagation();
 			break;
 		case "ArrowRight":
 			event.preventDefault();
-			myMap.panBy([100,0]);
+			switch(state) {
+				case "MAP":
+					myMap.panBy([100,0]);
+					break;
+				case "MENU":
+					if (currentMenuIndex < menuItems.length - 1) currentMenuIndex += 1;
+					else 									currentMenuIndex = 0;
+					activateMenu(currentMenuIndex);
+					break;
+			};
 			event.stopPropagation();
 			break;
 		// To scroll down
 		case "ArrowDown":
 			event.preventDefault();
-			myMap.panBy([0,100]);
+			switch(state) {
+				case "MAP":
+					myMap.panBy([0,100]);
+					break;
+				case "MENU":
+					break;
+			};
 			event.stopPropagation();
 			break;
 		// To scroll up
 		case "ArrowUp":
 			event.preventDefault();
-			myMap.panBy([0,-100]);
+			switch(state) {
+				case "MAP":
+					myMap.panBy([0,-100]);
+					break;
+				case "MENU":
+					break;
+			};
 			event.stopPropagation();
 			break;
 		// Enter

@@ -36,7 +36,11 @@
 	<div id="menu" class="root">
 	
 		<header>
-			<span>Carto</span><br/>
+			<div class="tab">
+			  <button id = "INFO_GPS" class="tablinks active">Infos GPS</button>
+			  <button id = "WAYPOINTS" class="tablinks">Waypoints</button>
+			  <button id = "TRACKS" class="tablinks">Tracks</button>
+			</div>
 		</header>
 	  
 		<div id="mapid">
@@ -47,6 +51,8 @@
 				<li>Altitude : <span id="altitude"></span></li>
 				<li>Heading : <span id="heading"></span></li>
 				<li>Speed : <span id="speed"></span></li>
+				<li>Waypoint</li>
+				<li>ETA</li>
 			</ul>
 		</div>
 
