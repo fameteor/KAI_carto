@@ -1,0 +1,62 @@
+* {
+  box-sizing: border-box;
+}
+
+
+
+html,
+body,
+.root {
+  font-family: "Open Sans", sans-serif;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: #ffffff !important;
+}
+
+#mapid { height: 290px; }
+
+/* SOFTKEYS */
+
+#softkey {
+  height: 30px;
+  max-height: 30px;
+  width: 100%;
+  max-width: 100%;
+  background: #c5cac5;
+  display: flex;
+  flex-shrink: 0;
+  white-space: nowrap;
+  padding: 0 5px;
+  font-weight: 700;
+  box-sizing: border-box;
+  line-height: 26px;
+  margin-top: auto;
+  position: absolute;
+  bottom: 0;
+}
+
+#left,
+#right {
+  font-size: 14px;
+  color: #313131;
+  width: 100%;
+}
+
+#left {
+  text-align: left;
+  padding-right: 5px;
+}
+
+#center {
+  color: #313131;
+  font-size: 14px;
+  text-align: center;
+  width: 100%;
+}
+
+#right {
+  text-align: right;
+  padding-left: 5px;
+}

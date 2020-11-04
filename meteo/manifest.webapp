@@ -1,0 +1,23 @@
+{
+  "version": "1.0.0",
+  "name": "Météo",
+  "description": "Affichage du temps prévu",
+  "type": "web",
+  "launch_path": "/index.html",
+  "icons": {
+    "56": "/icons/kaios_56.png",
+    "112": "/icons/kaios_112.png"
+  },
+  "developer": {
+    "name": "KaiOS Team",
+    "url": "https://www.kaiostech.com"
+  },
+  "locales": {
+    "fr-FR": {
+      "name": "Météo",
+      "subtitle": "Affichage du temps prévu",
+      "description": "Affichage du temps prévu"
+    }
+  },
+  "default_locale": "fr-FR"
+}

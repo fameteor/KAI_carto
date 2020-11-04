@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="theme-color" content="rgb(0, 0, 128)" />
+    <title>Météo</title>
+    <link rel="stylesheet" type="text/css" href="css.css" />
+	<script src="index.js"></script>
+  </head>
+
+  <body onLoad="init()">
+    <div id="root">
+	
+		<header>
+			<span>Météo <span id="placeLabel"></span></span><br/>
+		</header>
+	  
+		<div id="dateLabel"></div>
+		
+		<div id="resultTable">
+		</div>
+
+		<div id="softkey">
+			<label id="left">&lt; ville</label>
+			<label id="center">&lt; date &gt;</label>
+			<label id="right">ville &gt;</label>
+		</div>
+	
+    </div>
+  </body>
+</html>

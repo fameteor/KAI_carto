@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="theme-color" content="rgb(0, 0, 128)" />
+    <title>Carto</title>
+    <link rel="stylesheet" type="text/css" href="css.css" />
+	<link rel="stylesheet" href="leaflet1_7_1/leaflet.css"/>
+	<link href="css/all.css" rel="stylesheet">
+	<script src="jquery-3.5.1.min.js"></script>
+	<script src="trails/drauRadweg.js"></script>
+	<script src="trails/drauSlovenia.js"></script>
+	<script src="trails/mur.js"></script>
+	<script src="trails/murCroatia.js"></script>
+	<script src="leaflet1_7_1/leaflet.js"></script>
+	<script src="index.js"></script>
+  </head>
+
+  <body onLoad="init()">
+    <div id="map" class="root">
+	  
+		<div id="mapid"></div>
+
+		<div id="softkey">
+			<label id="left"><i class="fas fa-search-minus"></i></label>
+			<label id="center">MENU</label>
+			<label id="right"><i class="fas fa-search-plus"></i></label>
+		</div>
+	
+    </div>
+	
+	<div id="menu" class="root">
+	
+		<header>
+			<span>Carto</span><br/>
+		</header>
+	  
+		<div id="mapid">
+			<h2>Informations GPS</h2><br/>
+			<ul>
+				<li>Latitude : <span id="latitude"></span></li>
+				<li>Longitude : <span id="longitude"></span></li>
+				<li>Altitude : <span id="altitude"></span></li>
+				<li>Heading : <span id="heading"></span></li>
+				<li>Speed : <span id="speed"></span></li>
+			</ul>
+		</div>
+
+		<div id="softkey">
+			<label id="left"></label>
+			<label id="center">MAP</label>
+			<label id="right"></label>
+		</div>
+	
+    </div>
+	
+  </body>
+</html>
