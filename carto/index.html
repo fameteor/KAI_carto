@@ -17,10 +17,13 @@
 	<script src="trails/mur.js"></script>
 	<script src="trails/murCroatia.js"></script>
 	<script src="leaflet1_7_1/leaflet.js"></script>
+	<script src="common.js"></script>
 	<script src="index.js"></script>
   </head>
 
   <body onLoad="init()">
+  
+	<!-- MAP ---------------------------------------------------- -->
     <div id="map" class="root">
 	  
 		<div id="mapid"></div>
@@ -34,6 +37,7 @@
     </div>
 	
 	<div id="menu" class="root">
+	<!-- MENU --------------------------------------------------- -->
 	
 		<header>
 			<div class="tab">
@@ -43,7 +47,8 @@
 			  <span id = "OTHERS">Others</span>
 			</div>
 		</header>
-	  
+		
+		<!-- MENU.INFO_GPS -------------------------------------- -->
 		<div id="TARGET_INFO_GPS">
 			<div id="mapid">
 				<ul>
@@ -56,19 +61,35 @@
 					<li>ETA</li>
 				</ul>
 			</div>
+			<div id="softkey">
+				<label id="left"></label>
+				<label id="center"></label>
+				<label id="right"></label>
+			</div>
 		</div>
 		
+		<!-- MENU.WAYPOINTS ------------------------------------- -->
 		<div id="TARGET_WAYPOINTS">
-			Waypoints
+			
+			<input id="waypointName" placeholder="Taper le nom"></input>
+			
+			<div id="waypoints_list"></div>
+			<div id="softkey">
+				<label id="left">nouveau</label>
+				<label id="center">SELECTIONNER</label>
+				<label id="right">options</label>
+			</div>
 		</div>
+		
+		<!-- MENU.TRACKS ---------------------------------------- -->
 		<div id="TARGET_TRACKS">
 			Tracks
-		</div>
-
-		<div id="softkey">
-			<label id="left"></label>
-			<label id="center">MAP</label>
-			<label id="right"></label>
+			
+			<div id="softkey">
+				<label id="left"></label>
+				<label id="center"></label>
+				<label id="right"></label>
+			</div>
 		</div>
 	
     </div>

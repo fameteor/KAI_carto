@@ -23,6 +23,35 @@ const activateMenu = function(currentMenuIndex) {
 	});
 }
 
+// ??????????????????????????????????????????????
+
+let waypointsList = [
+	{label:"essai1",coords:[45,12]},
+	{label:"essai2",coords:[47,12]},
+	{label:"essai3",coords:[49,12]},
+];
+
+// Function to generate dynamix HTML for waypoints list
+// this = waypoints Iterable
+const waypointsHtml = function() {
+	let html = "";
+	const that = this;
+	this.list.forEach(function(waypoint,index) {
+		if (index === that.currentIndex)	html += '<div id="waypoint' + index + '" class="list selected">' + waypoint.label + '<input type="checkbox" checked/></div>';
+		else								html += '<div id="waypoint' + index + '" class="list">' + waypoint.label + '<input type="checkbox" checked/></div>';
+	});
+	$("#waypoints_list").html(html);
+}
+
+const waypoints = new Iterable(waypointsList,waypointsHtml,"#waypoint");
+
+
+
+let selectedWayPointIndex = 0;
+
+
+// ?????????????????????????????????????????????
+
 
 // Functions -------------------------------------------------------
 let init = function() {
@@ -73,6 +102,7 @@ let init = function() {
 			// ??????????????????????????????????
 		}
 	);
+	waypoints.generateHtml();
 }
 
 let displayGpsInfo = function() {
@@ -86,6 +116,19 @@ let displayGpsInfo = function() {
 // Keyboard management ---------------------------------------------
 document.addEventListener("keydown", event => {
 	switch(event.key) {
+		case "Backspace":
+			switch(state) {
+				case "MAP":
+					// Nothing is done : quit the application
+					break;
+				case "MENU":
+					event.preventDefault();
+					state = "MAP";
+					$("#menu").hide();
+					$("#map").show();
+					break;
+			};
+			break;
 		case "SoftLeft":
 		// For emulation on Firefox PC 
 		case "PageDown":
@@ -152,6 +195,9 @@ document.addEventListener("keydown", event => {
 					myMap.panBy([0,100]);
 					break;
 				case "MENU":
+				if (currentMenuIndex === 1) {
+						waypoints.next();
+					};
 					break;
 			};
 			event.stopPropagation();
@@ -164,6 +210,9 @@ document.addEventListener("keydown", event => {
 					myMap.panBy([0,-100]);
 					break;
 				case "MENU":
+					if (currentMenuIndex === 1) {
+						waypoints.previous();
+					};
 					break;
 			};
 			event.stopPropagation();
@@ -180,9 +229,6 @@ document.addEventListener("keydown", event => {
 					displayGpsInfo();
 					break;
 				case "MENU":
-					state = "MAP";
-					$("#menu").hide();
-					$("#map").show();
 					break;
 			};
 			break;

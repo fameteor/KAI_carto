@@ -88,3 +88,15 @@ body,
 .tab span.active {
   border-bottom: 3px solid blue;
 }
+
+
+div.list {
+	background-color : white;
+	color:blue;
+	padding: 10px;
+}
+
+div.list.selected {
+	background-color : blue;
+	color:white;
+}
