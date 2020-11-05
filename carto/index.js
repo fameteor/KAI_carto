@@ -29,21 +29,24 @@ let waypointsList = [
 	{label:"essai1",coords:[45,12]},
 	{label:"essai2",coords:[47,12]},
 	{label:"essai3",coords:[49,12]},
+	{label:"essai1",coords:[45,12]},
+	{label:"essai2",coords:[47,12]},
+	{label:"essai3",coords:[49,12]}
 ];
 
 // Function to generate dynamix HTML for waypoints list
 // this = waypoints Iterable
-const waypointsHtml = function() {
+const waypointsGenerateHtml = function() {
 	let html = "";
 	const that = this;
 	this.list.forEach(function(waypoint,index) {
-		if (index === that.currentIndex)	html += '<div id="waypoint' + index + '" class="list selected">' + waypoint.label + '<input type="checkbox" checked/></div>';
-		else								html += '<div id="waypoint' + index + '" class="list">' + waypoint.label + '<input type="checkbox" checked/></div>';
+		html += '<div id="waypoint' + index + '" class="list"><label><i class="fas fa-map-marker"></i> ' + waypoint.label + '</label><input type="checkbox" checked/><div class="info">Latitude : ' + waypoint.coords[0] + '<br/>Longitude : ' + waypoint.coords[1] + '</div></div>';
 	});
 	$("#waypoints_list").html(html);
+	this.refreshSelection();
 }
 
-const waypoints = new Iterable(waypointsList,waypointsHtml,"#waypoint");
+const waypoints = new Iterable(waypointsList,waypointsGenerateHtml,"#waypoint");
 
 
 
