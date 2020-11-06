@@ -7,7 +7,7 @@ let center = [46.589187,15.0133661];
 let state = "MAP";
 let currentPosition = null;
 
-const menuItems = ["INFO_GPS","WAYPOINTS","TRACKS","OTHERS"];
+const menuItems = ["INFO_GPS","WAYPOINTS","TRACKS","MAP_BACKGROUNDS"];
 let currentMenuIndex = 0;
 
 const activateMenu = function(currentMenuIndex) {
@@ -46,7 +46,12 @@ const waypointsGenerateHtml = function() {
 	this.refreshSelection();
 }
 
-const waypoints = new Iterable(waypointsList,waypointsGenerateHtml,"#waypoint");
+// this = mapBackgrounds Iterable
+const waypointsOptions = {
+	"selectedDomElementPrefix" : "#waypoint"	
+}
+
+const waypoints = new Iterable(waypointsList,waypointsGenerateHtml,waypointsOptions);
 
 
 
@@ -55,6 +60,47 @@ let selectedWayPointIndex = 0;
 
 // ?????????????????????????????????????????????
 
+// Only one map background should be be active
+let mapBackgroundsList = [
+	{label:"web : photos IGN",url:"https://wxs.ign.fr/pratique/geoportail/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=ORTHOIMAGERY.ORTHOPHOTOS&TILEMATRIXSET=PM&TILEMATRIX={z}&TILECOL={x}&TILEROW={y}&STYLE=normal&FORMAT=image/jpeg",active:false},
+	{label:"web : carte IGN",url:"https://wxs.ign.fr/pratique/geoportail/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS&TILEMATRIXSET=PM&TILEMATRIX={z}&TILECOL={x}&TILEROW={y}&STYLE=normal&FORMAT=image/jpeg",active:true},
+	{label:"web : OpenStreetMap",url:"https://a.tile.openstreetmap.org/{z}/{x}/{y}.png",active:false},
+	{label:"local : carte IGN",url:"cartes_IGN/{z}/{x}/{y}.jpg",active:false}
+];
+
+// Function to generate dynamix HTML for map backgrounds list
+// this = mapBackgrounds Iterable
+const mapBackgroundsGenerateHtml = function() {
+	let html = "";
+	const that = this;
+	this.list.forEach(function(mapBackground,index) {
+		html += '<div id="mapBackground' + index + '" class="list"><label><i class="fas fa-globe"></i> ' + mapBackground.label + '</label><input type="checkbox" ' + (mapBackground.active ? "checked" : "") + '/></div>';
+	});
+	$("#mapBackground_list").html(html);
+}
+
+// this = mapBackgrounds Iterable
+const mapBackgroundsOptions = {
+	"selectedDomElementPrefix" : "#mapBackground",
+	"initialSelectionIndex" : function() {
+		let initialSelectionIndex = 0;
+		mapBackgroundsList.forEach((mapBackground,index) => {
+			if (mapBackground.active) initialSelectionIndex = index;
+		});
+		return initialSelectionIndex;
+	},
+	
+}
+
+const mapBackgrounds = new Iterable(mapBackgroundsList,mapBackgroundsGenerateHtml,mapBackgroundsOptions);
+
+const getActiveMapBackground = function() {
+	return mapBackgroundsList.find(mapBackground => {
+		return mapBackground.active;
+	});
+}
+
+let leafletBackgroundLayer = {};
 
 // Functions -------------------------------------------------------
 let init = function() {
@@ -69,8 +115,8 @@ let init = function() {
 		}
 	);
 	// We add the background ---------------------------------------
-	L.tileLayer(
-		'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png', 
+	leafletBackgroundLayer = L.tileLayer(
+		getActiveMapBackground().url, 
 		{
 			attribution:  '',
 			maxZoom: 	19,
@@ -106,6 +152,7 @@ let init = function() {
 		}
 	);
 	waypoints.generateHtml();
+	mapBackgrounds.generateHtml();
 }
 
 let displayGpsInfo = function() {
@@ -198,8 +245,11 @@ document.addEventListener("keydown", event => {
 					myMap.panBy([0,100]);
 					break;
 				case "MENU":
-				if (currentMenuIndex === 1) {
+					if (currentMenuIndex === 1) {
 						waypoints.next();
+					};
+					if (currentMenuIndex === 3) {
+						mapBackgrounds.next();
 					};
 					break;
 			};
@@ -215,6 +265,9 @@ document.addEventListener("keydown", event => {
 				case "MENU":
 					if (currentMenuIndex === 1) {
 						waypoints.previous();
+					};
+					if (currentMenuIndex === 3) {
+						mapBackgrounds.previous();
 					};
 					break;
 			};
@@ -232,6 +285,24 @@ document.addEventListener("keydown", event => {
 					displayGpsInfo();
 					break;
 				case "MENU":
+					if (currentMenuIndex === 3) {
+						mapBackgrounds.list.forEach(function(mapBackground,index) {
+							if (index === mapBackgrounds.currentIndex) 	mapBackground.active = true;
+							else										mapBackground.active = false;
+						});
+						mapBackgrounds.generateHtml();
+						
+						myMap.removeLayer(leafletBackgroundLayer);
+						leafletBackgroundLayer = L.tileLayer(
+							mapBackgrounds.currentItem().url, 
+							{
+								attribution:  '',
+								maxZoom: 	19,
+								minZoom:	2,
+								id: 		'openStreetMap'
+							}
+						).addTo(myMap);
+					}
 					break;
 			};
 			break;
