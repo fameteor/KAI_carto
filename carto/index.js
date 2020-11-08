@@ -35,7 +35,7 @@ let mapBackgroundsList = [
 
 let tracksList = [
 	{label:"Drau radweg Autriche",points:drauRadweg,color:'red',displayed:false},
-	{label:"Drav radweg Slovénie",points:drauSlovenia,color:'orange',displayed:true},
+	{label:"Drav radweg Slovénie",points:drauSlovenia,color:'orange',displayed:false},
 	{label:"Mur radweg Slovénie",points:murCroatia,color:'blue',displayed:false},
 	{label:"Mur radweg Autriche",points:mur,color:'green',displayed:false},
 	{label:"Enregistrement actuel",points:[],color:'purple',displayed:true}

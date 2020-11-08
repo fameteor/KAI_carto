@@ -1,10 +1,21 @@
 // -----------------------------------------------------------------
 // Keyboard management
 // -----------------------------------------------------------------
+const minDeltaBetweenKeys = 200; // In ms
+let lastKeyTs = new Date().getTime();
+
 document.addEventListener("keydown", event => {
 	console.log(event.key);
-	if (keysActions[state.current()] && keysActions[state.current()][event.key]) {
-		keysActions[state.current()][event.key](event);
+	const keyTs = new Date().getTime();
+	// Anti bounce filtering
+	if ((keyTs - lastKeyTs) > minDeltaBetweenKeys) {
+		lastKeyTs = keyTs;
+		if (keysActions[state.current()] && keysActions[state.current()][event.key]) {
+			keysActions[state.current()][event.key](event);
+		}
+	}
+	else {
+		console.log("Anti-bounce : invalid key");
 	}
 });
 
