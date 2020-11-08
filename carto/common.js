@@ -20,6 +20,17 @@ document.addEventListener("keydown", event => {
 });
 
 // -----------------------------------------------------------------
+// Toastr
+// -----------------------------------------------------------------
+const toastr = {
+	info : function (text) {
+		$("#toastrMsg").html(text);
+		$("#toastr").attr("class","visible");
+		setTimeout(function(){ $("#toastr").attr("class","hidden"); }, 2000);
+	}	
+}
+
+// -----------------------------------------------------------------
 // States management
 // -----------------------------------------------------------------
 const state = {

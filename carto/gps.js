@@ -48,13 +48,9 @@ const getGpsCurrentPosition = function() {
 			}
 			// Display GPS infos
 			displayGpsInfos();
+			toastr.info("Point GPS ok.");
 		}, function(error) {
-			
-			//????????????????????????????????????
-			// Handle error in toastr
-			//document.getElementById("geoloc").innerHTML = error.message;
-			//console.log("Erreur de géoloc N°"+error.code+" : "+error.message);
-			// ??????????????????????????????????
+			toastr.info("Erreur GPS : " + error.message);
 		}
 	);	
 }
@@ -88,13 +84,9 @@ const markGpsCurrentPosition = function() {
 			displayDisplayedWaypointsMarker();
 			// Display GPS infos
 			displayGpsInfos();
+			toastr.info("Point GPS marqué.");
 		}, function(error) {
-			
-			//????????????????????????????????????
-			// Handle error in toastr
-			//document.getElementById("geoloc").innerHTML = error.message;
-			//console.log("Erreur de géoloc N°"+error.code+" : "+error.message);
-			// ??????????????????????????????????
+			toastr.info("Erreur GPS : " + error.message);
 		}
 	);	
 }
@@ -109,10 +101,11 @@ function gpsWatchOnSuccess(position) {
 	tracks.list[4].points.push([position.coords && position.coords.latitude,position.coords && position.coords.longitude]);
 	refreshTracksDisplay();
 	refreshCurrentPosition();
+	toastr.info("Nouveau point GPS.");
 }
 
-function gpsWatchOnError(err) {
-	console.warn('GPS problem : ' + err.message);
+function gpsWatchOnError(error) {
+	toastr.info("Erreur GPS : " + error.message);
 }
 
 const gpsWatchOptions = {
@@ -124,11 +117,11 @@ const gpsWatchOptions = {
 function gpsWatchStart() {
 	gpsWatchHandler = navigator.geolocation.watchPosition(gpsWatchOnSuccess, gpsWatchOnError, gpsWatchOptions);
 	console.log("GPS watch ON");
-	tracks.list[4].points.push([currentPosition.coords.latitude,currentPosition.coords.longitude]);
 	refreshTracksDisplay();
 }
 
 function gpsWatchStop() {
+	console.log(gpsWatchHandler);
 	if (gpsWatchHandler) navigator.geolocation.clearWatch(gpsWatchHandler);
 	console.log("GPS watch OFF");
 }
