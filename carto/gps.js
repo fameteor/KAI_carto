@@ -2,6 +2,7 @@
 // Global variables
 // -----------------------------------------------------------------
 let gpsWatchHandler = null;
+let lockHandler = null;
 
 // -----------------------------------------------------------------
 // GPS management
@@ -115,6 +116,9 @@ const gpsWatchOptions = {
 };
 
 function gpsWatchStart() {
+	tracks.list[4].points = [];
+	// Only for Nokia phone, not on PC firefox, lock GPS ressource when screen off or applis in background
+	if (window.navigator.requestWakeLock) lockHandler = window.navigator.requestWakeLock('gps');
 	gpsWatchHandler = navigator.geolocation.watchPosition(gpsWatchOnSuccess, gpsWatchOnError, gpsWatchOptions);
 	console.log("GPS watch ON");
 	refreshTracksDisplay();
@@ -122,6 +126,7 @@ function gpsWatchStart() {
 
 function gpsWatchStop() {
 	console.log(gpsWatchHandler);
-	if (gpsWatchHandler) navigator.geolocation.clearWatch(gpsWatchHandler);
+	navigator.geolocation.clearWatch(gpsWatchHandler);
+	if (lockHandler) lockHandler.unlock();
 	console.log("GPS watch OFF");
 }

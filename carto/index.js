@@ -150,7 +150,7 @@ const tracksGenerateHtml = function() {
 	let html = "";
 	const that = this;
 	this.list.forEach(function(track,index) {
-		html += '<div id="track' + index + '" class="list"><label><i class="fas fa-feather" style="color:' + track.color + ';"></i> ' + track.label + '</label><input type="checkbox" ' + (track.displayed ? "checked" : "") + '/></div>';
+		html += '<div id="track' + index + '" class="list"><label><i class="fas fa-feather" style="color:' + track.color + ';"></i> ' + track.label + '</label><input type="checkbox" ' + (track.displayed ? "checked" : "") + '/><div class="info">' + track.points.length + ' points</div></div>';
 	});
 	$("#tracks_list").html(html);
 	this.refreshSelection();

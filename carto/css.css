@@ -120,12 +120,13 @@ div#toastr {
 	position : absolute;
 	top:0;
 	left:0;
-	width :100%;
+	width :230px;
 	padding:10px;
+	margin:5px;
 	background-color : yellow;
 	z-index: 1000;
-	border-bottom: 1px solid #444444;
-	border-radius: 0 0 5px 5px;
+	border: 1px solid #666666;
+	border-radius: 5px;
 }
 
 div#toastr.hidden {
