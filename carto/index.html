@@ -18,93 +18,60 @@
 	<script src="trails/murCroatia.js"></script>
 	<script src="leaflet1_7_1/leaflet.js"></script>
 	<script src="common.js"></script>
+	<script src="gps.js"></script>
 	<script src="index.js"></script>
   </head>
 
   <body onLoad="init()">
   
-	<!-- MAP ---------------------------------------------------- -->
-    <div id="map" class="root">
+	<!-- MAP --------------------------------------------------------- -->
+	<div id="map" class="root">
 	  
 		<div id="mapid"></div>
-
-		<div id="softkey">
-			<label id="left"><i class="fas fa-search-minus"></i></label>
-			<label id="center">MENU</label>
-			<label id="right"><i class="fas fa-search-plus"></i></label>
-		</div>
 	
     </div>
 	
+	<!-- MENU -------------------------------------------------------- -->
 	<div id="menu" class="root">
-	<!-- MENU --------------------------------------------------- -->
 	
-		<header>
-			<div class="tab">
-			  <span id = "INFO_GPS" class="active">Infos GPS</span>
-			  <span id = "WAYPOINTS">Waypoints</span>
-			  <span id = "TRACKS">Tracks</span>
-			  <span id = "MAP_BACKGROUNDS">Map backgrounds</span>
-			</div>
-		</header>
+		<header id="menuHeader"></header>
 		
-		<!-- MENU.INFO_GPS -------------------------------------- -->
-		<div id="TARGET_INFO_GPS">
-			<div id="mapid">
-				<ul>
-					<li>Latitude : <span id="latitude"></span></li>
-					<li>Longitude : <span id="longitude"></span></li>
-					<li>Altitude : <span id="altitude"></span></li>
-					<li>Heading : <span id="heading"></span></li>
-					<li>Speed : <span id="speed"></span></li>
-					<li>Waypoint</li>
-					<li>ETA</li>
-				</ul>
-			</div>
-			<div id="softkey">
-				<label id="left"></label>
-				<label id="center"></label>
-				<label id="right"></label>
-			</div>
+		<!-- MENU.INFO_GPS.MANUAL or .AUTO --------------------------- -->
+		<div id="menuTarget_0">
+			<ul>
+				<li>Latitude : <span id="latitude"></span></li>
+				<li>Longitude : <span id="longitude"></span></li>
+				<li>Altitude : <span id="altitude"></span></li>
+				<li>Heading : <span id="heading"></span></li>
+				<li>Speed : <span id="speed"></span></li>
+				<li>Waypoint</li>
+				<li>ETA</li>
+			</ul>
 		</div>
 		
-		<!-- MENU.WAYPOINTS ------------------------------------- -->
-		<div id="TARGET_WAYPOINTS">
-			
-			<input id="waypointName" placeholder="Taper le nom"></input>
-			
+		<!-- MENU.WAYPOINTS.displayed or .notDisplayed or .ADD ------- -->
+		<div id="menuTarget_1">
 			<div id="waypoints_list"></div>
-			<div id="softkey">
-				<label id="left">nouveau</label>
-				<label id="center">SELECTIONNER</label>
-				<label id="right">options</label>
-			</div>
 		</div>
 		
-		<!-- MENU.TRACKS ---------------------------------------- -->
-		<div id="TARGET_TRACKS">
-			Tracks
-			
-			<div id="softkey">
-				<label id="left"></label>
-				<label id="center"></label>
-				<label id="right"></label>
-			</div>
+		<!-- MENU.TRACKS.displayed or .notDisplayed ------------------ -->
+		<div id="menuTarget_2">
+			<div id="tracks_list"></div>
 		</div>
 		
-		<!-- MENU.MAP_BACKGROUND ------------------------------------- -->
-		<div id="TARGET_MAP_BACKGROUNDS">
-			
+		<!-- MENU.SETTING.MAP_BACKGROUNDS.active or .notActive ------- -->
+		<div id="menuTarget_3">
 			<div id="mapBackground_list"></div>
-			
-			<div id="softkey">
-				<label id="left"></label>
-				<label id="center">SELECTIONNER</label>
-				<label id="right"></label>
-			</div>
 		</div>
-	
-    </div>
+		
+	</div>
+    
+	<!-- Softkeys ---------------------------------------------------- -->
+	<div id="softkey">
+		<label id="left"></label>
+		<label id="center"></label>
+		<label id="right"></label>
+	</div>
 	
   </body>
 </html>

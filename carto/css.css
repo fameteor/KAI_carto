@@ -84,7 +84,7 @@ body,
 }
 
 /* Create an active/current tablink class */
-.tab span.active {
+.tab span.selected {
   border-bottom: 3px solid #008080;
 }
 
