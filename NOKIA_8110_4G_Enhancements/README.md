@@ -1,5 +1,5 @@
 # Nokia 8110 4G enhancements
-## 1) Anti-bounce Keyboard patching
+## 1) Anti-bounce Keyboard patching (Ne semble pas marcher ?)
 Source : https://sites.google.com/view/bananahackers/customizations/fix-the-keypad-speed
 **All changes will be restored after a factory reset or after an update !**
 

@@ -1,3 +1,67 @@
+# Fonctionnalités
+
+## MAP 
+	Fonctionnalités :
+	- Se déplacer droite, gauche, haut, bas, 
+	- Zoomer plus et moins,
+	- Afficher le menu.
+	- Raffraichissement uniquement quand focus.
+	
+	Mode auto :
+	Affichage d'un "TRACE" clignotant à change nouveau point.
+
+## INFOS
+
+	"TRACE" (rouge) affiché 
+	Si trace : information : CAP suivi et vitesse instantanée
+	Si waypoint cible : Affichage du nom, cap à suivre, distance et ETA
+
+	"marquer pt" 	"RAFRAICHIR"		"act. trace"
+	"marquer Pt" 						"désact. trace"
+
+	quand on active trace : 
+		même trace ou nouvelle trace ?
+		si nouvelle trace : sauver ou pas l'actuelle ?
+		si oui : non ou entrer le nom
+	quand marquer point : entrer nom et enregistrer en affichant
+
+## POINTS : affichage nom, lattitude, longitude, altitude et date de création
+
+	"" 	"Afficher"		"Options"
+	"" 	"Cacher"		"Options"
+	
+	Options :
+	- Sélectionner/déselectionner comme cible
+	- Changer la couleur
+	- Changer le nom
+	- Supprimer
+	- Centrer la carte à cet endroit (désactive centrer la carte sur la position courante)
+	- Déplacer ?
+	- Trier selon ?
+	
+
+## TRACES : affichage nom, date 1er point et date du dernier point 
+
+	"" 	"Afficher"		"Options"
+	"" 	"Cacher"		"Options"
+	
+	Options :
+	- Changer la couleur
+	- Changer le nom
+	- Supprimer
+	- Déplacer ?
+	- Trier selon ?
+
+## FONDS DE CARTE
+
+## OPTIONS :
+	- carte :
+		- afficher ou ne pas afficher le nom des points
+		- centrer/ne pas centrer sur le dernier point
+	- GPS
+		- algo de lissage des traces et d'élimination des points
+		- haute précision si disponible ?
+		
 # A faire
 
 - Vérifier si appli ouverte ou fermée pour optimiser la consommation

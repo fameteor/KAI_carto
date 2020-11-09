@@ -18,7 +18,7 @@ function writeSelectedTrackToDisk() {
 		}
 		// Error
 		request.onerror = function () {
-			toastr.info('Ecriture impossible : ' + JSON.stringify(this.error));
+			toastr.info('Ecriture impossible : ' + JSON.stringify(this));
 			console.log(this.error);
 		}
 	}
