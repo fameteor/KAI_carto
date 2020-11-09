@@ -15,7 +15,8 @@
   },
   "fullscreen":"true",
   "permissions": {
-	"geolocation": {"description": "Get location"}
+	"geolocation": {"description": "Get location"},
+	"device-storage:pictures":{ "access": "readwrite" }
   },
   "locales": {
     "fr-FR": {

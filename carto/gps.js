@@ -97,12 +97,16 @@ const markGpsCurrentPosition = function() {
 // -----------------------------------------------------------------
 
 function gpsWatchOnSuccess(position) {
-	currentPosition = position.coords;
-	console.log(position);
-	tracks.list[4].points.push([position.coords && position.coords.latitude,position.coords && position.coords.longitude]);
-	refreshTracksDisplay();
-	refreshCurrentPosition();
-	toastr.info("Nouveau point GPS.");
+	// Only if different GPS point ---------------------------------
+	if (!(position.coords.latitude === currentPosition.latitude && position.coords.longitude === currentPosition.longitude)) {
+		currentPosition = position.coords;
+		console.log(position);
+		tracks.list[4].points.push([position.coords && position.coords.latitude,position.coords && position.coords.longitude]);
+		refreshTracksDisplay();
+		refreshCurrentPosition();
+		toastr.info("Nouveau point GPS.");
+	}
+	else toastr.info("Même point GPS.");
 }
 
 function gpsWatchOnError(error) {
@@ -125,7 +129,6 @@ function gpsWatchStart() {
 }
 
 function gpsWatchStop() {
-	console.log(gpsWatchHandler);
 	navigator.geolocation.clearWatch(gpsWatchHandler);
 	if (lockHandler) lockHandler.unlock();
 	console.log("GPS watch OFF");
