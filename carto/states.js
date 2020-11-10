@@ -537,6 +537,8 @@ const keysActions = {
 				options.currentItem().target(!options.currentItem().target());
 				options.generateHtml();
 				state.current(menuStateCalculation());
+				refreshCurrentPosition();
+				displayDisplayedWaypointsMarker();
 				event.preventDefault();
 			},
 			Backspace: function(event) {
@@ -578,6 +580,8 @@ const keysActions = {
 				options.currentItem().target(!options.currentItem().target());
 				options.generateHtml();
 				state.current(menuStateCalculation());
+				refreshCurrentPosition();
+				displayDisplayedWaypointsMarker();
 				event.preventDefault();
 			},
 			Backspace: function(event) {

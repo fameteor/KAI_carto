@@ -83,4 +83,16 @@ State
 # General
 - debounce system
 - MMS problem
+
+# How do the GPS works :
+
+Properties :
+- `latitude`
+- longitude
+- altitude
+- accuracy : 10 or 11
+- altitudeAccuracy : 0
+- heading : 0
+- speed : 0
+
 	

@@ -9,9 +9,6 @@ let mapCenter = [46.589187,15.0133661];
 let currentPosition = null;
 let currentPositionMarker = null;
 let gpsModeIsAuto = false;
-let mapIsCenteredOnGpsPosition = true;
-let waypointsNameAreDisplayed = false;
-let currentLocationIsDisplayed = true;
 let displayedWaypointsMarkerList = [];
 let displayedTracksMarkerList = [];
 
@@ -24,7 +21,7 @@ let menuItems = [
 ];
 
 let waypointsList = [
-	{label:"essai1",coords:[45,12],displayed:false},
+	{label:"A voir",coords:[47.208058,-1.578184],displayed:false},
 ];
 
 // Only one map background should be be active
@@ -142,6 +139,8 @@ const displayDisplayedWaypointsMarker = function() {
 				{icon:blueIcon}
 			).addTo(myMap);
 			displayedWaypointsMarkerList.push(marker);
+			// Display optionnaly markers names
+			if (waypointsNameAreDisplayed) marker.bindTooltip(waypoint.label,{direction: "center"}).openTooltip();
 		}
 	});
 	
@@ -234,6 +233,26 @@ let optionsList = [
 			return mapIsCenteredOnGpsPosition;
 		}
 	}},
+	{label:"Afficher la position courante",target:function(value) {
+		if (value === true || value === false) {
+			//Setter
+			currentLocationIsDisplayed = value;
+		}
+		else {
+			//Getter
+			return currentLocationIsDisplayed;
+		}
+	}},
+	{label:"Moyenner les positions GPS (5s)",target:function(value) {
+		if (value === true || value === false) {
+			//Setter
+			gpsPostProcessing = value;
+		}
+		else {
+			//Getter
+			return gpsPostProcessing;
+		}
+	}},
 	{label:"Afficher le nom des points",target:function(value) {
 		if (value === true || value === false) {
 			//Setter
@@ -243,7 +262,7 @@ let optionsList = [
 			//Getter
 			return waypointsNameAreDisplayed;
 		}
-	}}
+	}},
 ];
 
 // Function to generate dynamix HTML for waypoints list
@@ -291,15 +310,17 @@ const displaySoftKeysLabels = function(state) {
 // Functions -------------------------------------------------------
 let init = function() {
 	$("#tracing_green").hide();
+	$("#tracing_orange").hide();
 	$("#tracing_red").hide();
 	state.current("MAP");
 	// App visibility check ----------------------------------------
 	document.addEventListener("visibilitychange", function () {
 		if (document.hidden) {
-			toastr.info("App is hidden");
+			appHasFocus = false;
 		} 
 		else {
-			toastr.info("App has focus");
+			appHasFocus = true;
+			refreshCurrentPosition();
 		} 
 	});
 	// Dynamic HTML generation -------------------------------------

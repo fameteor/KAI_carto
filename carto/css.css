@@ -155,6 +155,15 @@ div#tracing_red {
 	z-index: 500;
 }
 
+div#tracing_orange {
+	position : absolute;
+	top:0;
+	left:0;
+	width :230px;
+	margin:5px;
+	z-index: 500;
+}
+
 div#tracing_green {
 	position : absolute;
 	top:0;
