@@ -71,26 +71,6 @@ const softKeysLabels = {
 			Center : 	"AFFICHER",
 			SoftRight :	"Enregistrer"
 		},
-		"MAP.SETTING.DISPLAY_MARKER_CURRENT_POSITION.activated" : {
-			SoftLeft :	"",
-			Center : 	"DESACTIVER",
-			SoftRight :	""
-		},
-			"MAP.SETTING.DISPLAY_MARKER_CURRENT_POSITION.desactivated" : {
-			SoftLeft :	"",
-			Center : 	"ACTIVER",
-			SoftRight :	""
-		},
-		"MAP.SETTING.CENTER_MAP_ON_CURRENT_POSITION.activated" : {
-			SoftLeft :	"",
-			Center : 	"DESACTIVER",
-			SoftRight :	""
-		},
-		"MAP.SETTING.CENTER_MAP_ON_CURRENT_POSITION.desactivated" : {
-			SoftLeft :	"",
-			Center : 	"DESACTIVER",
-			SoftRight :	""
-		},
 		"MAP.MAP_BACKGROUNDS_ACTIVE" : {
 			SoftLeft :	"",
 			Center : 	"",
@@ -100,7 +80,17 @@ const softKeysLabels = {
 			SoftLeft :	"",
 			Center : 	"UTILISER",
 			SoftRight :	""
-		}
+		},
+		"MAP.OPTIONS_ACTIVE" : {
+			SoftLeft :	"",
+			Center : 	"DESACTIVER",
+			SoftRight :	""
+		},
+		"MAP.OPTIONS_NOTACTIVE" : {
+			SoftLeft :	"",
+			Center : 	"ACTIVER",
+			SoftRight :	""
+		},
 	}
 }				
 
@@ -430,26 +420,6 @@ const keysActions = {
 				state.pop();
 			}
 		},
-		"MAP.SETTING.DISPLAY_MARKER_CURRENT_POSITION.activated" : {
-			SoftLeft :	"",
-			Center : 	"DESACTIVER",
-			SoftRight :	""
-		},
-		"MAP.SETTING.DISPLAY_MARKER_CURRENT_POSITION.desactivated" : {
-			SoftLeft :	"",
-			Center : 	"ACTIVER",
-			SoftRight :	""
-		},
-		"MAP.SETTING.CENTER_MAP_ON_CURRENT_POSITION.activated" : {
-			SoftLeft :	"",
-			Center : 	"DESACTIVER",
-			SoftRight :	""
-		},
-		"MAP.SETTING.CENTER_MAP_ON_CURRENT_POSITION.desactivated" : {
-			SoftLeft :	"",
-			Center : 	"DESACTIVER",
-			SoftRight :	""
-		},
 		"MAP.MAP_BACKGROUNDS_ACTIVE" : {
 			ArrowUp: function(event) {
 				event.preventDefault();
@@ -527,6 +497,88 @@ const keysActions = {
 				).addTo(myMap);
 				displayDisplayedWaypointsMarker();
 				state.current(menuStateCalculation());
+			},
+			Backspace: function(event) {
+				event.preventDefault();
+				$("#menu").hide();
+				$("#map").show();
+				state.pop();
+			}
+		},
+		"MAP.OPTIONS_ACTIVE" : {
+			ArrowUp: function(event) {
+				event.preventDefault();
+				options.previous();
+				state.current(menuStateCalculation());
+				event.stopPropagation();
+			},
+			ArrowDown: function(event) {
+				event.preventDefault();
+				options.next();
+				state.current(menuStateCalculation());
+				event.stopPropagation();
+			},
+			ArrowLeft: function(event) {
+				event.preventDefault();
+				menu.previous();
+				state.current(menuStateCalculation());
+				event.stopPropagation();
+			},
+			ArrowRight: function(event) {
+				event.preventDefault();
+				menu.next();
+				state.current(menuStateCalculation());
+				event.stopPropagation();
+			},
+			Enter: function(event) {
+				// Toggle displayed state
+				// Toggle displayed state
+				event.preventDefault();
+				options.currentItem().target(!options.currentItem().target());
+				options.generateHtml();
+				state.current(menuStateCalculation());
+				event.preventDefault();
+			},
+			Backspace: function(event) {
+				event.preventDefault();
+				$("#menu").hide();
+				$("#map").show();
+				state.pop();
+			}
+		},
+		"MAP.OPTIONS_NOTACTIVE" : {
+			ArrowUp: function(event) {
+				event.preventDefault();
+				options.previous();
+				state.current(menuStateCalculation());
+				event.stopPropagation();
+			},
+			ArrowDown: function(event) {
+				event.preventDefault();
+				options.next();
+				state.current(menuStateCalculation());
+				event.stopPropagation();
+			},
+			ArrowLeft: function(event) {
+				event.preventDefault();
+				menu.previous();
+				state.current(menuStateCalculation());
+				event.stopPropagation();
+			},
+			ArrowRight: function(event) {
+				event.preventDefault();
+				menu.next();
+				state.current(menuStateCalculation());
+				event.stopPropagation();
+			},
+			Enter: function(event) {
+				// Toggle displayed state
+				// Toggle displayed state
+				event.preventDefault();
+				options.currentItem().target(!options.currentItem().target());
+				options.generateHtml();
+				state.current(menuStateCalculation());
+				event.preventDefault();
 			},
 			Backspace: function(event) {
 				event.preventDefault();

@@ -71,6 +71,8 @@
 - Si nouveau point de track pas très loin (? c'est quoi ?) du précédent, on ne l'enregistre pas
 - Tester le enableHighAccuracy
 - Ajouter le timestamp aux enregistrements de track (voir toutes les infos du GPS ?)
+- Faire un test simplified de mode privileged pour enregistrement
+- affichage CSS menu tabs et options si plus d'une page
 
 # Cleaning
 Mettre paramètrage touches et code dans le même fichier

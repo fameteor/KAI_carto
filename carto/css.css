@@ -80,7 +80,8 @@ body,
 .tab span {
   float: left;
   border: none;
-  padding: 5px 5px;
+  padding-left: 3px;
+  padding-right:  3px;
 }
 
 /* Create an active/current tablink class */
@@ -143,4 +144,22 @@ div#toastr.init {
 div#toastr.visible {
   visibility: visible;
   opacity: 1;
+}
+
+div#tracing_red {
+	position : absolute;
+	top:0;
+	left:0;
+	width :230px;
+	margin:5px;
+	z-index: 500;
+}
+
+div#tracing_green {
+	position : absolute;
+	top:0;
+	left:0;
+	width :230px;
+	margin:5px;
+	z-index: 500;
 }

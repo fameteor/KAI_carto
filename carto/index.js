@@ -10,15 +10,17 @@ let currentPosition = null;
 let currentPositionMarker = null;
 let gpsModeIsAuto = false;
 let mapIsCenteredOnGpsPosition = true;
+let waypointsNameAreDisplayed = false;
 let currentLocationIsDisplayed = true;
 let displayedWaypointsMarkerList = [];
 let displayedTracksMarkerList = [];
 
 let menuItems = [
-	{label:"Infos GPS",statePrefix:"INFOS_GPS"},
-	{label:"Waypoints",statePrefix:"WAYPOINTS"},
-	{label:"Tracks",statePrefix:"TRACKS"},
+	{label:"Infos",statePrefix:"INFOS_GPS"},
+	{label:"Points",statePrefix:"WAYPOINTS"},
+	{label:"Traces",statePrefix:"TRACKS"},
 	{label:"Fonds de carte",statePrefix:"MAP_BACKGROUNDS"},
+	{label:"Options",statePrefix:"OPTIONS"},
 ];
 
 let waypointsList = [
@@ -96,6 +98,10 @@ const menuStateCalculation = function() {
 		case "MAP_BACKGROUNDS":
 			if (mapBackgrounds.currentItem().active) 	return "MAP.MAP_BACKGROUNDS_ACTIVE";
 			else 										return "MAP.MAP_BACKGROUNDS_NOTACTIVE";
+			break;
+		case "OPTIONS":
+			if (options.currentItem().target()) 		return "MAP.OPTIONS_ACTIVE";
+			else 										return "MAP.OPTIONS_NOTACTIVE";
 			break;
 	}
 }
@@ -212,6 +218,52 @@ const getActiveMapBackground = function() {
 		return mapBackground.active;
 	});
 }
+
+// -----------------------------------------------------------------
+// OPTIONS
+// -----------------------------------------------------------------
+
+let optionsList = [
+	{label:"Centrer la carte sur la position actuelle",target:function(value) {
+		if (value === true || value === false) {
+			//Setter
+			mapIsCenteredOnGpsPosition = value;
+		}
+		else {
+			//Getter
+			return mapIsCenteredOnGpsPosition;
+		}
+	}},
+	{label:"Afficher le nom des points",target:function(value) {
+		if (value === true || value === false) {
+			//Setter
+			waypointsNameAreDisplayed = value;
+		}
+		else {
+			//Getter
+			return waypointsNameAreDisplayed;
+		}
+	}}
+];
+
+// Function to generate dynamix HTML for waypoints list
+// this = waypoints Iterable
+const optionsGenerateHtml = function() {
+	let html = "";
+	const that = this;
+	this.list.forEach(function(option,index) {
+		html += '<div id="option' + index + '" class="list"><label><i class="fas fa-map-marker" style="color:#2bcccb;"></i> ' + option.label + '</label><input type="checkbox" ' + (option.target() ? "checked" : "") + '/><div class="info">Autres infos</div></div>';
+	});
+	$("#options_list").html(html);
+	this.refreshSelection();
+}
+
+// this = mapBackgrounds Iterable
+const optionsOptions = {
+	"selectedDomElementPrefix" : "#option"	
+}
+
+const options = new Iterable(optionsList,optionsGenerateHtml,optionsOptions);
 					
 
 const displaySoftKeysLabels = function(state) {
@@ -238,6 +290,8 @@ const displaySoftKeysLabels = function(state) {
 
 // Functions -------------------------------------------------------
 let init = function() {
+	$("#tracing_green").hide();
+	$("#tracing_red").hide();
 	state.current("MAP");
 	// App visibility check ----------------------------------------
 	document.addEventListener("visibilitychange", function () {
@@ -253,6 +307,7 @@ let init = function() {
 	waypoints.generateHtml();
 	tracks.generateHtml();
 	mapBackgrounds.generateHtml();
+	options.generateHtml();
 	
 	$("#menu").hide();
 	// Map instance initialisation ---------------------------------
@@ -284,7 +339,6 @@ let init = function() {
 	getGpsCurrentPosition();
 	// We display the dispayed waypoints markers and tracks --------
 	displayDisplayedWaypointsMarker();
-	refreshTracksDisplay();
-	
+	refreshTracksDisplay();	
 }
 

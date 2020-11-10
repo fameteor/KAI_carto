@@ -104,9 +104,13 @@ function gpsWatchOnSuccess(position) {
 		tracks.list[4].points.push([position.coords && position.coords.latitude,position.coords && position.coords.longitude]);
 		refreshTracksDisplay();
 		refreshCurrentPosition();
-		toastr.info("Nouveau point GPS.");
+		$("#tracing_green").show();
+		setTimeout(function(){ $("#tracing_green").hide(); }, 1000);
 	}
-	else toastr.info("Même point GPS.");
+	else {
+		$("#tracing_red").show();
+		setTimeout(function(){ $("#tracing_red").hide(); }, 1000);
+	}
 }
 
 function gpsWatchOnError(error) {
