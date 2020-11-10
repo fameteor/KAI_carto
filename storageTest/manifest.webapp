@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
-  "name": "Carto",
-  "description": "Cartographie",
-  "type": "web",
+  "name": "storageTest",
+  "description": "StorageTest",
+  "type": "privileged",
   "launch_path": "/index.html",
   "icons": {
     "56": "/icons/icon-56.png",
@@ -15,14 +15,13 @@
   },
   "fullscreen":"true",
   "permissions": {
-	"geolocation": {"description": "Get location"},
 	"device-storage:sdcard":{ "access": "readwrite" }
   },
   "locales": {
     "fr-FR": {
-      "name": "Carto",
-      "subtitle": "Cartographie + enregistrement des positions",
-      "description": "Cartographie + enregistrement des positions"
+      "name": "storageTest",
+      "subtitle": "storageTest",
+      "description": "storageTest"
     }
   },
   "default_locale": "fr-FR",

@@ -112,7 +112,7 @@ const waypointsGenerateHtml = function() {
 	let html = "";
 	const that = this;
 	this.list.forEach(function(waypoint,index) {
-		html += '<div id="waypoint' + index + '" class="list"><label><i class="fas fa-map-marker" style="color:#2bcccb;"></i> ' + waypoint.label + '</label><input type="checkbox" ' + (waypoint.displayed ? "checked" : "") + '/><div class="info">Latitude : ' + Math.round(waypoint.coords[0] * 1000000)/1000000 + '<br/>Longitude : ' + Math.round(waypoint.coords[1] * 1000000)/1000000 + '</div></div>';
+		html += '<div id="waypoint' + index + '" class="list"><label><i class="fas fa-map-marker marker"></i> ' + waypoint.label + '</label><input type="checkbox" ' + (waypoint.displayed ? "checked" : "") + '/><div class="info">Latitude : ' + Math.round(waypoint.coords[0] * 1000000)/1000000 + '<br/>Longitude : ' + Math.round(waypoint.coords[1] * 1000000)/1000000 + '</div></div>';
 	});
 	$("#waypoints_list").html(html);
 	this.refreshSelection();
@@ -155,7 +155,7 @@ const tracksGenerateHtml = function() {
 	let html = "";
 	const that = this;
 	this.list.forEach(function(track,index) {
-		html += '<div id="track' + index + '" class="list"><label><i class="fas fa-feather" style="color:' + track.color + ';"></i> ' + track.label + '</label><input type="checkbox" ' + (track.displayed ? "checked" : "") + '/><div class="info">' + track.points.length + ' points</div></div>';
+		html += '<div id="track' + index + '" class="list"><label><i class="fas fa-feather ' + track.color + '"></i> ' + track.label + '</label><input type="checkbox" ' + (track.displayed ? "checked" : "") + '/><div class="info">' + track.points.length + ' points</div></div>';
 	});
 	$("#tracks_list").html(html);
 	this.refreshSelection();

@@ -182,14 +182,3 @@ div#tracing_green {
 	margin:5px;
 	z-index: 500;
 }
-
-.currentPositionMarker {color:#c91d36;}
-
-.red {color:red;}
-.orange {color:orange;}
-.blue {color:blue;}
-.green {color:green;}
-.purple {color:purple;}
-}
-
-.marker {color:#2bcccb;}

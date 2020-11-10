@@ -49,7 +49,7 @@ function refreshCurrentPosition() {
 		}
 		
 		// Display current position information ------------------------
-		$("#date").html(format_dateString(new Date(currentPosition.timestamp)));
+		$("#date").html("(Obtenue le " + format_dateString(new Date(currentPosition.timestamp)) +")");
 		$("#latitude").html(Math.round(currentPosition.latitude * 1000000)/1000000);
 		$("#longitude").html(Math.round(currentPosition.longitude * 1000000)/1000000);
 		$("#altitude").html(Math.round(currentPosition.altitude));
