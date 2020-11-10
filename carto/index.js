@@ -271,7 +271,7 @@ const optionsGenerateHtml = function() {
 	let html = "";
 	const that = this;
 	this.list.forEach(function(option,index) {
-		html += '<div id="option' + index + '" class="list"><label><i class="fas fa-map-marker" style="color:#2bcccb;"></i> ' + option.label + '</label><input type="checkbox" ' + (option.target() ? "checked" : "") + '/><div class="info">Autres infos</div></div>';
+		html += '<div id="option' + index + '" class="list"><label><i class="fas fa-cog"></i> ' + option.label + '</label><input type="checkbox" ' + (option.target() ? "checked" : "") + '/><div class="info">Autres infos</div></div>';
 	});
 	$("#options_list").html(html);
 	this.refreshSelection();

@@ -64,7 +64,6 @@
 		
 # A faire
 
-- Vérifier si appli ouverte ou fermée pour optimiser la consommation
 - Toaster à améliorer
 - Optimiser l'affichage de la track modifiée uniquement
 - comment restarter une appli sur le téléphone
@@ -73,6 +72,7 @@
 - Ajouter le timestamp aux enregistrements de track (voir toutes les infos du GPS ?)
 - Faire un test simplified de mode privileged pour enregistrement
 - affichage CSS menu tabs et options si plus d'une page
+- ajouter la gestion des versions GIT
 
 # Cleaning
 Mettre paramètrage touches et code dans le même fichier
