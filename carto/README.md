@@ -34,23 +34,19 @@ Private properties :
 Method :
  - `refresh` : refresh the waypoint in the application : map, data... depending on the options
  
-### `currentTrack` (global variable)
+### `::Track`
 
 Properties :
  - `points` [::Waypoint] list of the waypoints of the track.
- - `label` ::String : "Trace actuelle".
- - `color` ::ColorCssString : CSS color code string of the track's color on the map.
- - `isDisplayedOnTheMap` ::Boolean : if `true` the track is displayed on the map.
+ - `label` (opt) ::String : by default the date and time it was set, can be modified.
+ - `color` (opt) ::ColorCssString : CSS color code string of the track's color on the map.
+ - `isDisplayedOnTheMap` (opt:true) ::Boolean : if `true` the track is displayed on the map.
  
 Private properties :
  - `mapHandler` ::LeafletHandler.
  
 Method :
  - `refresh` : refresh the track in the application : map, data... depending on the options
- 
-### `::Track`
-
-Properties :
 
  
 ### `::BackgroundMap`
