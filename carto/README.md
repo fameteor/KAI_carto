@@ -8,7 +8,27 @@ Properties :
  - `latitude`
  - `longitude`
  - `altitude`
- - `timestamp` : when the point was set
+ - `timestamp` : when the point was set.
+ 
+### `::Waypoint`
+
+Properties :
+ - `latitude`
+ - `longitude`
+ - `altitude`
+ - `timestamp` : when the point was set.
+ - `marker` ::String : name of the FA icon to use to display the point.
+ - `color` ::ColorCssString : CSS color code string of the marker's color.
+ 
+### `::Track`
+
+Properties :
+
+ 
+### `::BackgroundMap`
+
+Properties :
+
 
 # Fonctionnalités
 
