@@ -13,10 +13,10 @@ Properties :
 ### `::Waypoint`
 
 Properties :
- - `lat` ::Number
- - `lng` ::Number
- - `alt` ::Number
- - `ts` ::UnixTS : when the waypoint was set.
+ - `latitude` ::Number
+ - `longitude` ::Number
+ - `altitude` ::Number
+ - `timestamp` ::UnixTS : when the waypoint was set.
  - `label` ::String : label of the waypoint : by default the date and time it was set, can be modified.
  - `marker` ::String : name of the Leaflet icon file to use to display the point. No need to specify color.
  - `isDisplayedOnTheMap` ::Boolean : if `true` the marker is displayed on the map.
