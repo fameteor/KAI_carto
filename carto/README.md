@@ -10,8 +10,7 @@ Properties :
  - `altitude` ::Number
  - `timestamp` ::UnixTS : when the point was set.
  - `label` ::String : label of the waypoint : the date and time it was set (cannot be modified).
- - `marker` ::String : name of the FA icon to use to display the point.
- - `color` ::ColorCssString : CSS color code string of the marker's color on the map.
+ - `marker` ::String : name of the Leaflet icon file to use to display the point. No need to specify color.
  - `isDisplayedOnTheMap` ::Boolean : if `true` the marker is displayed on the map.
  
 ### `::Waypoint`
@@ -22,8 +21,7 @@ Properties :
  - `altitude` ::Number
  - `timestamp` ::UnixTS : when the waypoint was set.
  - `label` ::String : label of the waypoint : by default the date and time it was set, can be modified.
- - `marker` ::String : name of the FA icon to use to display the point.
- - `color` ::ColorCssString : CSS color code string of the marker's color on the map.
+ - `marker` ::String : name of the Leaflet icon file to use to display the point. No need to specify color.
  - `isDisplayedOnTheMap` ::Boolean : if `true` the marker is displayed on the map.
  
 ### `currentTrack` (global variable)
