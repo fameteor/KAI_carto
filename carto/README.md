@@ -9,6 +9,13 @@ Properties :
  - `waypointsList` [::Waypoint]
  - `currentTrack` ::Track
  - `tracksList` [::Track]
+ - `options` :
+		- `mapIsCenteredOnGpsPosition` ::Boolean
+		- `waypointsLabelsAreDisplayed` ::Boolean
+		- `currentLocationIsDisplayed` ::Boolean
+		- `currentTrackIsDisplayed` ::Boolean
+		- `gpsPostProcessingIsOn` ::Boolean
+
  
 ### `::Waypoint`
 
