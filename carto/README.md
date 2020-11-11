@@ -1,3 +1,15 @@
+# Code
+
+## Data structures
+
+### `currentPosition` (global variable)
+
+Properties :
+ - `latitude`
+ - `longitude`
+ - `altitude`
+ - `timestamp` : when the point was set
+
 # Fonctionnalités
 
 ## MAP 
