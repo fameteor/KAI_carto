@@ -19,7 +19,16 @@ Properties :
  - `timestamp` : when the waypoint was set.
  - `label` : label of the waypoint.
  - `marker` ::String : name of the FA icon to use to display the point.
- - `color` ::ColorCssString : CSS color code string of the marker's color.
+ - `color` ::ColorCssString : CSS color code string of the marker's color on the map.
+ - `isDisplayedOnTheMap` ::Boolean : if `true` the marker is displayed on the map.
+ 
+### `currentTrack` (global variable)
+
+Properties :
+ - `point` ::[::Waypoint]
+ - `label`
+ - `color` ::ColorCssString : CSS color code string of the track's color on the map.
+ - `isDisplayedOnTheMap` ::Boolean : if `true` the track is displayed on the map.
  
 ### `::Track`
 
