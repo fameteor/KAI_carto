@@ -13,6 +13,9 @@ Properties :
  - `marker` ::String : name of the Leaflet icon file to use to display the point. No need to specify color.
  - `isDisplayedOnTheMap` ::Boolean : if `true` the marker is displayed on the map.
  
+Private properties :
+ - `mapHandler` ::LeafletHandler.
+ 
 ### `::Waypoint`
 
 Properties :
@@ -24,6 +27,9 @@ Properties :
  - `marker` ::String : name of the Leaflet icon file to use to display the point. No need to specify color.
  - `isDisplayedOnTheMap` ::Boolean : if `true` the marker is displayed on the map.
  
+Private properties :
+ - `mapHandler` ::LeafletHandler.
+ 
 ### `currentTrack` (global variable)
 
 Properties :
@@ -31,6 +37,9 @@ Properties :
  - `label` ::String : "Trace actuelle".
  - `color` ::ColorCssString : CSS color code string of the track's color on the map.
  - `isDisplayedOnTheMap` ::Boolean : if `true` the track is displayed on the map.
+ 
+Private properties :
+ - `mapHandler` ::LeafletHandler.
  
 ### `::Track`
 
