@@ -31,7 +31,8 @@ Properties :
 Private properties :
  - `mapHandler` ::LeafletHandler.
  
-
+Method :
+ - `refresh` : refresh the waypoint in the application : map, data... depending on the options
  
 ### `currentTrack` (global variable)
 
@@ -43,6 +44,9 @@ Properties :
  
 Private properties :
  - `mapHandler` ::LeafletHandler.
+ 
+Method :
+ - `refresh` : refresh the track in the application : map, data... depending on the options
  
 ### `::Track`
 
