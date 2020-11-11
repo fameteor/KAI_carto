@@ -5,19 +5,23 @@
 ### `currentPosition` (global variable)
 
 Properties :
- - `latitude`
- - `longitude`
- - `altitude`
- - `timestamp` : when the point was set.
+ - `latitude` ::Number
+ - `longitude` ::Number
+ - `altitude` ::Number
+ - `timestamp` ::UnixTS : when the point was set.
+ - `label` ::String : label of the waypoint : the date and time it was set (cannot be modified).
+ - `marker` ::String : name of the FA icon to use to display the point.
+ - `color` ::ColorCssString : CSS color code string of the marker's color on the map.
+ - `isDisplayedOnTheMap` ::Boolean : if `true` the marker is displayed on the map.
  
 ### `::Waypoint`
 
 Properties :
- - `latitude`
- - `longitude`
- - `altitude`
- - `timestamp` : when the waypoint was set.
- - `label` : label of the waypoint.
+ - `latitude` ::Number
+ - `longitude` ::Number
+ - `altitude` ::Number
+ - `timestamp` ::UnixTS : when the waypoint was set.
+ - `label` ::String : label of the waypoint : by default the date and time it was set, can be modified.
  - `marker` ::String : name of the FA icon to use to display the point.
  - `color` ::ColorCssString : CSS color code string of the marker's color on the map.
  - `isDisplayedOnTheMap` ::Boolean : if `true` the marker is displayed on the map.
@@ -25,8 +29,8 @@ Properties :
 ### `currentTrack` (global variable)
 
 Properties :
- - `point` ::[::Waypoint]
- - `label`
+ - `points` ::[::Waypoint] list of the waypoints of the track.
+ - `label` ::String : "Trace actuelle".
  - `color` ::ColorCssString : CSS color code string of the track's color on the map.
  - `isDisplayedOnTheMap` ::Boolean : if `true` the track is displayed on the map.
  
