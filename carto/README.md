@@ -2,27 +2,21 @@
 
 ## Data structures
 
-### `currentPosition` (global variable)
+### `::App`
 
 Properties :
- - `latitude` ::Number
- - `longitude` ::Number
- - `altitude` ::Number
- - `timestamp` ::UnixTS : when the point was set.
- - `label` ::String : label of the waypoint : the date and time it was set (cannot be modified).
- - `marker` ::String : name of the Leaflet icon file to use to display the point. No need to specify color.
- - `isDisplayedOnTheMap` ::Boolean : if `true` the marker is displayed on the map.
- 
-Private properties :
- - `mapHandler` ::LeafletHandler.
+ - `currentPosition` ::Waypoint
+ - `waypointsList` [::Waypoint]
+ - `currentTrack` ::Track
+ - `tracksList` [::Track]
  
 ### `::Waypoint`
 
 Properties :
- - `latitude` ::Number
- - `longitude` ::Number
- - `altitude` ::Number
- - `timestamp` ::UnixTS : when the waypoint was set.
+ - `lat` ::Number
+ - `lng` ::Number
+ - `alt` ::Number
+ - `ts` ::UnixTS : when the waypoint was set.
  - `label` ::String : label of the waypoint : by default the date and time it was set, can be modified.
  - `marker` ::String : name of the Leaflet icon file to use to display the point. No need to specify color.
  - `isDisplayedOnTheMap` ::Boolean : if `true` the marker is displayed on the map.
@@ -30,10 +24,12 @@ Properties :
 Private properties :
  - `mapHandler` ::LeafletHandler.
  
+
+ 
 ### `currentTrack` (global variable)
 
 Properties :
- - `points` ::[::Waypoint] list of the waypoints of the track.
+ - `points` [::Waypoint] list of the waypoints of the track.
  - `label` ::String : "Trace actuelle".
  - `color` ::ColorCssString : CSS color code string of the track's color on the map.
  - `isDisplayedOnTheMap` ::Boolean : if `true` the track is displayed on the map.
