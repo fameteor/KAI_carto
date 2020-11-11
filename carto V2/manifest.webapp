@@ -1,0 +1,29 @@
+{
+  "version": "1.0.0",
+  "name": "Carto V2",
+  "description": "Carto V2",
+  "type": "privileged",
+  "launch_path": "/index.html",
+  "icons": {
+    "56": "/icons/icon-56.png",
+    "112": "/icons/icon-112.png"
+  },
+  "theme_color": "#008080",
+  "developer": {
+    "name": "KaiOS Team",
+    "url": "https://www.kaiostech.com"
+  },
+  "fullscreen":"true",
+  "permissions": {
+	"device-storage:sdcard":{ "access": "readwrite" }
+  },
+  "locales": {
+    "fr-FR": {
+      "name": "Carto V2",
+      "subtitle": "Carto V2",
+      "description": "Carto V2"
+    }
+  },
+  "default_locale": "fr-FR",
+  "ime_default_softkey_bar": true
+}
