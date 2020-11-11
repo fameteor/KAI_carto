@@ -16,7 +16,8 @@ Properties :
  - `latitude`
  - `longitude`
  - `altitude`
- - `timestamp` : when the point was set.
+ - `timestamp` : when the waypoint was set.
+ - `label` : label of the waypoint.
  - `marker` ::String : name of the FA icon to use to display the point.
  - `color` ::ColorCssString : CSS color code string of the marker's color.
  
