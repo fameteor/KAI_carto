@@ -66,6 +66,7 @@ body,
   overflow-x: hidden;
   white-space: nowrap;
   background-color: #dddddd;
+  color:#008080;
   height: 2.2rem;
   outline: none;
   display: flex;
@@ -87,17 +88,6 @@ body,
 /* Create an active/current tablink class */
 .tab span.selected {
   border-bottom: 3px solid #008080;
-}
-
-/* Menu INFOS */
-div#menuTarget_0 {
-	background-color : #EEEEEE;
-	color:#008080;
-	padding: 5px;
-	font-weight: 400;
-	font-size: 1.1rem;
-	overflow-x: hidden;
-	overflow-y: auto;
 }
 
 div.list {
@@ -193,3 +183,32 @@ div#tracing_green {
 }
 
 .marker {color:#2bcccb;}
+
+/* Header */
+h1 {
+	background-color:#008080;
+	color:white;
+	padding: 3px;
+	font-weight: 400;
+	font-size: 1.1rem;
+	border-radius:5px;
+	margin-right:5px;
+	margin-top:5px;
+	margin-bottom:5px;
+	box-shadow: 3px 3px 3px #444444;
+}
+
+/* pseudo table */
+.table {
+	display:table;
+	margin-top:5px;
+	margin-left:10px;
+	color:#008080;
+	width:100%;
+	font-weight: 400;
+	font-size: 0.9rem;
+}
+.tr {display:table-row;padding-left:3px;padding-right:3px;}
+.th{display:table-cell;padding-left:3px;padding-right:3px;}
+.td {display:table-cell;padding-left:3px;padding-right:3px;}
+

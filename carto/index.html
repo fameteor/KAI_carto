@@ -41,14 +41,43 @@
 		
 		<!-- MENU.INFO_GPS.MANUAL or .AUTO --------------------------- -->
 		<div id="menuTarget_0">
-			<i class="fas fa-map-marker currentPositionMarker"></i> Position actuelle<br/>
+			<h1><i class="fas fa-map-marker currentPositionMarker"></i> Position actuelle</h1>
 			<div class="info"><span id="date"></span></div>
-			<ul>
-				<li>Latitude : <span id="latitude"></span></li>
-				<li>Longitude : <span id="longitude"></span></li>
-				<li>Altitude : <span id="altitude"></span></li>
-			</ul>
-			<div class="info">Nb : pour obtenir le cap et la vitesse, passer en mode "trace".</div>
+			
+			<div class="table">
+				<div class="tr">
+					<div class="th">Latitude	</div>
+					<div class="td"><span id="latitude"></span></div>
+				</div>
+				<div class="tr">
+					<div class="th">Longitude	</div>
+					<div class="td"><span id="longitude"></span></div>
+				</div>
+				<div class="tr">
+					<div class="th">Altitude	</div>
+					<div class="td"><span id="altitude"></span></div>
+				</div>
+			</div>
+			
+			<div id="targetWaypointInfo">
+				<h1>Vers cible</h1>
+				<div class="table">
+					<div class="tr">
+						<div class="th">Cap	</div>
+						<div class="td"><span id="bearing"></span>°</div>
+					</div>
+					<div class="tr">
+						<div class="th">Distance</div>
+						<div class="td"><span id="distance"></span> km</div>
+					</div>
+					<div class="tr">
+						<div class="th">ETA</div>
+						<div class="td"><span id="distance"></span> km</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="info">Nb : pour obtenir le cap et la vitesse, passer en mode "tracer".</div>
 		</div>
 		
 		<!-- MENU.WAYPOINTS.displayed or .notDisplayed or .ADD ------- -->

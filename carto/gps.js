@@ -2,10 +2,10 @@
 // GPS management
 // =================================================================
 
-
 // -----------------------------------------------------------------
 // Global variables
 // -----------------------------------------------------------------
+let targetWaypoint = [46.589187,15.0133661];
 let gpsWatchHandler = null;
 let lockHandler = null;
 let appHasFocus = true;
@@ -17,6 +17,47 @@ let currentLocationIsDisplayed = 	true;
 let gpsPostProcessing = 			true;
 
 // -----------------------------------------------------------------
+// Calculus functions
+// -----------------------------------------------------------------
+
+// Converts from degrees to radians --------------------------------
+function degreesToRadians(degrees) {
+  return degrees * Math.PI / 180;
+};
+ 
+// Converts from radians to degrees --------------------------------
+function gradiansToDegrees(radians) {
+  return radians * 180 / Math.PI;
+}
+
+// Calculates bearing in degres ------------------------------------
+function bearing(p1, p2){
+  p1[0] = degreesToRadians(p1[0]);
+  p1[1] = degreesToRadians(p1[1]);
+  p2[0] = degreesToRadians(p2[0]);
+  p2[1] = degreesToRadians(p2[1]);
+
+  const y = Math.sin(p2[1] - p1[1]) * Math.cos(p2[0]);
+  const x = Math.cos(p1[0]) * Math.sin(p2[0]) -
+        Math.sin(p1[0]) * Math.cos(p2[0]) * Math.cos(p2[1] - p1[1]);
+  let brng = Math.atan2(y, x);
+  brng = gradiansToDegrees(brng);
+  return (brng + 360) % 360;
+}
+
+// Calculates distance in meters ------------------------------------
+function distance(p1, p2) {
+  const R = 6378137; // Earth’s mean radius in meter
+  const dLat = degreesToRadians(p2[0] - p1[0]);
+  const dLong = degreesToRadians(p2[1] - p1[1]);
+  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(degreesToRadians(p1[0])) * Math.cos(degreesToRadians(p2[0])) *
+    Math.sin(dLong / 2) * Math.sin(dLong / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const d = R * c;
+  return d; // returns the distance in meter
+};
+// -----------------------------------------------------------------
 // refreshCurrentPosition :
 // Refresh the map/infos when the current position has changed
 // Only if appHasFocus !
@@ -24,7 +65,7 @@ let gpsPostProcessing = 			true;
 function refreshCurrentPosition() {
 	// If appHasFocus only -----------------------------------------
 	if (appHasFocus) {
-		// Displays optionnally current position marker ----------------
+		// Displays optionnally current position marker ------------
 		if (currentLocationIsDisplayed) {
 			// Remove currentPosition marker if exists
 			if (currentPositionMarker) myMap.removeLayer(currentPositionMarker);
@@ -33,7 +74,7 @@ function refreshCurrentPosition() {
 				[currentPosition.latitude,currentPosition.longitude],
 				{icon:redIcon}
 			).addTo(myMap);
-			// Display optionnally markers names ------------------------
+			// Display optionnally markers names -------------------
 			if (waypointsNameAreDisplayed) {
 				currentPositionMarker.bindTooltip(format_dateString(new Date(currentPosition.timestamp)),{direction: "center"}).openTooltip();
 			}
@@ -43,16 +84,24 @@ function refreshCurrentPosition() {
 			if (currentPositionMarker) myMap.removeLayer(currentPositionMarker);
 		}
 		
-		// Center map optionnally on current position ------------------
+		// Center map optionnally on current position --------------
 		if (mapIsCenteredOnGpsPosition) {
 			myMap.flyTo([currentPosition.latitude,currentPosition.longitude],zoomLevel);
 		}
 		
-		// Display current position information ------------------------
+		// Display current position information --------------------
 		$("#date").html("(Obtenue le " + format_dateString(new Date(currentPosition.timestamp)) +")");
 		$("#latitude").html(Math.round(currentPosition.latitude * 1000000)/1000000);
 		$("#longitude").html(Math.round(currentPosition.longitude * 1000000)/1000000);
 		$("#altitude").html(Math.round(currentPosition.altitude));
+		
+		// Displays target informations if available ---------------
+		if (targetWaypoint) {
+			$("#bearing").html(Math.round(bearing(targetWaypoint,[currentPosition.latitude,currentPosition.longitude])));
+			$("#distance").html(Math.round(distance(targetWaypoint,[currentPosition.latitude,currentPosition.longitude])/1000));
+			$("#targetWaypointInfo").show();
+		}
+		else $("#targetWaypointInfo").hide();
 	}
 }
 	
@@ -127,7 +176,7 @@ function gpsWatchOnSuccess(position) {
 		else {
 			if ((position.timestamp % 5000) === 0) {
 				gpsPointsCoordinates.push(position.coords);
-				// Average calculation
+				// Average position calculation --------------------
 				let latitude = 0;
 				let longitude = 0;
 				let altitude = 0;
@@ -139,24 +188,26 @@ function gpsWatchOnSuccess(position) {
 				latitude = latitude / gpsPointsCoordinates.length;
 				longitude = longitude / gpsPointsCoordinates.length;
 				altitude = altitude / gpsPointsCoordinates.length;
-				
+				// Get current position ----------------------------
 				currentPosition = {
 					latitude:latitude,
 					longitude:longitude,
 					altitude:altitude,
 					timestamp:position.timestamp
 				};
-				// Reset the averaging array
+				// Reset the averaging array -----------------------
 				gpsPointsCoordinates = [];
+				// Push in the track list --------------------------
 				tracks.list[4].points.push([currentPosition.latitude,currentPosition.longitude]);
 				$("#tracing_green").show();
 				setTimeout(function(){ $("#tracing_green").hide(); }, 500);
+				// Refresh track and position ----------------------
 				refreshTracksDisplay();
 				refreshCurrentPosition();
 				
 			}
 			else {
-				// Push
+				// Push in the averaging array ---------------------
 				gpsPointsCoordinates.push(position.coords);
 				currentPosition = position.coords;
 				currentPosition.timestamp = position.timestamp;
@@ -165,11 +216,17 @@ function gpsWatchOnSuccess(position) {
 			}
 		}
 	}
+	// GPS point is identical to the previous one ------------------
 	else {
 		$("#tracing_red").show();
 		setTimeout(function(){ $("#tracing_red").hide(); }, 500);
 	}
 }
+
+// -----------------------------------------------------------------
+// gpsWatchStart and gpsWatchStop
+// To lock the GPS ressource when screen off or applis in background
+// -----------------------------------------------------------------
 
 function gpsWatchOnError(error) {
 	toastr.info("Erreur GPS : " + error.message);

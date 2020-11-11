@@ -37,14 +37,14 @@ const softKeysLabels = {
 			SoftRight :	'<i class="fas fa-search-plus"></i>'
 		},
 		"MAP.INFOS_GPS_MANUAL" : {
-			SoftLeft :	"",
+			SoftLeft :	"Tracer",
 			Center : 	"RAFRAICHIR",
-			SoftRight :	"GPS Auto"
+			SoftRight :	"Options"
 		},
 		"MAP.INFOS_GPS_AUTO" : {
-			SoftLeft :	"",
+			SoftLeft :	"Ne pas tracer",
 			Center : 	"",
-			SoftRight :	"GPS manuel"
+			SoftRight :	"Options"
 		},
 		"MAP.WAYPOINTS_DISPLAYED" : {
 			SoftLeft :	"Ajouter",
@@ -184,16 +184,16 @@ const keysActions = {
 				state.current(menuStateCalculation());
 				event.stopPropagation();
 			},
-			Enter: function(event) {
-				// Refresh GPS
-				event.preventDefault();
-				getGpsCurrentPosition();
-			},
-			SoftRight: function(event) {
+			SoftLeft: function(event) {
 				event.preventDefault();
 				gpsModeIsAuto = true;
 				gpsWatchStart();
 				state.current(menuStateCalculation());
+			},
+			Enter: function(event) {
+				// Refresh GPS
+				event.preventDefault();
+				getGpsCurrentPosition();
 			},
 			Backspace: function(event) {
 				event.preventDefault();
@@ -209,17 +209,17 @@ const keysActions = {
 				state.current(menuStateCalculation());
 				event.stopPropagation();
 			},
+			SoftLeft: function(event) {
+				event.preventDefault();
+				gpsModeIsAuto = false;
+				gpsWatchStop();
+				state.current(menuStateCalculation());
+			},
 			ArrowRight: function(event) {
 				event.preventDefault();
 				menu.next();
 				state.current(menuStateCalculation());
 				event.stopPropagation();
-			},
-			SoftRight: function(event) {
-				event.preventDefault();
-				gpsModeIsAuto = false;
-				gpsWatchStop();
-				state.current(menuStateCalculation());
 			},
 			Backspace: function(event) {
 				event.preventDefault();
