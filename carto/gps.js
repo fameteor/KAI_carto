@@ -47,7 +47,16 @@ function bearing(p1, p2){
 
 // Calculates distance in meters ------------------------------------
 function distance(p1, p2) {
-  const R = 6378137; // Earth’s mean radius in meter
+	p1[0] = degreesToRadians(p1[0]);
+	p1[1] = degreesToRadians(p1[1]);
+	p2[0] = degreesToRadians(p2[0]);
+	p2[1] = degreesToRadians(p2[1]);
+	const R = 6378137; // Earth’s mean radius in meter
+	return R * (Math.acos(Math.sin(p1[0]) * Math.sin(p2[0]) + Math.cos(p1[0]) * Math.cos(p2[0]) * Math.cos(p1[1] - p2[1])));
+	
+	/*
+	// avec tranformation en radian intégrée
+	const R = 6378137; // Earth’s mean radius in meter
   const dLat = degreesToRadians(p2[0] - p1[0]);
   const dLong = degreesToRadians(p2[1] - p1[1]);
   const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
@@ -56,6 +65,8 @@ function distance(p1, p2) {
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   const d = R * c;
   return d; // returns the distance in meter
+*/
+  
 };
 // -----------------------------------------------------------------
 // refreshCurrentPosition :
@@ -90,18 +101,41 @@ function refreshCurrentPosition() {
 		}
 		
 		// Display current position information --------------------
-		$("#date").html("(Obtenue le " + format_dateString(new Date(currentPosition.timestamp)) +")");
-		$("#latitude").html(Math.round(currentPosition.latitude * 1000000)/1000000);
-		$("#longitude").html(Math.round(currentPosition.longitude * 1000000)/1000000);
-		$("#altitude").html(Math.round(currentPosition.altitude));
+		if (currentPosition) {
+			$("#date").html(format_dateString(new Date(currentPosition.timestamp)));
+			$("#latitude").html(Math.round(currentPosition.latitude * 1000000)/1000000);
+			$("#longitude").html(Math.round(currentPosition.longitude * 1000000)/1000000);
+			$("#altitude").html(Math.round(currentPosition.altitude));
+			$(".zone_noCurrentWayPoint").hide();
+			$(".zone_currentWayPointDisplayed").show();
+		}
+		else {
+			$(".zone_currentWayPointDisplayed").hide();
+			$(".zone_noCurrentWayPoint").show();
+		}
+		
+		// Display bearing and speed -------------------------------
+		if (gpsModeIsAuto)	{
+			$(".zone_traceInactive").hide();
+			$(".zone_traceActive").show();
+		}
+		else {
+			$(".zone_traceActive").hide();
+			$(".zone_traceInactive").show();
+		}
 		
 		// Displays target informations if available ---------------
 		if (targetWaypoint) {
-			$("#bearing").html(Math.round(bearing(targetWaypoint,[currentPosition.latitude,currentPosition.longitude])));
-			$("#distance").html(Math.round(distance(targetWaypoint,[currentPosition.latitude,currentPosition.longitude])/1000));
+			$("#targetBearing").html(Math.round(bearing([currentPosition.latitude,currentPosition.longitude],targetWaypoint)));
+			$("#distance").html(Math.round(distance([currentPosition.latitude,currentPosition.longitude],targetWaypoint)/1000));
 			$("#targetWaypointInfo").show();
+			$(".zone_noTargetWayPoint").hide();
+			$(".zone_targetWayPointDisplayed").show();
 		}
-		else $("#targetWaypointInfo").hide();
+		else {
+			$(".zone_targetWayPointDisplayed").hide();
+			$(".zone_noTargetWayPoint").show();
+		}
 	}
 }
 	

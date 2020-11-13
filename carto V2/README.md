@@ -20,7 +20,7 @@ Properties :
 ### `::Waypoint`
 
 Properties :
- - `latitude` ::Number
+ - `coords` ::[lattitude,longitude]
  - `longitude` ::Number
  - `altitude` ::Number
  - `timestamp` ::UnixTS : when the waypoint was set.

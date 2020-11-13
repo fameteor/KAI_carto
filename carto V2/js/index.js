@@ -6,7 +6,7 @@ document.addEventListener("keydown", event => {
 			var sdcard = navigator.getDeviceStorage("sdcard");
 			var file   = new Blob(["This is a text file."], {type: "text/plain"});
 
-			var request = sdcard.addNamed(file, "carto/my-file1.txt");
+			var request = sdcard.addNamed(file, "carto/my-file2.txt");
 
 			request.onsuccess = function () {
 			  var name = this.result;
@@ -31,15 +31,15 @@ let init = function() {
 	myMap = L.map(
 		'myMap', 
 		{
-			center:[46.589187,15.0133661],
-			zoom:13,
+			center:[46.8087531,-2.0362527],
+			zoom:10,
 			zoomControl: false
 		}
 	);
 	console.log("ok")
 	// We add the background ---------------------------------------
 	leafletBackgroundLayer = L.tileLayer(
-		"https://a.tile.openstreetmap.org/{z}/{x}/{y}.png", 
+		"/carteIgn/{z}/{x}/{y}.png", 
 		{
 			attribution:  '',
 			maxZoom: 	19,

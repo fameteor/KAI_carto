@@ -37,12 +37,12 @@ const softKeysLabels = {
 			SoftRight :	'<i class="fas fa-search-plus"></i>'
 		},
 		"MAP.INFOS_GPS_MANUAL" : {
-			SoftLeft :	"Tracer",
+			SoftLeft :	"Mode AUTO",
 			Center : 	"RAFRAICHIR",
 			SoftRight :	"Options"
 		},
 		"MAP.INFOS_GPS_AUTO" : {
-			SoftLeft :	"Ne pas tracer",
+			SoftLeft :	"Mode MANUEL",
 			Center : 	"",
 			SoftRight :	"Options"
 		},
@@ -214,6 +214,7 @@ const keysActions = {
 				gpsModeIsAuto = false;
 				gpsWatchStop();
 				state.current(menuStateCalculation());
+				refreshCurrentPosition();
 			},
 			ArrowRight: function(event) {
 				event.preventDefault();

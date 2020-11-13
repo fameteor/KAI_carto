@@ -41,43 +41,79 @@
 		
 		<!-- MENU.INFO_GPS.MANUAL or .AUTO --------------------------- -->
 		<div id="menuTarget_0">
-			<h1><i class="fas fa-map-marker currentPositionMarker"></i> Position actuelle</h1>
-			<div class="info"><span id="date"></span></div>
-			
-			<div class="table">
-				<div class="tr">
-					<div class="th">Latitude	</div>
-					<div class="td"><span id="latitude"></span></div>
-				</div>
-				<div class="tr">
-					<div class="th">Longitude	</div>
-					<div class="td"><span id="longitude"></span></div>
-				</div>
-				<div class="tr">
-					<div class="th">Altitude	</div>
-					<div class="td"><span id="altitude"></span></div>
-				</div>
+			<div class="zone_currentWayPointDisplayed">
+				<center>
+					<!-- Current position -->
+					<h1><i class="fas fa-map-marker currentPositionMarker"></i> <span id="date"></span></h1>
+					<div class="table">
+						<div class="tr">
+							<div class="td">
+								<div class="info">Latitude</div>
+								<b><span id="latitude"></span>°</b>
+							</div>
+							<div class="td">
+								<div class="info">Longitude</div>
+								<b><span id="longitude"></span>°</b>
+							</div>
+						</div>
+					</div>
+					<div class="table">
+						<div class="tr">
+							<div class="td">
+								<div class="info">Altitude</div>
+								<b><span id="altitude"></span> m</b>
+							</div>
+						</div>
+					</div>
+					<!-- Current heading and speed -->
+					<div class="table zone_traceActive">
+						<div class="tr">
+							<div class="td">
+								<div class="info">Cap</div>
+								<b><span id="bearing">123</span>°</b>
+							</div>
+							<div class="td">
+								<div class="info">Vitesse</div>
+								<b><span id="speed">12</span> km/h</b>
+							</div>
+						</div>
+					</div>
+				
+				
+					<div id="zone_targetWayPointDisplayed">
+						<h1><i class="fas fa-bullseye"></i> cible</h1>
+						<div class="table">
+							<div class="tr">
+								<div class="td">
+									<div class="info">Cap</div>
+									<b><span id="targetBearing"></span>°</b>
+								</div>
+								<div class="td">
+									<div class="info">Distance</div>
+									<b><span id="distance"></span> km</b>
+								</div>
+								<div class="td zone_traceActive">
+									<div class="info">ETA</div>
+									<b><span id="distance">12:23:15</span></b>
+								</div>
+							</div>
+						</div>
+					</div>
+				</center>
 			</div>
 			
-			<div id="targetWaypointInfo">
-				<h1>Vers cible</h1>
-				<div class="table">
-					<div class="tr">
-						<div class="th">Cap	</div>
-						<div class="td"><span id="bearing"></span>°</div>
-					</div>
-					<div class="tr">
-						<div class="th">Distance</div>
-						<div class="td"><span id="distance"></span> km</div>
-					</div>
-					<div class="tr">
-						<div class="th">ETA</div>
-						<div class="td"><span id="distance"></span> km</div>
-					</div>
-				</div>
+			<div class="zone_noCurrentWayPoint">
+				<hr/>
+				<div class="info"><b>Nb</b> : La position actuelle n'est pas diponible.</div>
+			</div>
+			
+			<div class="zone_noTargetWayPoint">
+				<hr/>
+				<div class="info"><b>Nb</b> : Aucune cible n'est définie.</div>
 			</div>
 
-			<div class="info">Nb : pour obtenir le cap et la vitesse, passer en mode "tracer".</div>
+
+			<div class="info zone_traceInactive"><hr/><b>Nb</b> : pour obtenir le cap, vitesse et ETA, passer en "mode AUTO".</div>
 		</div>
 		
 		<!-- MENU.WAYPOINTS.displayed or .notDisplayed or .ADD ------- -->

@@ -108,6 +108,7 @@ div.list label {
 
 div.info {	
 	font-size: 0.7rem;
+	color:black;
 }
 
 div.list.selected {
@@ -124,7 +125,7 @@ div#toastr {
 	width :230px;
 	padding:10px;
 	margin:5px;
-	background-color : yellow;
+	background-color : #CCC014;
 	z-index: 1000;
 	border: 1px solid #666666;
 	border-radius: 5px;
@@ -174,6 +175,8 @@ div#tracing_green {
 }
 
 .currentPositionMarker {color:#c91d36;}
+.markerBlue {color:#1f79c8;}
+
 
 .red {color:red;}
 .orange {color:orange;}
@@ -191,24 +194,23 @@ h1 {
 	padding: 3px;
 	font-weight: 400;
 	font-size: 1.1rem;
-	border-radius:5px;
-	margin-right:5px;
-	margin-top:5px;
+	margin-top:0px;
 	margin-bottom:5px;
-	box-shadow: 3px 3px 3px #444444;
+	text-align:center;
 }
 
 /* pseudo table */
 .table {
 	display:table;
-	margin-top:5px;
-	margin-left:10px;
+	margin:5px;
 	color:#008080;
 	width:100%;
 	font-weight: 400;
-	font-size: 0.9rem;
+	font-size: 1.1rem;
+	box-sizing: border-box;
+	width:235px;
 }
-.tr {display:table-row;padding-left:3px;padding-right:3px;}
-.th{display:table-cell;padding-left:3px;padding-right:3px;}
-.td {display:table-cell;padding-left:3px;padding-right:3px;}
+.tr {display:table-row;padding-right:5px;}
+.th{display:table-cell;padding-left:3px;padding-right:3px;text-align:center;}
+.td {display:table-cell;padding-left:3px;padding-right:3px;text-align:center;}
 

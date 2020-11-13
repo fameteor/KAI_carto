@@ -312,11 +312,26 @@ let init = function() {
 	$("#tracing_green").hide();
 	$("#tracing_orange").hide();
 	$("#tracing_red").hide();
+	$(".zone_currentWayPointDisplayed").hide();
+	$(".zone_noCurrentWayPoint").show();
+	$(".zone_targetWayPointDisplayed").hide();
+	$(".zone_noTargetWayPoint").show();
+	
+	if (gpsModeIsAuto)	{
+		$(".zone_traceInactive").hide();
+		$(".zone_traceActive").show();
+	}
+	else {
+		$(".zone_traceActive").hide();
+		$(".zone_traceInactive").show();
+	}
+	
 	state.current("MAP");
 	// App visibility check ----------------------------------------
 	document.addEventListener("visibilitychange", function () {
 		if (document.hidden) {
 			appHasFocus = false;
+			refreshCurrentPosition();
 		} 
 		else {
 			appHasFocus = true;
