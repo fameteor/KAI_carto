@@ -21,15 +21,14 @@ Properties :
 
 Properties :
  - `coords` ::[lattitude,longitude]
- - `longitude` ::Number
  - `altitude` ::Number
  - `timestamp` ::UnixTS : when the waypoint was set.
  - `label` ::String : label of the waypoint : by default the date and time it was set, can be modified.
- - `marker` ::String : name of the Leaflet icon file to use to display the point. No need to specify color.
+ - `markerFileName` ::String : name of the Leaflet icon file to use to display the point. No need to specify color.
  - `isDisplayedOnTheMap` ::Boolean : if `true` the marker is displayed on the map.
  
 Private properties :
- - `mapHandler` ::LeafletHandler.
+ - `mapMarkerHandler` ::LeafletHandler.
  
 Method :
  - `refresh` : refresh the waypoint in the application : map, data... depending on the options

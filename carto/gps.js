@@ -153,7 +153,7 @@ const getGpsCurrentPosition = function() {
 			toastr.info("Position actuelle rafraîchie");
 		}, 
 		function(error) {
-			toastr.info("Erreur GPS : " + error.message);
+			toastr.warning("Erreur GPS : " + error.message);
 		}
 	);	
 }
@@ -184,7 +184,7 @@ const markGpsCurrentPosition = function() {
 			refreshCurrentPosition();
 			toastr.info("Point GPS ajouté.");
 		}, function(error) {
-			toastr.info("Erreur GPS : " + error.message);
+			toastr.warning("Erreur GPS : " + error.message);
 		}
 	);	
 }
@@ -263,7 +263,7 @@ function gpsWatchOnSuccess(position) {
 // -----------------------------------------------------------------
 
 function gpsWatchOnError(error) {
-	toastr.info("Erreur GPS : " + error.message);
+	toastr.warning("Erreur GPS : " + error.message);
 }
 
 const gpsWatchOptions = {
@@ -273,7 +273,6 @@ const gpsWatchOptions = {
 };
 
 function gpsWatchStart() {
-	tracks.list[4].points = [];
 	// Only for Nokia phone, not on PC firefox, lock GPS ressource when screen off or applis in background
 	if (window.navigator.requestWakeLock) lockHandler = window.navigator.requestWakeLock('gps');
 	gpsWatchHandler = navigator.geolocation.watchPosition(gpsWatchOnSuccess, gpsWatchOnError, gpsWatchOptions);

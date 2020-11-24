@@ -24,10 +24,24 @@ document.addEventListener("keydown", event => {
 // -----------------------------------------------------------------
 const toastr = {
 	info : function (text) {
-		$("#toastrMsg").html(text);
+		$("#toastrMsg").html('<center><i class="fas fa-info-circle" style="color:green;"></i><br/>' + text + '</center>');
 		$("#toastr").attr("class","visible");
 		setTimeout(function(){ $("#toastr").attr("class","hidden"); }, 2000);
-	}	
+	},
+	warning : function (text) {
+		$("#toastrMsg").html('<center><i class="fas fa-exclamation-circle" style="color:orange;"></i><br/>' + text + '</center>');
+		$("#toastr").attr("class","visible");
+		setTimeout(function(){ $("#toastr").attr("class","hidden"); }, 2000);
+	},
+	question : function(text) {
+		state.push("QUESTION");
+		$("#toastr").attr("class","visible");
+		$("#toastrMsg").html('<center><i class="fas fa-question-circle"  style="color:blue;"></i><br/>' + text + '</center>');
+	},
+	hide: function() {
+		$("#toastr").attr("class","hidden");
+		state.pop();
+	}
 }
 
 // -----------------------------------------------------------------

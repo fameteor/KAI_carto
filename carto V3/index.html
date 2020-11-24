@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="theme-color" content="rgb(0, 0, 128)" />
+    <title>App template</title>
+    <link rel="stylesheet" type="text/css" href="css.css" />
+	<link href="fontawesome_5/css/all.css" rel="stylesheet">
+	<link rel="stylesheet" href="leaflet1_7_1/leaflet.css"/>
+
+	<script src="jquery_3_5_1/jquery-3.5.1.min.js"></script>
+	<script src="trails/drauRadweg.js"></script>
+	<script src="trails/drauSlovenia.js"></script>
+	<script src="trails/mur.js"></script>
+	<script src="trails/murCroatia.js"></script>
+	<script src="leaflet1_7_1/leaflet.js"></script>
+	
+	<script src="js/1-common.js"></script>
+	<script src="js/2-states.js"></script>
+	<script src="js/3-mapBackgrounds.js"></script>
+	<script src="js/4-waypoints.js"></script>
+	<script src="js/4-gps.js"></script>
+	<script src="index.js"></script>
+  </head>
+
+  <body onLoad="init()">
+
+	<div id="map">
+		<div id="myMap"></div>
+	</div>
+  
+	<div id="menu"></div>
+	
+	<!-- ROOT -------------------------------------------------------- -->
+	<div id="root">
+		<!-- menuTargets --------------------------------------------- -->
+		<div id="menuTarget_0">
+			<div id="infos">
+				<div class="zone_currentWayPointDisplayed">
+					<center>
+						<!-- Current position -->
+						<h1><i class="fas fa-map-marker currentPositionMarker"></i> <span id="date"></span></h1>
+						<div class="table">
+							<div class="tr">
+								<div class="td">
+									<div class="info">Latitude</div>
+									<b><span id="latitude"></span></b>
+								</div>
+								<div class="td">
+									<div class="info">Longitude</div>
+									<b><span id="longitude"></span></b>
+								</div>
+							</div>
+						</div>
+						<div class="table">
+							<div class="tr">
+								<div class="td">
+									<div class="info">Altitude</div>
+									<b><span id="altitude"></span> m</b>
+								</div>
+							</div>
+						</div>
+						<!-- Current heading and speed -->
+						<div class="table zone_traceActive">
+							<div class="tr">
+								<div class="td">
+									<div class="info">Cap actuel</div>
+									<b><span id="bearing">123</span>°</b>
+								</div>
+								<div class="td">
+									<div class="info">Vitesse</div>
+									<b><span id="speed">12</span> km/h</b>
+								</div>
+							</div>
+						</div>
+					
+					
+						<div id="zone_targetWayPointDisplayed">
+							<h1><i class="fas fa-bullseye green"></i> <span id="targetName"></span></h1>
+							<div class="table">
+								<div class="tr">
+									<div class="td">
+										<div class="info">Cap initial</div>
+										<b><span id="targetBearing"></span>°</b>
+									</div>
+									<div class="td">
+										<div class="info">Distance</div>
+										<b><span id="distance"></span> km</b>
+									</div>
+									<div class="td zone_traceActive">
+										<div class="info">ETA</div>
+										<b><span id="distance">12:23:15</span></b>
+									</div>
+								</div>
+							</div>
+						</div>
+					</center>
+				</div>
+				
+				<div class="zone_noCurrentWayPoint">
+					<hr/>
+					<div class="info"><b>Nb</b> : La position actuelle n'est pas diponible.</div>
+				</div>
+				
+				<div class="zone_noTargetWayPoint">
+					<hr/>
+					<div class="info"><b>Nb</b> : Aucune cible n'est définie.</div>
+				</div>
+
+
+				<div class="info zone_traceInactive"><hr/><b>Nb</b> : pour obtenir le cap, vitesse et ETA, passer en "Tracer".</div>
+			</div>
+			<div id="infosOptions"></div>
+		</div>
+		
+		<!-- menuTargets --------------------------------------------- -->
+		<div id="menuTarget_1">
+		</div>
+		<!-- menuTargets --------------------------------------------- -->
+		<div id="menuTarget_2">
+			Menu 2
+		</div>
+		<!-- menuTargets --------------------------------------------- -->
+		<div id="menuTarget_3">
+			Menu 3
+		</div>
+		<!-- menuTargets --------------------------------------------- -->
+		<div id="menuTarget_4">
+			Menu 4
+		</div>
+    </div>
+    
+	<!-- Softkeys ---------------------------------------------------- -->
+	<div id="softkeys">
+        <label id="left">Gauche action</label>
+        <label id="center">Action centrale</label>
+        <label id="right">Droite action</label>
+	</div>
+
+  </body>
+</html>

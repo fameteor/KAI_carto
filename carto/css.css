@@ -125,10 +125,15 @@ div#toastr {
 	width :230px;
 	padding:10px;
 	margin:5px;
-	background-color : #CCC014;
+	background-color : #7FFFD4;
+	color: #008080;
 	z-index: 1000;
 	border: 1px solid #666666;
 	border-radius: 5px;
+}
+
+div#toastr i {
+  font-size: 2rem;
 }
 
 div#toastr.hidden {

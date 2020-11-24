@@ -37,12 +37,17 @@ const softKeysLabels = {
 			SoftRight :	'<i class="fas fa-search-plus"></i>'
 		},
 		"MAP.INFOS_GPS_MANUAL" : {
-			SoftLeft :	"Mode AUTO",
+			SoftLeft :	"Tracer",
 			Center : 	"RAFRAICHIR",
 			SoftRight :	"Options"
 		},
+		"MAP.INFOS_GPS_MANUAL.QUESTION" : {
+			SoftLeft :	"Ajouter",
+			Center : 	"",
+			SoftRight :	"Remplacer"
+		},
 		"MAP.INFOS_GPS_AUTO" : {
-			SoftLeft :	"Mode MANUEL",
+			SoftLeft :	"Arrêter trace",
 			Center : 	"",
 			SoftRight :	"Options"
 		},
@@ -186,9 +191,8 @@ const keysActions = {
 			},
 			SoftLeft: function(event) {
 				event.preventDefault();
-				gpsModeIsAuto = true;
-				gpsWatchStart();
-				state.current(menuStateCalculation());
+				toastr.question("Voulez-vous ajouter cette trace à la trace actuelle ou la remplacer ?");
+				// state.current(menuStateCalculation());
 			},
 			Enter: function(event) {
 				// Refresh GPS
@@ -202,6 +206,31 @@ const keysActions = {
 				state.pop();
 			}
 		},
+		"MAP.INFOS_GPS_MANUAL.QUESTION" : {
+			SoftLeft: function(event) {
+				event.preventDefault();
+				// Add to track
+				toastr.hide();
+				gpsModeIsAuto = true;
+				gpsWatchStart();
+				state.current(menuStateCalculation());
+			},
+			SoftRight: function(event) {
+				event.preventDefault();
+				// Replace track
+				tracks.list[4].points = [];
+				toastr.hide();
+				toastr.info("Trace effacée.")
+				gpsModeIsAuto = true;
+				gpsWatchStart();
+				state.current(menuStateCalculation());
+			},
+			Backspace: function(event) {
+				event.preventDefault();
+				toastr.hide();
+			}
+		},
+		
 		"MAP.INFOS_GPS_AUTO" : {
 			ArrowLeft: function(event) {
 				event.preventDefault();
@@ -213,6 +242,7 @@ const keysActions = {
 				event.preventDefault();
 				gpsModeIsAuto = false;
 				gpsWatchStop();
+				toastr.info("Trace arrêtée.")
 				state.current(menuStateCalculation());
 				refreshCurrentPosition();
 			},

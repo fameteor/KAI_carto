@@ -41,10 +41,10 @@ header span {
 
 /* Forecast display */
 
-#resultTable {display:table;margin-top:5px;color:#000000;}
-.row {display:table-row;padding-left:3px;padding-right:3px;}
-.cell{display:table-cell;padding-left:3px;padding-right:3px;}
-.cellData {display:table-cell;padding-left:3px;padding-right:3px;}
+#resultTable1,#resultTable2 {display:table;margin-top:5px;color:#000000;font-size: 16px;}
+.row {display:table-row;padding-left:2px;padding-right:2px;min-height:22px;min-height:23px;}
+.cell{display:table-cell;padding-left:2px;padding-right:2px;}
+.cellData {display:table-cell;padding-left:2px;padding-right:2px;}
 
 /* SOFTKEYS */
 
@@ -156,3 +156,38 @@ header span {
 .wGreen		{color:green;}
 .wOrange	{color:orange;font-weight:bold;}
 .wRed		{color:red;font-weight:bold;}
+
+/* TOASTR like */
+
+div#toastr {
+	position : absolute;
+	top:50;
+	left:0;
+	width :230px;
+	padding:10px;
+	margin:5px;
+	background-color : rgb(0, 0, 128);
+	color: #FFFFFF;
+	z-index: 101;
+	border-radius: 5px;
+}
+
+div#toastr i {
+  font-size: 2rem;
+}
+
+div#toastr.hidden {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 2s, opacity 2s linear;
+}
+
+div#toastr.init {
+  visibility: hidden;
+  opacity: 0;
+}
+
+div#toastr.visible {
+  visibility: visible;
+  opacity: 1;
+}

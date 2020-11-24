@@ -6,7 +6,7 @@ document.addEventListener("keydown", event => {
 			var sdcard = navigator.getDeviceStorage("sdcard");
 			var file   = new Blob(["This is a text file."], {type: "text/plain"});
 
-			var request = sdcard.addNamed(file, "carto/my-file2.txt");
+			var request = sdcard.addNamed(file, "carto/my-file3.txt");
 
 			request.onsuccess = function () {
 			  var name = this.result;
@@ -39,11 +39,11 @@ let init = function() {
 	console.log("ok")
 	// We add the background ---------------------------------------
 	leafletBackgroundLayer = L.tileLayer(
-		"/carteIgn/{z}/{x}/{y}.png", 
+		"carteIgn/{z}/{x}/{y}.jpg", 
 		{
 			attribution:  '',
-			maxZoom: 	19,
-			minZoom:	2,
+			maxZoom: 	10,
+			minZoom:	10,
 			id: 		'ignMap'
 		}
 	).addTo(myMap);

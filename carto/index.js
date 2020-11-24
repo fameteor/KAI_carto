@@ -29,7 +29,7 @@ let mapBackgroundsList = [
 	{label:"web : photos IGN",url:"https://wxs.ign.fr/pratique/geoportail/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=ORTHOIMAGERY.ORTHOPHOTOS&TILEMATRIXSET=PM&TILEMATRIX={z}&TILECOL={x}&TILEROW={y}&STYLE=normal&FORMAT=image/jpeg",active:false},
 	{label:"web : carte IGN",url:"https://wxs.ign.fr/pratique/geoportail/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS&TILEMATRIXSET=PM&TILEMATRIX={z}&TILECOL={x}&TILEROW={y}&STYLE=normal&FORMAT=image/jpeg",active:false},
 	{label:"web : OpenStreetMap",url:"https://a.tile.openstreetmap.org/{z}/{x}/{y}.png",active:true},
-	{label:"local : carte IGN",url:"cartes_IGN/{z}/{x}/{y}.jpg",active:false}
+	{label:"local : IGN le Perrier Zoom 10",url:"carteIgn/{z}/{x}/{y}.jpg",active:false}
 ];
 
 let tracksList = [

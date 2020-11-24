@@ -9,27 +9,31 @@
     <meta name="theme-color" content="rgb(0, 0, 128)" />
     <title>Météo</title>
     <link rel="stylesheet" type="text/css" href="css.css" />
+	<link href="css/all.css" rel="stylesheet">
+	<script src="jquery-3.5.1.min.js"></script>
 	<script src="index.js"></script>
   </head>
 
   <body onLoad="init()">
     <div id="root">
-	
 		<header>
 			<span>Météo <span id="placeLabel"></span></span><br/>
 		</header>
 	  
 		<div id="dateLabel"></div>
 		
-		<div id="resultTable">
-		</div>
+		<div id="resultTable1"></div>
+		
+		<div id="resultTable2">essai</div>
 
 		<div id="softkey">
 			<label id="left">&lt; ville</label>
 			<label id="center">&lt; date &gt;</label>
 			<label id="right">ville &gt;</label>
 		</div>
-	
     </div>
+	<div id="toastr" class="init">
+		<div id="toastrMsg">Essai de message</div>
+	</div>
   </body>
 </html>
