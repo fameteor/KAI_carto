@@ -14,9 +14,10 @@ let app = {
 	gpsTraceIsOn:				false,
 	// Current poistion -----------------------------------------
 	currentPosition :			new Waypoint({
-		coords :				[47,0],
+		coords :				null,
 		markerIcon : 			redIcon,
-		label:					"Position actuelle"
+		label:					"Position actuelle",
+		markerIsDisplayedOnTheMap:true
 	}),
 	
 	
@@ -51,7 +52,7 @@ let optionsList = [
 		}
 	},
 	{	
-		label:"Afficher la position actuelle",
+		label:"Afficher la position actuelle sur la carte",
 		rotatorType:"BOOLEAN",
 		rotatorIcon:"fas fa-cog",
 		rotatorValue:function(value) {
@@ -66,7 +67,7 @@ let optionsList = [
 		}
 	},
 	{	
-		label:"Afficher le nom des waypoints",
+		label:"Afficher le nom des points sur la carte",
 		rotatorType:"BOOLEAN",
 		rotatorIcon:"fas fa-cog",
 		rotatorValue:function(value) {

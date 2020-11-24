@@ -29,7 +29,7 @@ span.menuItem {
 }
 
 span.menuItem.menuSelected {
-	background: #000080;
+	background: #b30086;
 	color:white;
 	border-radius:0 0 5px 5px;
 }
@@ -38,7 +38,7 @@ span.menuItem.menuSelected {
 	width:240px;
 	/* 265px if fullscreen or 235px */
 	height:265px;
-	background-color: #DDDDDD;
+	background-color: #EEEEEE;
 	color:#000080;
 	overflow-y:auto;
 }
@@ -106,7 +106,7 @@ tr.list {
 }
 
 tr.list.active {
-	background-color : #4444CC;
+	background-color : #b30086;
 	color:#FFFFFF;
 }
 
@@ -149,13 +149,16 @@ input[type=text] {
 .currentPositionMarker {color:#c91d36;}
 
 h1 {
-	background-color:#000080;
-	color:white;
+	background-color:#eeeeee;
+	color:#b30086;
 	padding: 3px;
 	font-weight: 400;
 	font-size: 1.1rem;
 	margin-top:0px;
 	margin-bottom:5px;
+	margin-left:5px;
+	margin-right:5px;
+	border-bottom:2px solid #b30086;
 	text-align:center;
 }
 

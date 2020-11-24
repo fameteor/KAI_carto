@@ -111,6 +111,7 @@ const states = {
 			},
 			Enter: function(event) {
 				event.preventDefault();
+				gps.setAndDisplayCurrentPosition();
 				event.stopPropagation();
 			},
 			SoftRight: function(event) {
@@ -668,10 +669,8 @@ const states = {
 				event.preventDefault();
 				options.currentItem().rotatorValue(!options.currentItem().rotatorValue());
 				options.generateHtml();
-				
-				//??????????????????? pour test only
 				app.currentPosition.refreshMap();
-				
+				waypoints.refreshMap();
 				event.stopPropagation();
 			},
 			Backspace: function(event) {
@@ -718,10 +717,8 @@ const states = {
 				event.preventDefault();
 				options.currentItem().rotatorValue(!options.currentItem().rotatorValue());
 				options.generateHtml();
-				
-				//??????????????????? pour test only
 				app.currentPosition.refreshMap();
-				
+				waypoints.refreshMap();
 				event.stopPropagation();
 			},
 			Backspace: function(event) {

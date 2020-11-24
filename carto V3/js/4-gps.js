@@ -38,76 +38,77 @@ const format_coords = {
 	},
 	
 	"DDD° MM.xxxx'" : function(coord) {
-		const DDD = Math.floor(coord);
+		let sign = "";
+		if (coord < 0) {
+			sign = "-";
+			coord = -coord;
+		}
+		const DDD = Math.trunc(coord);
 		let minutes = (coord - DDD) * 60;
 		const MM = Math.round(minutes * 1000)/1000;
-		return DDD + "° " + MM + "'";
+		return sign + DDD + "° " + MM + "'";
 	},
 	
 	"DDD° MM' SS\"" : function(coord) {
-		const DDD = Math.floor(coord);
+		let sign = "";
+		if (coord < 0) {
+			sign = "-";
+			coord = -coord;
+		}
+		const DDD = Math.trunc(coord);
 		let minutes = (coord - DDD) * 60;
-		const MM = Math.floor(minutes);
+		const MM = Math.trunc(minutes);
 		let seconds = (minutes - MM) * 60;
 		const SS = Math.round(seconds);
-		return DDD + "° " + MM + "' " + SS + '"';
+		return sign + DDD + "° " + MM + "' " + SS + '"';
 	},
 }
 
-// -----------------------------------------------------------------
-// Calculus functions
-// -----------------------------------------------------------------
-
-// Converts from degrees to radians --------------------------------
-function degreesToRadians(degrees) {
-  return degrees * Math.PI / 180;
-};
- 
-// Converts from radians to degrees --------------------------------
-function gradiansToDegrees(radians) {
-  return radians * 180 / Math.PI;
-}
-
-// Calculates bearing in degres ------------------------------------
-function bearing(p1, p2){
-  p1[0] = degreesToRadians(p1[0]);
-  p1[1] = degreesToRadians(p1[1]);
-  p2[0] = degreesToRadians(p2[0]);
-  p2[1] = degreesToRadians(p2[1]);
-
-  const y = Math.sin(p2[1] - p1[1]) * Math.cos(p2[0]);
-  const x = Math.cos(p1[0]) * Math.sin(p2[0]) -
-        Math.sin(p1[0]) * Math.cos(p2[0]) * Math.cos(p2[1] - p1[1]);
-  let brng = Math.atan2(y, x);
-  brng = gradiansToDegrees(brng);
-  return (brng + 360) % 360;
-}
-
-// Calculates distance in meters ------------------------------------
-function distance(p1, p2) {
-	p1[0] = degreesToRadians(p1[0]);
-	p1[1] = degreesToRadians(p1[1]);
-	p2[0] = degreesToRadians(p2[0]);
-	p2[1] = degreesToRadians(p2[1]);
-	const R = 6378137; // Earth’s mean radius in meter
-	return R * (Math.acos(Math.sin(p1[0]) * Math.sin(p2[0]) + Math.cos(p1[0]) * Math.cos(p2[0]) * Math.cos(p1[1] - p2[1])));
-	
-	/*
-	// avec tranformation en radian intégrée
-	const R = 6378137; // Earth’s mean radius in meter
-  const dLat = degreesToRadians(p2[0] - p1[0]);
-  const dLong = degreesToRadians(p2[1] - p1[1]);
-  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(degreesToRadians(p1[0])) * Math.cos(degreesToRadians(p2[0])) *
-    Math.sin(dLong / 2) * Math.sin(dLong / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  const d = R * c;
-  return d; // returns the distance in meter
-*/
-  
-};
-
 const gps = {
+	
+	// -------------------------------------------------------------
+	// Converts from degrees to radians
+	// -------------------------------------------------------------
+	degreesToRadians : function(degrees) {
+		return degrees * Math.PI / 180;
+	},
+ 
+	// -------------------------------------------------------------
+	// Converts from radians to degrees
+	// -------------------------------------------------------------
+	gradiansToDegrees : function(radians) {
+		return radians * 180 / Math.PI;
+	},
+	
+	// -------------------------------------------------------------
+	// Converts from radians to degrees
+	// -------------------------------------------------------------
+	initialBearing : function(p1, p2){
+		var φ1 = this.degreesToRadians(p1[0]), φ2 = this.degreesToRadians(p2[0]);
+		var Δλ = this.degreesToRadians((p2[1]-p1[1]));
+		var y = Math.sin(Δλ) * Math.cos(φ2);
+		var x = Math.cos(φ1)*Math.sin(φ2) -
+				Math.sin(φ1)*Math.cos(φ2)*Math.cos(Δλ);
+		var θ = Math.atan2(y, x);
+		return (this.gradiansToDegrees(θ)+360) % 360;
+	},
+
+	// -------------------------------------------------------------
+	// Converts from radians to degrees
+	// -------------------------------------------------------------
+	distance : function(p1, p2) {
+		var R = 6371e3;
+		var φ1 = this.degreesToRadians(p1[0]),  λ1 = this.degreesToRadians(p1[1]);
+		var φ2 = this.degreesToRadians(p2[0]), λ2 = this.degreesToRadians(p2[1]);
+		var Δφ = φ2 - φ1;
+		var Δλ = λ2 - λ1;
+		var a = Math.sin(Δφ/2) * Math.sin(Δφ/2)
+			  + Math.cos(φ1) * Math.cos(φ2)
+			  * Math.sin(Δλ/2) * Math.sin(Δλ/2);
+		var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+		var d = R * c;
+		return d;
+	},
 	
 	// -------------------------------------------------------------
 	// setCurrentPosition
@@ -135,12 +136,10 @@ const gps = {
 		that = this;
 		window.navigator.geolocation.getCurrentPosition(
 			function(position) {
-				/*
 				app.currentPosition.coords = [position.coords.latitude,position.coords.longitude];
 				app.currentPosition.timestamp = position.timestamp;
 				app.currentPosition.label = format_dateString(new Date(position.timestamp));
 				that.refreshCurrentPosition();
-				*/
 				let waypoint = new Waypoint({
 					coords : [position.coords.latitude,position.coords.longitude],
 					timestamp : position.timestamp,
@@ -158,6 +157,9 @@ const gps = {
 		);
 	},
 	
+	// -------------------------------------------------------------
+	// refreshCurrentPosition
+	// -------------------------------------------------------------
 	refreshCurrentPosition : function () {
 		// If appHasFocus only -----------------------------------------
 		if (app.hasFocus) {
@@ -170,7 +172,7 @@ const gps = {
 			}
 			
 			// Display current position information --------------------
-			if (app.currentPosition) {
+			if (app.currentPosition.coords) {
 				$("#date").html(app.currentPosition.label);
 				$("#latitude").html(format_coords[app.options.coordinatesFormat](app.currentPosition.coords[0]));
 				$("#longitude").html(format_coords[app.options.coordinatesFormat](app.currentPosition.coords[1]));
@@ -196,9 +198,23 @@ const gps = {
 			// Displays target informations if available ---------------
 			if (waypoints.target()) {
 				$("#targetName").html(waypoints.target().label);
-				$("#targetBearing").html(Math.round(bearing(app.currentPosition.coords,waypoints.target().coords)));
-				$("#distance").html(Math.round(distance(app.currentPosition.coords,waypoints.target().coords)/1000));
-				// $("#targetWaypointInfo").show();
+				$("#targetBearing").html(Math.round(this.initialBearing(app.currentPosition.coords,waypoints.target().coords)));
+				// Distance in km initially
+				let distance = this.distance(app.currentPosition.coords,waypoints.target().coords)/1000;
+				let unit = "";
+				switch(app.options.units) {
+					case "Métriques" :
+						unit = "km";
+						break;
+					case "Nautiques" :
+						unit = "NM";
+						distance = distance / 1.852;
+						break;
+				}
+				if (distance > 100) 		$("#distance").html(Math.round(distance) + " " + unit);
+				else if (distance > 10) 	$("#distance").html(Math.round(distance*10)/10  + " " + unit);
+					else if (distance > 1) 	$("#distance").html(Math.round(distance*100)/100  + " " + unit);
+						else 					$("#distance").html(Math.round(distance*1000)/1000  + " " + unit);
 				$(".zone_noTargetWayPoint").hide();
 				$("#zone_targetWayPointDisplayed").show();
 			}

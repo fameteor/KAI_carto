@@ -69,7 +69,7 @@ const Waypoint = function(initial) {
 	this.rotatorInfos = 				initial.rotatorInfos || function() {
 		let target = "";
 		if (this.isTarget) target = '<i class="fas fa-bullseye green"></i>';
-		return target + " ( lat : " + format_coords[app.options.coordinatesFormat](this.coords[0]) + ", lng :" + format_coords[app.options.coordinatesFormat](this.coords[1]) + " )";
+		return target + " ( lat : " + format_coords[app.options.coordinatesFormat](this.coords[0]) + ", lon :" + format_coords[app.options.coordinatesFormat](this.coords[1]) + " )";
 	};
 }
 
