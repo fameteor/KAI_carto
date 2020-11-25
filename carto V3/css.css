@@ -178,6 +178,11 @@ h1 {
 .td {display:table-cell;padding-left:3px;padding-right:3px;text-align:center;}
 
 
-.red {color:red;}
-.green {color:green;}
+.red 		{color:red;}
+.green 		{color:green;}
+.orange 		{color:orange;}
+.blue 		{color:blue;}
+.purple 		{color:purple;}
+.black 		{color:black;}
+.white 		{color:white;}
 	

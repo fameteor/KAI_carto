@@ -493,12 +493,12 @@ const states = {
 			}
 		},
 	},
-	TRACKS : {
+	TRACKS_DISPLAYED : {
 		softKeysLabels : {
 			fr : {
-					SoftLeft :	'inactif',
-					Center : 	'inactif',
-					SoftRight :	'inactif'
+					SoftLeft :	'',
+					Center : 	'Cacher',
+					SoftRight :	'Actions'
 			},
 		},
 		keysActions : {
@@ -514,12 +514,132 @@ const states = {
 			},
 			ArrowUp: function(event) {
 				event.preventDefault();
-				options.previous();
+				tracks.previous();
 				event.stopPropagation();
 			},
 			ArrowDown: function(event) {
 				event.preventDefault();
-				options.next();
+				tracks.next();
+				event.stopPropagation();
+			},
+			SoftLeft: function(event) {
+				event.preventDefault();
+				menu.hide();
+				$("#root").height(235 + 28);
+				event.stopPropagation();
+			},
+			Enter: function(event) {
+				event.preventDefault();
+				tracks.currentItem().rotatorValue(!tracks.currentItem().rotatorValue());
+				tracks.generateHtml();
+				tracks.refreshMap();
+				event.stopPropagation();
+			},
+			SoftRight: function(event) {
+				event.preventDefault();
+				state.tracks_actions = true;
+				displaySoftKeysLabels();
+				// tracks_options.generateHtml();
+				event.stopPropagation();
+			},
+			Backspace: function(event) {
+				event.preventDefault();
+				state.map = true;
+				$("#map").show();
+				$("#menu").hide();
+				$("#root").hide();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			}
+		},
+	},
+	TRACKS_NOTDISPLAYED : {
+		softKeysLabels : {
+			fr : {
+					SoftLeft :	'',
+					Center : 	'Afficher',
+					SoftRight :	'Actions'
+			},
+		},
+		keysActions : {
+			ArrowLeft: function(event) {
+				event.preventDefault();
+				menu.previous();
+				event.stopPropagation();
+			},
+			ArrowRight: function(event) {
+				event.preventDefault();
+				menu.next();
+				event.stopPropagation();
+			},
+			ArrowUp: function(event) {
+				event.preventDefault();
+				tracks.previous();
+				event.stopPropagation();
+			},
+			ArrowDown: function(event) {
+				event.preventDefault();
+				tracks.next();
+				event.stopPropagation();
+			},
+			SoftLeft: function(event) {
+				event.preventDefault();
+				menu.hide();
+				$("#root").height(235 + 28);
+				event.stopPropagation();
+			},
+			Enter: function(event) {
+				event.preventDefault();
+				tracks.currentItem().rotatorValue(!tracks.currentItem().rotatorValue());
+				tracks.generateHtml();
+				tracks.refreshMap();
+				event.stopPropagation();
+			},
+			SoftRight: function(event) {
+				event.preventDefault();
+				state.tracks_actions = true;
+				displaySoftKeysLabels();
+				// tracks_options.generateHtml();
+				event.stopPropagation();
+			},
+			Backspace: function(event) {
+				event.preventDefault();
+				state.map = true;
+				$("#map").show();
+				$("#menu").hide();
+				$("#root").hide();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			}
+		},
+	},
+	TRACKS_ACTIONS : {
+		softKeysLabels : {
+			fr : {
+					SoftLeft :	'',
+					Center : 	'Choisir',
+					SoftRight :	'Annuler'
+			},
+		},
+		keysActions : {
+			ArrowLeft: function(event) {
+				event.preventDefault();
+				menu.previous();
+				event.stopPropagation();
+			},
+			ArrowRight: function(event) {
+				event.preventDefault();
+				menu.next();
+				event.stopPropagation();
+			},
+			ArrowUp: function(event) {
+				event.preventDefault();
+				tracks.previous();
+				event.stopPropagation();
+			},
+			ArrowDown: function(event) {
+				event.preventDefault();
+				tracks.next();
 				event.stopPropagation();
 			},
 			SoftLeft: function(event) {
@@ -534,16 +654,17 @@ const states = {
 			},
 			SoftRight: function(event) {
 				event.preventDefault();
-				menu.show();
-				$("#root").height(235);
+				state.tracks_actions = false;
+				tracks.generateHtml();
+				tracks.refreshMap();
+				displaySoftKeysLabels();
 				event.stopPropagation();
 			},
 			Backspace: function(event) {
 				event.preventDefault();
-				state.map = true;
-				$("#map").show();
-				$("#menu").hide();
-				$("#root").hide();
+				state.tracks_actions = false;
+				tracks.generateHtml();
+				tracks.refreshMap();
 				displaySoftKeysLabels();
 				event.stopPropagation();
 			}

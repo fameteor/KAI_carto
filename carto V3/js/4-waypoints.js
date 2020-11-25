@@ -1,7 +1,7 @@
 // -----------------------------------------------------------------
-// waypointsInitialList
+// waypoints_initialList
 // -----------------------------------------------------------------
-let waypointsInitialList = [
+let waypoints_initialList = [
 	{
 		coords :						[47,0],
 		altitude :						null,
@@ -118,11 +118,11 @@ const waypointsOptions = {
 }
 
 // Waypoints conversion in objects
-waypointsInitialList = waypointsInitialList.map(function(waypoint) {
+waypoints_initialList = waypoints_initialList.map(function(waypoint) {
 	return new Waypoint(waypoint);
 });
 
-const waypoints = new Rotator(waypointsInitialList,waypointsOptions);
+const waypoints = new Rotator(waypoints_initialList,waypointsOptions);
 
 waypoints.refreshMap = function() {
 	this.list.forEach(function(waypoint) {

@@ -267,10 +267,18 @@ let menuItems = [
 			state.waypointsOptions = false;
 			displaySoftKeysLabels();
 			waypoints.generateHtml();
-		}},
+		}
+	},
 	{
 		label:"Traces",
-		statePrefix:"TRACKS"
+		statePrefix:"TRACKS",
+		onSelected : function() {
+			// We force to "track" view
+			state.tracks_actions = false;
+			displaySoftKeysLabels();
+			tracks.generateHtml();
+			tracks.refreshMap();
+		}
 	},
 	{
 		label:"Fonds de carte",
@@ -280,8 +288,8 @@ let menuItems = [
 		label:"Options",
 		statePrefix:"OPTIONS",
 		onSelected : function() {
-				options.refreshSelection();
-			}
+			options.refreshSelection();
+		}
 	}
 ];
 
@@ -305,6 +313,7 @@ let init = function() {
 	menu.generateHtml();
 	options.generateHtml();
 	waypoints.generateHtml();
+	tracks.generateHtml();
 	mapBackgrounds.generateHtml();
 	// Display sofkeys -----------------------------------------
 	displaySoftKeysLabels();
@@ -319,6 +328,8 @@ let init = function() {
 	);
 	// Background layer added
 	mapBackgrounds.refreshMap();
+	waypoints.refreshMap();
+	tracks.refreshMap();
 	gps.setAndDisplayCurrentPosition();
 	gps.refreshCurrentPosition();
 	// Start on map display ------------------------------------
@@ -326,7 +337,5 @@ let init = function() {
 	$("#menu").hide();
 	$("#root").hide();
 	console.log("INIT done");
-	
-	
 }
 

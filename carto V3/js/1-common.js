@@ -257,6 +257,7 @@ const state = {
 	infosOptions : false,
 	infosOptionsValue : "",
 	waypointsOptions : false,
+	tracks_actions : false,
 	current: function() {
 		// Getter
 		if (this.map === true) return "MAP";
@@ -288,7 +289,11 @@ const state = {
 					}
 					break;
 				case "TRACKS":
-					currentState = "TRACKS";
+					if (this.tracks_actions) 						currentState = "TRACKS_ACTIONS";
+					else {
+						if (tracks.currentItem().rotatorValue()) 	currentState = "TRACKS_DISPLAYED";
+						else 										currentState = "TRACKS_NOTDISPLAYED";
+					}
 					break;
 				case "MAP_BACKGROUNDS":
 					if (mapBackgrounds.currentItem().active) 	return "MAP_BACKGROUNDS_ACTIVE";
