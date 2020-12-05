@@ -10,7 +10,21 @@ Dimensions :
 
 */
 
+// -----------------------------------------------------------------
+// input
+// -----------------------------------------------------------------
 
+let input = {
+	generateHtml : function(title,initialValue,targetSelector) {
+		let html = '<h1>' + title + '</h1><input type="text" id="input" value="' + (initialValue ? initialValue : '') + '"></input>';
+		$(targetSelector).html(html);
+		// To set focus on the input and select the input value
+		let input = $('#input');
+		var strLength = input.val().length;
+		input.focus();
+		input[0].setSelectionRange(0, strLength);
+	}
+}
 
 
 // -----------------------------------------------------------------
@@ -26,6 +40,30 @@ Dimensions :
 			app.onFocus();
 		} 
 	});
+	
+// -----------------------------------------------------------------
+// Toastr
+// -----------------------------------------------------------------
+const toastr = {
+	info : function (text) {
+		$("#toastrMsg").html('<center><i class="fas fa-info-circle" style="color:#b30086;"></i><br/>' + text + '</center>');
+		$("#toastr").attr("class","visible");
+		setTimeout(function(){ $("#toastr").attr("class","hidden"); }, 2000);
+	},
+	warning : function (text) {
+		$("#toastrMsg").html('<center><i class="fas fa-exclamation-circle" style="color:#b30086;"></i><br/>' + text + '</center>');
+		$("#toastr").attr("class","visible");
+		setTimeout(function(){ $("#toastr").attr("class","hidden"); }, 2000);
+	},
+	question : function(text) {
+		// state.push("QUESTION");
+		$("#toastr").attr("class","visible");
+		$("#toastrMsg").html('<center><i class="fas fa-question-circle"  style="color:#b30086;"></i><br/>' + text + '</center>');
+	},
+	hide: function() {
+		$("#toastr").attr("class","hidden");
+	}
+}
 	
 	
 // -----------------------------------------------------------------
@@ -254,10 +292,13 @@ const Menu = function(list,options) {
 const state = {
 	// Setter and Getter
 	map:true,
-	infosOptions : false,
-	infosOptionsValue : "",
-	waypointsOptions : false,
+	infos_actions : false,
+	waypoints_options : false,
+	waypoints_options_rename : false,
+	waypoints_options_delete : false,
 	tracks_actions : false,
+	// infosOptionsValue : "",
+	options_value : "",
 	current: function() {
 		// Getter
 		if (this.map === true) return "MAP";
@@ -265,31 +306,30 @@ const state = {
 			var currentState = "";
 			switch (menu.currentItem().statePrefix) {
 				case "INFOS_GPS":
-					if (this.infosOptions) 	{
-						switch(this.infosOptionsValue) {
-							case "coordinatesFormat":
-								currentState = "INFOS_GPS_OPTIONS_COORDINATESFORMAT";
-								break;
-							case "units":
-								currentState = "INFOS_GPS_OPTIONS_UNITS";
-								break;
-							default :
-								currentState = "INFOS_GPS_OPTIONS";
-								break;
-						}
-						
-					}
-					else 					currentState = "INFOS_GPS";
+					if (app.gpsWatchHandler === null) 	currentState = "INFOS_GPS_MANUEL";
+					else								currentState = "INFOS_GPS_AUTO";							
 					break;
 				case "WAYPOINTS":
-					if (this.waypointsOptions) 						currentState = "WAYPOINTS_OPTIONS";
+					if (this.waypoints_options) {
+						if (this.waypoints_options_rename) 			currentState = "WAYPOINTS_OPTIONS_RENAME";
+							else if (this.waypoints_options_delete)	currentState = "WAYPOINTS_OPTIONS_DELETE";
+								else 								currentState = "WAYPOINTS_OPTIONS";
+					}						
 					else {
-						if (waypoints.currentItem().rotatorValue()) currentState = "WAYPOINTS_DISPLAYED";
-						else 										currentState = "WAYPOINTS_NOTDISPLAYED";
+						if (waypoints.list.length > 0) {
+							if (waypoints.currentItem().rotatorValue()) currentState = "WAYPOINTS_DISPLAYED";
+							else 										currentState = "WAYPOINTS_NOTDISPLAYED";
+						}
+						else											currentState = "WAYPOINTS_EMPTY";
 					}
 					break;
 				case "TRACKS":
-					if (this.tracks_actions) 						currentState = "TRACKS_ACTIONS";
+					if (this.tracks_actions) {
+						if (this.tracks_actions === "rename") 					currentState = "TRACKS_ACTIONS_rename";
+							else if (this.tracks_actions === "delete")			currentState = "TRACKS_ACTIONS_delete";
+								else if (this.tracks_actions === "changeColor")	currentState = "TRACKS_ACTIONS_changeColor";
+									else 										currentState = "TRACKS_ACTIONS";
+					}
 					else {
 						if (tracks.currentItem().rotatorValue()) 	currentState = "TRACKS_DISPLAYED";
 						else 										currentState = "TRACKS_NOTDISPLAYED";
@@ -302,7 +342,19 @@ const state = {
 				case "OPTIONS":
 					if (options.currentItem().rotatorType === "BOOLEAN" && options.currentItem().rotatorValue() === true) 		currentState = "OPTIONS_ACTIVE";
 					if (options.currentItem().rotatorType === "BOOLEAN" && options.currentItem().rotatorValue() === false)		currentState = "OPTIONS_NOTACTIVE";
-					if (options.currentItem().rotatorType === "SELECT")		currentState = "OPTIONS_SELECT";
+					if (options.currentItem().rotatorType === "SELECT")	{
+						switch(this.options_value) {
+							case "coordinatesFormat":
+								currentState = "OPTIONS_COORDINATESFORMAT";
+								break;
+							case "units":
+								currentState = "OPTIONS_UNITS";
+								break;
+							default :
+								currentState = "OPTIONS_SELECT";
+								break;
+						}
+					}
 					if (options.currentItem().rotatorType === "INPUT")		currentState = "OPTIONS_INPUT";
 					break;
 			}

@@ -9,9 +9,10 @@ let app = {
 	myMap : 					null,		// Leaflet map handler
 	myMapBackgroundLayer:		null,		// Leaflet background Layer handler
 	zoomLevel :					13,
-	mapCenter:					[47,0], 		// [46.589187,15.0133661],
+	mapCenter:					[47,0], 	// [46.589187,15.0133661],
 	// GPS ------------------------------------------------------
-	gpsTraceIsOn:				false,
+	gpsWatchHandler:			null,
+	gpsLockHandler:				null,		// To lock GPS resource when focus is off
 	// Current poistion -----------------------------------------
 	currentPosition :			new Waypoint({
 		coords :				null,
@@ -19,6 +20,8 @@ let app = {
 		label:					"Position actuelle",
 		markerIsDisplayedOnTheMap:true
 	}),
+	// Current track --------------------------------------------
+	currentTrack : 				new Track({}),
 	
 	
 	
@@ -29,12 +32,70 @@ let app = {
 		mapIsCenteredOnGpsPosition: true,
 		waypointsNameAreDisplayed: 	false,
 		gpsPostProcessingisOn: 		true,
-		coordinatesFormat:			"DDD° MM.xxxx'",
-		units:						"Nautiques"
+		coordinatesFormat:			"DDD.xxxxxx",
+		units:						"Métriques"
 	}
 }
 
+// -----------------------------------------------------------------
+let menuItems = [
+	{
+		label:"Infos",
+		statePrefix:"INFOS_GPS",
+		onSelected : function() {
+			// We force to "info" view
+			state.infosOptions = false;
+			state.infosOptionsValue = "",
+			$("#infosOptions").hide();
+			$("#infos").show();
+		}
+	},
+	{
+		label:"Points",
+		statePrefix:"WAYPOINTS",
+		onSelected : function() {
+			// We force to "waypoint" view
+			state.waypoints_options = false;
+			state.waypoints_options_rename = false;
+			state.waypoints_options_delete = false;
+			displaySoftKeysLabels();
+			waypoints.generateHtml();
+		}
+	},
+	{
+		label:"Traces",
+		statePrefix:"TRACKS",
+		onSelected : function() {
+			// We force to "track" view
+			state.tracks_actions = false;
+			displaySoftKeysLabels();
+			tracks.generateHtml();
+			tracks.refreshMap();
+		}
+	},
+	{
+		label:"Fonds de carte",
+		statePrefix:"MAP_BACKGROUNDS"
+	},
+	{
+		label:"Options",
+		statePrefix:"OPTIONS",
+		onSelected : function() {
+			options.refreshSelection();
+		}
+	}
+];
 
+const menuOptions = {
+	"selectedItemIdPrefix" :	"menuItem",
+	"showDomElementPrefix":		"#menuTarget_"
+};
+
+const menu = new Menu(menuItems,menuOptions);
+
+// -----------------------------------------------------------------
+// Options
+// -----------------------------------------------------------------
 let optionsList = [
 	{	
 		label:"Centrer la carte sur la position GPS",
@@ -59,10 +120,27 @@ let optionsList = [
 			if (value != undefined) {
 				// Setter
 				app.currentPosition.markerIsDisplayedOnTheMap = value;
+				app.currentPosition.refreshMap();
 			}
 			else {
 				// Getter
 				return app.currentPosition.markerIsDisplayedOnTheMap;
+			}
+		}
+	},
+	{	
+		label:"Afficher la trace actuelle sur la carte",
+		rotatorType:"BOOLEAN",
+		rotatorIcon:"fas fa-cog",
+		rotatorValue:function(value) {
+			if (value != undefined) {
+				// Setter
+				app.currentTrack.trackIsDisplayedOnTheMap = value;
+				app.currentTrack.refreshMap();
+			}
+			else {
+				// Getter
+				return app.currentTrack.trackIsDisplayedOnTheMap;
 			}
 		}
 	},
@@ -98,20 +176,7 @@ let optionsList = [
 		rotatorInfos: function() {
 			return "1 position/s moyennées toutes les 5s";
 		}
-	}
-];
-
-const optionsOptions = {
-	"selectedItemIdPrefix" : 	"option",
-	"targetDomSelector" : 			"#menuTarget_4"
-}
-
-
-
-const options = new Rotator(optionsList,optionsOptions);
-
-// -----------------------------------------------------------------
-let infosOptionsList = [
+	},
 	{	
 		label:"Format des coordonnées",
 		rotatorType:"SELECT",
@@ -150,17 +215,19 @@ let infosOptionsList = [
 	}
 ];
 
-const infosOptionsOptions = {
-	"selectedItemIdPrefix" : 		"infosOption",
-	"targetDomSelector" : 			"#infosOptions"
+const optionsOptions = {
+	"selectedItemIdPrefix" : 	"option",
+	"targetDomSelector" : 		"#menuTarget_4"
 }
 
 
 
-const infosOptions = new Rotator(infosOptionsList,infosOptionsOptions);
+const options = new Rotator(optionsList,optionsOptions);
 
 // -----------------------------------------------------------------
-let infosOptionsCoordinatesFormatList = [
+// OptionsCoordinatesFormat
+// -----------------------------------------------------------------
+let optionsCoordinatesFormatList = [
 	{	
 		label:"DDD.xxxxxx",
 		rotatorType:"BOOLEAN",
@@ -190,12 +257,12 @@ let infosOptionsCoordinatesFormatList = [
 	}
 ];
 
-const infosOptionsCoordinatesFormatOptions = {
-	"selectedItemIdPrefix" : 		"infosOptionsCoordinatesFormatOptions",
-	"targetDomSelector" : 			"#infosOptions",
+const optionsCoordinatesFormatOptions = {
+	"selectedItemIdPrefix" : 		"optionsCoordinatesFormatOptions",
+	"targetDomSelector" : 			"#menuTarget_4",
 	"initialSelectionIndex" : function() {
 		let initialSelectionIndex = 0;
-		infosOptionsCoordinatesFormatList.forEach((option,index) => {
+		optionsCoordinatesFormatList.forEach((option,index) => {
 			if (option.label === app.options.coordinatesFormat) initialSelectionIndex = index;
 		});
 		return initialSelectionIndex;
@@ -204,10 +271,12 @@ const infosOptionsCoordinatesFormatOptions = {
 
 
 
-const infosOptionsCoordinatesFormat = new Rotator(infosOptionsCoordinatesFormatList,infosOptionsCoordinatesFormatOptions);
+const optionsCoordinatesFormat = new Rotator(optionsCoordinatesFormatList,optionsCoordinatesFormatOptions);
 
 // -----------------------------------------------------------------
-let infosOptionsUnitsList = [
+// OptionsUnitsFormat
+// -----------------------------------------------------------------
+let optionsUnitsList = [
 	{	
 		label:"Métriques",
 		rotatorType:"BOOLEAN",
@@ -228,12 +297,12 @@ let infosOptionsUnitsList = [
 	}
 ];
 
-const infosOptionsUnitsOptions = {
-	"selectedItemIdPrefix" : 		"infosOptionsUnitsOptions",
-	"targetDomSelector" : 			"#infosOptions",
+const optionsUnitsOptions = {
+	"selectedItemIdPrefix" : 		"optionsUnitsOptions",
+	"targetDomSelector" : 			"#menuTarget_4",
 	"initialSelectionIndex" : function() {
 		let initialSelectionIndex = 0;
-		infosOptionsUnitsList.forEach((option,index) => {
+		optionsUnitsList.forEach((option,index) => {
 			if (option.label === app.options.units) initialSelectionIndex = index;
 		});
 		return initialSelectionIndex;
@@ -242,65 +311,22 @@ const infosOptionsUnitsOptions = {
 
 
 
-const infosOptionsUnits = new Rotator(infosOptionsUnitsList,infosOptionsUnitsOptions);
-
-
+const optionsUnits = new Rotator(optionsUnitsList,optionsUnitsOptions);
 
 // -----------------------------------------------------------------
-let menuItems = [
-	{
-		label:"Infos",
-		statePrefix:"INFOS_GPS",
-		onSelected : function() {
-			// We force to "info" view
-			state.infosOptions = false;
-			state.infosOptionsValue = "",
-			$("#infosOptions").hide();
-			$("#infos").show();
-		}
-	},
-	{
-		label:"Points",
-		statePrefix:"WAYPOINTS",
-		onSelected : function() {
-			// We force to "waypoint" view
-			state.waypointsOptions = false;
-			displaySoftKeysLabels();
-			waypoints.generateHtml();
-		}
-	},
-	{
-		label:"Traces",
-		statePrefix:"TRACKS",
-		onSelected : function() {
-			// We force to "track" view
-			state.tracks_actions = false;
-			displaySoftKeysLabels();
-			tracks.generateHtml();
-			tracks.refreshMap();
-		}
-	},
-	{
-		label:"Fonds de carte",
-		statePrefix:"MAP_BACKGROUNDS"
-	},
-	{
-		label:"Options",
-		statePrefix:"OPTIONS",
-		onSelected : function() {
-			options.refreshSelection();
-		}
+// InfosOptions
+// -----------------------------------------------------------------
+let infosOptionsList = [
+	{	
+		label:"Enregistrer la trace actuelle",
+		rotatorType:"MENU"
 	}
 ];
 
-const menuOptions = {
-	"selectedItemIdPrefix" :	"menuItem",
-	"showDomElementPrefix":		"#menuTarget_"
-};
-
-const menu = new Menu(menuItems,menuOptions);
-
-
+const infosOptionsOptions = {
+	"selectedItemIdPrefix" : 		"infosOption",
+	"targetDomSelector" : 			"#infosOptions"
+}
 
 
 
@@ -308,7 +334,10 @@ const menu = new Menu(menuItems,menuOptions);
 // Initialisation
 // -----------------------------------------------------------------
 let init = function() {
-	
+	// Hide tracing leds ---------------------------------------
+	$("#tracing_green").hide();
+	$("#tracing_orange").hide();
+	$("#tracing_red").hide();
 	// Generate HTML -------------------------------------------
 	menu.generateHtml();
 	options.generateHtml();

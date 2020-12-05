@@ -136,17 +136,25 @@ table {
 
 .text-center {text-align:center;}
 
+
+/* INPUT */
+
 input[type=text] {
 	width:230px;
 	margin:5px;
 	color:#000080;
-	font-weight: 400;
-	font-size: 1rem;
+	font-w1ight: 400;
+	font-size: 1.1rem;
 }
 
 /* infos */
 
 .currentPositionMarker {color:#c91d36;}
+
+::-moz-selection{
+	background-color : #b30086;
+	color:#FFFFFF;
+}
 
 h1 {
 	background-color:#eeeeee;
@@ -185,4 +193,69 @@ h1 {
 .purple 		{color:purple;}
 .black 		{color:black;}
 .white 		{color:white;}
+
+/* TOASTR -------------------------- */
+
+div#toastr {
+	position : absolute;
+	top:0;
+	left:0;
+	width :100%;
+	background-color : #DDDDDD;
+	color: #000080;
+	z-index: 1000;
+	padding:5px;
+	border-bottom: 1px #AAAAAA solid;
+}
+
+div#toastr i {
+  font-size: 2rem;
+}
+
+div#toastr.hidden {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 2s, opacity 2s linear;
+}
+
+div#toastr.init {
+  visibility: hidden;
+  opacity: 0;
+}
+
+div#toastr.visible {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Tracing LEDs */
+
+div#tracing_red {
+	position : absolute;
+	top:0;
+	left:0;
+	width :230px;
+	margin:5px;
+	z-index: 500;
+}
+
+div#tracing_orange {
+	position : absolute;
+	top:0;
+	left:0;
+	width :230px;
+	margin:5px;
+	z-index: 500;
+}
+
+div#tracing_green {
+	position : absolute;
+	top:0;
+	left:0;
+	width :230px;
+	margin:5px;
+	z-index: 500;
+}
+
+
 	

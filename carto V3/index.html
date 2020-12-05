@@ -25,7 +25,8 @@
 	<script src="js/4-waypoints.js"></script>
 	<script src="js/4-gps.js"></script>
 	<script src="js/5-tracks.js"></script>
-	<script src="index.js"></script>
+	
+	<script src="index.js"></script
   </head>
 
   <body onLoad="init()">
@@ -70,11 +71,11 @@
 							<div class="tr">
 								<div class="td">
 									<div class="info">Cap actuel</div>
-									<b><span id="bearing">123</span>°</b>
+									<b><span id="currentBearing">--</span>°</b>
 								</div>
 								<div class="td">
 									<div class="info">Vitesse</div>
-									<b><span id="speed">12</span> km/h</b>
+									<b><span id="currentSpeed">--</span></b>
 								</div>
 							</div>
 						</div>
@@ -94,7 +95,7 @@
 									</div>
 									<div class="td zone_traceActive">
 										<div class="info">ETA</div>
-										<b><span id="distance">12:23:15</span></b>
+										<b><span id="eta">--</span></b>
 									</div>
 								</div>
 							</div>
@@ -115,7 +116,6 @@
 
 				<div class="info zone_traceInactive"><hr/><b>Nb</b> : pour obtenir le cap actuel, vitesse et ETA, passer en "Tracer".</div>
 			</div>
-			<div id="infosOptions"></div>
 		</div>
 		
 		<!-- menuTargets --------------------------------------------- -->
@@ -137,9 +137,25 @@
     
 	<!-- Softkeys ---------------------------------------------------- -->
 	<div id="softkeys">
-        <label id="left">Gauche action</label>
-        <label id="center">Action centrale</label>
-        <label id="right">Droite action</label>
+        <label id="left"></label>
+        <label id="center"></label>
+        <label id="right"></label>
+	</div>
+	
+	<div id="toastr" class="init">
+		<div id="toastrMsg">Essai de message</div>
+	</div>
+	
+	<div id ="tracing_red">
+		<img src="icons/tracing_red.png"/>
+	</div>
+	
+	<div id ="tracing_orange">
+		<img src="icons/tracing_orange.png"/>
+	</div>
+	
+	<div id ="tracing_green">
+		<img src="icons/tracing_green.png"/>
 	</div>
 
   </body>

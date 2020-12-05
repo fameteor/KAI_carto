@@ -73,7 +73,7 @@ const states = {
 		},
 	},
 	// MENU --------------------------------------------------------
-	INFOS_GPS : {
+	INFOS_GPS_MANUEL : {
 		softKeysLabels : {
 			fr : {
 					SoftLeft :	'Tracer',
@@ -94,19 +94,10 @@ const states = {
 				displaySoftKeysLabels();
 				event.stopPropagation();
 			},
-			ArrowUp: function(event) {
-				event.preventDefault();
-				options.previous();
-				event.stopPropagation();
-			},
-			ArrowDown: function(event) {
-				event.preventDefault();
-				options.next();
-				event.stopPropagation();
-			},
 			SoftLeft: function(event) {
 				event.preventDefault();
-				console.log("tracer");
+				gps.watchStart();
+				displaySoftKeysLabels();
 				event.stopPropagation();
 			},
 			Enter: function(event) {
@@ -116,10 +107,49 @@ const states = {
 			},
 			SoftRight: function(event) {
 				event.preventDefault();
-				state.infosOptions = true;
-				infosOptions.generateHtml();
-				$("#infos").hide();
-				$("#infosOptions").show();
+				event.stopPropagation();
+			},
+			Backspace: function(event) {
+				event.preventDefault();
+				state.map = true;
+				$("#map").show();
+				$("#menu").hide();
+				$("#root").hide();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			}
+		},
+	},
+	INFOS_GPS_AUTO : {
+		softKeysLabels : {
+			fr : {
+					SoftLeft :	'Stop trace',
+					Center : 	'',
+					SoftRight :	'Actions'
+			},
+		},
+		keysActions : {
+			ArrowLeft: function(event) {
+				event.preventDefault();
+				menu.previous();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			},
+			ArrowRight: function(event) {
+				event.preventDefault();
+				menu.next();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			},
+			SoftLeft: function(event) {
+				event.preventDefault();
+				gps.watchStop();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			},
+			SoftRight: function(event) {
+				event.preventDefault();
+				
 				event.stopPropagation();
 			},
 			Backspace: function(event) {
@@ -156,12 +186,12 @@ const states = {
 			},
 			ArrowUp: function(event) {
 				event.preventDefault();
-				infosOptions.previous();
+				options.previous();
 				event.stopPropagation();
 			},
 			ArrowDown: function(event) {
 				event.preventDefault();
-				infosOptions.next();
+				options.next();
 				event.stopPropagation();
 			},
 			SoftLeft: function(event) {
@@ -170,147 +200,54 @@ const states = {
 			},
 			Enter: function(event) {
 				event.preventDefault();
-				switch (infosOptions.currentIndex) {
-					case 0:
-						state.infosOptionsValue = "coordinatesFormat";
-						infosOptionsCoordinatesFormat.generateHtml();
-						break;
-					case 1:
-						state.infosOptionsValue = "units";
-						infosOptionsUnits.generateHtml();
-						break;
-				}
+				
 				event.stopPropagation();
 			},
 			SoftRight: function(event) {
 				event.preventDefault();
-				state.infosOptions = false;
+				state.options = false;
 				displaySoftKeysLabels();
-				$("#infosOptions").hide();
-				$("#infos").show();
 				event.stopPropagation();
 			},
 			Backspace: function(event) {
 				event.preventDefault();
-				state.infosOptions = false;
+				state.options = false;
 				displaySoftKeysLabels();
-				$("#infosOptions").hide();
-				$("#infos").show();
 				event.stopPropagation();
 			}
 		},
 	},
-	INFOS_GPS_OPTIONS_COORDINATESFORMAT : {
+	WAYPOINTS_EMPTY : {
 		softKeysLabels : {
 			fr : {
-					SoftLeft :	'',
-					Center : 	'Sélectionner',
-					SoftRight :	'Annuler'
+					SoftLeft :	'Ajouter ici',
+					Center : 	'',
+					SoftRight :	''
 			},
 		},
 		keysActions : {
 			ArrowLeft: function(event) {
 				event.preventDefault();
 				menu.previous();
-				displaySoftKeysLabels();
 				event.stopPropagation();
 			},
 			ArrowRight: function(event) {
 				event.preventDefault();
 				menu.next();
-				displaySoftKeysLabels();
-				event.stopPropagation();
-			},
-			ArrowUp: function(event) {
-				event.preventDefault();
-				infosOptionsCoordinatesFormat.previous();
-				event.stopPropagation();
-			},
-			ArrowDown: function(event) {
-				event.preventDefault();
-				infosOptionsCoordinatesFormat.next();
 				event.stopPropagation();
 			},
 			SoftLeft: function(event) {
 				event.preventDefault();
-				event.stopPropagation();
-			},
-			Enter: function(event) {
-				event.preventDefault();
-				infosOptions.currentItem().rotatorValue(infosOptionsCoordinatesFormat.currentItem().label);
-				state.infosOptionsValue = "";
-				infosOptions.generateHtml();
-				gps.refreshCurrentPosition();
-				waypoints.generateHtml();
-				event.stopPropagation();
-			},
-			SoftRight: function(event) {
-				event.preventDefault();
-				state.infosOptionsValue = "";
-				infosOptions.generateHtml();
+				gps.setAndDisplayWaypoint();
 				event.stopPropagation();
 			},
 			Backspace: function(event) {
 				event.preventDefault();
-				state.infosOptionsValue = "";
-				infosOptions.generateHtml();
-				event.stopPropagation();
-			}
-		},
-	},
-	INFOS_GPS_OPTIONS_UNITS : {
-		softKeysLabels : {
-			fr : {
-					SoftLeft :	'',
-					Center : 	'Sélectionner',
-					SoftRight :	'Annuler'
-			},
-		},
-		keysActions : {
-			ArrowLeft: function(event) {
-				event.preventDefault();
-				menu.previous();
+				state.map = true;
+				$("#map").show();
+				$("#menu").hide();
+				$("#root").hide();
 				displaySoftKeysLabels();
-				event.stopPropagation();
-			},
-			ArrowRight: function(event) {
-				event.preventDefault();
-				menu.next();
-				displaySoftKeysLabels();
-				event.stopPropagation();
-			},
-			ArrowUp: function(event) {
-				event.preventDefault();
-				infosOptionsUnits.previous();
-				event.stopPropagation();
-			},
-			ArrowDown: function(event) {
-				event.preventDefault();
-				infosOptionsUnits.next();
-				event.stopPropagation();
-			},
-			SoftLeft: function(event) {
-				event.preventDefault();
-				event.stopPropagation();
-			},
-			Enter: function(event) {
-				event.preventDefault();
-				infosOptions.currentItem().rotatorValue(infosOptionsUnits.currentItem().label);
-				state.infosOptionsValue = "";
-				infosOptions.generateHtml();
-				gps.refreshCurrentPosition();
-				event.stopPropagation();
-			},
-			SoftRight: function(event) {
-				event.preventDefault();
-				state.infosOptionsValue = "";
-				infosOptions.generateHtml();
-				event.stopPropagation();
-			},
-			Backspace: function(event) {
-				event.preventDefault();
-				state.infosOptionsValue = "";
-				infosOptions.generateHtml();
 				event.stopPropagation();
 			}
 		},
@@ -358,7 +295,7 @@ const states = {
 			},
 			SoftRight: function(event) {
 				event.preventDefault();
-				state.waypointsOptions = true;
+				state.waypoints_options = true;
 				displaySoftKeysLabels();
 				waypoints_options.generateHtml();
 				event.stopPropagation();
@@ -417,7 +354,7 @@ const states = {
 			},
 			SoftRight: function(event) {
 				event.preventDefault();
-				state.waypointsOptions = true;
+				state.waypoints_options = true;
 				displaySoftKeysLabels();
 				waypoints_options.generateHtml();
 				event.stopPropagation();
@@ -467,27 +404,136 @@ const states = {
 				switch(waypoints_options.currentItem().state) {
 					case "goto":
 						waypoints.target(waypoints.currentItem());
-						state.waypointsOptions = false;
+						state.waypoints_options = false;
 						waypoints.generateHtml();
 						displaySoftKeysLabels();
 						gps.refreshCurrentPosition();
 						break;
 					case "rename":
+						state.waypoints_options_rename = true;
+						input.generateHtml("Renommer le point",waypoints.currentItem().label,"#menuTarget_1");
+						displaySoftKeysLabels();
+						break;
+					case "delete":
+						toastr.question("Voulez-vous supprimer définitivement le point " + waypoints.currentItem().label);
+						state.waypoints_options_delete = true;
+						displaySoftKeysLabels();
+						break;
+					case "positionMap" :
+						// We disable the map centering on current position
+						app.options.mapIsCenteredOnGpsPosition = false;
+						options.generateHtml();
+						// We exit from waypoints actions
+						state.waypoints_options = false;
+						// We display the map
+						state.map = true;
+						$("#map").show();
+						$("#menu").hide();
+						$("#root").hide();
+						app.myMap.flyTo(waypoints.currentItem().coords,app.zoomLevel);
+						displaySoftKeysLabels();
 						break;
 				}
 				event.stopPropagation();
 			},
 			SoftRight: function(event) {
 				event.preventDefault();
-				state.waypointsOptions = false;
+				state.waypoints_options = false;
 				waypoints.generateHtml();
 				displaySoftKeysLabels();
 				event.stopPropagation();
 			},
 			Backspace: function(event) {
 				event.preventDefault();
-				state.waypointsOptions = false;
+				state.waypoints_options = false;
 				waypoints.generateHtml();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			}
+		},
+	},
+	WAYPOINTS_OPTIONS_RENAME: {
+		softKeysLabels : {
+			fr : {
+					SoftLeft :	'',
+					Center : 	'Enregistrer',
+					SoftRight :	'Annuler'
+			},
+		},
+		keysActions : {
+			Enter: function(event) {
+				event.preventDefault();
+				// We rename the waypoint
+				if ($("#input").val().trim() != "") {
+					waypoints.currentItem().label = $("#input").val().trim();
+					state.waypoints_options_rename = false;
+					state.waypoints_options = false;
+					gps.refreshCurrentPosition();
+					waypoints.generateHtml();
+					displaySoftKeysLabels();
+				}
+				else toastr.warning("Attention ce champ ne peut-être vide.")
+				event.stopPropagation();
+			},
+			SoftRight: function(event) {
+				event.preventDefault();
+				state.waypoints_options_rename = false;
+				waypoints_options.generateHtml();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			},
+			Backspace: function(event) {
+				event.preventDefault();
+				state.waypoints_options_rename = false;
+				waypoints_options.generateHtml();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			}
+		},
+	},
+	WAYPOINTS_OPTIONS_DELETE: {
+		softKeysLabels : {
+			fr : {
+					SoftLeft :	'Supprimer',
+					Center : 	'',
+					SoftRight :	'Annuler'
+			},
+		},
+		keysActions : {
+			SoftLeft: function(event) {
+				event.preventDefault();
+				toastr.hide();
+				state.waypoints_options_delete = false;
+				state.waypoints_options = false;
+				toastr.info(waypoints.currentItem().label + " a été supprimé.");
+				// Delete this waypoint from the map if drawn
+				if (waypoints.currentItem().markerIsDisplayedOnTheMap === true) {
+					waypoints.currentItem().markerIsDisplayedOnTheMap = false;
+					waypoints.currentItem().refreshMap();
+				};
+				// Delete this waypoint
+				const indexToDeleted = waypoints.currentIndex;
+				waypoints.list.splice(indexToDeleted, 1);
+				// Activate the previous one
+				let newSelectedIndex = (indexToDeleted != 0) ? (indexToDeleted - 1) : 0;
+				waypoints.currentIndex = newSelectedIndex;
+				// Update list and map and infos
+				gps.refreshCurrentPosition();
+				waypoints.generateHtml();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			},
+			SoftRight: function(event) {
+				event.preventDefault();
+				toastr.hide();
+				state.waypoints_options_delete = false;
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			},
+			Backspace: function(event) {
+				event.preventDefault();
+				toastr.hide();
+				state.waypoints_options_delete = false;
 				displaySoftKeysLabels();
 				event.stopPropagation();
 			}
@@ -496,7 +542,7 @@ const states = {
 	TRACKS_DISPLAYED : {
 		softKeysLabels : {
 			fr : {
-					SoftLeft :	'',
+					SoftLeft :	'+ actuelle',
 					Center : 	'Cacher',
 					SoftRight :	'Actions'
 			},
@@ -524,8 +570,16 @@ const states = {
 			},
 			SoftLeft: function(event) {
 				event.preventDefault();
-				menu.hide();
-				$("#root").height(235 + 28);
+				// We add the current track and change its color
+				tracks.list.unshift(app.currentTrack);
+				tracks.list[0].color = "purple";
+				tracks.list[0].label = format_dateString(new Date());
+				tracks.currentIndex = 0;
+				tracks.generateHtml();
+				tracks.refreshMap();
+				// We delete the current track
+				app.currentTrack = new Track({});
+				app.currentTrack.refreshMap();
 				event.stopPropagation();
 			},
 			Enter: function(event) {
@@ -539,7 +593,7 @@ const states = {
 				event.preventDefault();
 				state.tracks_actions = true;
 				displaySoftKeysLabels();
-				// tracks_options.generateHtml();
+				tracks_actions.generateHtml();
 				event.stopPropagation();
 			},
 			Backspace: function(event) {
@@ -556,7 +610,7 @@ const states = {
 	TRACKS_NOTDISPLAYED : {
 		softKeysLabels : {
 			fr : {
-					SoftLeft :	'',
+					SoftLeft :	'+ actuelle',
 					Center : 	'Afficher',
 					SoftRight :	'Actions'
 			},
@@ -584,8 +638,16 @@ const states = {
 			},
 			SoftLeft: function(event) {
 				event.preventDefault();
-				menu.hide();
-				$("#root").height(235 + 28);
+				// We add the current track and change its color
+				tracks.list.unshift(app.currentTrack);
+				tracks.list[0].color = "purple";
+				tracks.list[0].label = format_dateString(new Date());
+				tracks.currentIndex = 0;
+				tracks.generateHtml();
+				tracks.refreshMap();
+				// We delete the current track
+				app.currentTrack = new Track({});
+				app.currentTrack.refreshMap();
 				event.stopPropagation();
 			},
 			Enter: function(event) {
@@ -599,7 +661,7 @@ const states = {
 				event.preventDefault();
 				state.tracks_actions = true;
 				displaySoftKeysLabels();
-				// tracks_options.generateHtml();
+				tracks_actions.generateHtml();
 				event.stopPropagation();
 			},
 			Backspace: function(event) {
@@ -634,22 +696,31 @@ const states = {
 			},
 			ArrowUp: function(event) {
 				event.preventDefault();
-				tracks.previous();
+				tracks_actions.previous();
 				event.stopPropagation();
 			},
 			ArrowDown: function(event) {
 				event.preventDefault();
-				tracks.next();
-				event.stopPropagation();
-			},
-			SoftLeft: function(event) {
-				event.preventDefault();
-				menu.hide();
-				$("#root").height(235 + 28);
+				tracks_actions.next();
 				event.stopPropagation();
 			},
 			Enter: function(event) {
 				event.preventDefault();
+				state.tracks_actions = tracks_actions.currentItem().value;
+				displaySoftKeysLabels();
+				switch(tracks_actions.currentItem().value) {
+					case "rename":
+						console.log("ok")
+						input.generateHtml("Renommer la trace",tracks.currentItem().label,"#menuTarget_2");
+						break;
+					case "delete":
+						toastr.question("Voulez-vous supprimer définitivement la trace " + tracks.currentItem().label);
+						displaySoftKeysLabels();
+						break;
+					case "changeColor":
+						
+						break;
+				}
 				event.stopPropagation();
 			},
 			SoftRight: function(event) {
@@ -665,6 +736,89 @@ const states = {
 				state.tracks_actions = false;
 				tracks.generateHtml();
 				tracks.refreshMap();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			}
+		},
+	},
+	TRACKS_ACTIONS_rename: {
+		softKeysLabels : {
+			fr : {
+					SoftLeft :	'',
+					Center : 	'Enregistrer',
+					SoftRight :	'Annuler'
+			},
+		},
+		keysActions : {
+			Enter: function(event) {
+				event.preventDefault();
+				// We rename the waypoint
+				if ($("#input").val().trim() != "") {
+					tracks.currentItem().label = $("#input").val().trim();
+					state.tracks_actions = false;
+					tracks.generateHtml();
+					displaySoftKeysLabels();
+				}
+				else toastr.warning("Attention ce champ ne peut-être vide.")
+				event.stopPropagation();
+			},
+			SoftRight: function(event) {
+				event.preventDefault();
+				state.tracks_actions = true;
+				tracks_actions.generateHtml();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			},
+			Backspace: function(event) {
+				event.preventDefault();
+				state.tracks_actions = true;
+				tracks_actions.generateHtml();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			}
+		},
+	},
+	TRACKS_ACTIONS_delete: {
+		softKeysLabels : {
+			fr : {
+					SoftLeft :	'Supprimer',
+					Center : 	'',
+					SoftRight :	'Annuler'
+			},
+		},
+		keysActions : {
+			SoftLeft: function(event) {
+				event.preventDefault();
+				toastr.hide();
+				state.tracks_actions = false;
+				toastr.info(tracks.currentItem().label + " a été supprimé.");
+				// Delete this track from the map if drawn
+				if (tracks.currentItem().trackIsDisplayedOnTheMap === true) {
+					tracks.currentItem().trackIsDisplayedOnTheMap = false;
+					tracks.currentItem().refreshMap();
+				};
+				// Delete this track from the list
+				const indexToDeleted = tracks.currentIndex;
+				tracks.list.splice(indexToDeleted, 1);
+				// Activate the previous track (or the initial)
+				let newSelectedIndex = (indexToDeleted != 0) ? (indexToDeleted - 1) : 0;
+				tracks.currentIndex = newSelectedIndex;
+				// Display updated tracks list
+				tracks.generateHtml();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			},
+			SoftRight: function(event) {
+				event.preventDefault();
+				toastr.hide();
+				state.tracks_actions = true;
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			},
+			Backspace: function(event) {
+				event.preventDefault();
+				toastr.hide();
+				state.tracks_actions = true;
 				displaySoftKeysLabels();
 				event.stopPropagation();
 			}
@@ -791,6 +945,7 @@ const states = {
 				options.currentItem().rotatorValue(!options.currentItem().rotatorValue());
 				options.generateHtml();
 				app.currentPosition.refreshMap();
+				gps.refreshCurrentPosition();
 				waypoints.refreshMap();
 				event.stopPropagation();
 			},
@@ -839,6 +994,7 @@ const states = {
 				options.currentItem().rotatorValue(!options.currentItem().rotatorValue());
 				options.generateHtml();
 				app.currentPosition.refreshMap();
+				gps.refreshCurrentPosition();
 				waypoints.refreshMap();
 				event.stopPropagation();
 			},
@@ -857,7 +1013,7 @@ const states = {
 		softKeysLabels : {
 			fr : {
 					SoftLeft :	'',
-					Center : 	'modifier',
+					Center : 	'Modifier',
 					SoftRight :	''
 			},
 		},
@@ -882,20 +1038,18 @@ const states = {
 				options.next();
 				event.stopPropagation();
 			},
-			SoftLeft: function(event) {
-				event.preventDefault();
-				menu.hide();
-				$("#root").height(235 + 28);
-				event.stopPropagation();
-			},
 			Enter: function(event) {
 				event.preventDefault();
-				event.stopPropagation();
-			},
-			SoftRight: function(event) {
-				event.preventDefault();
-				menu.show();
-				$("#root").height(235);
+				switch (options.currentIndex) {
+					case 5:
+						state.options_value = "coordinatesFormat";
+						optionsCoordinatesFormat.generateHtml();
+						break;
+					case 6:
+						state.options_value = "units";
+						optionsUnits.generateHtml();
+						break;
+				}
 				event.stopPropagation();
 			},
 			Backspace: function(event) {
@@ -905,6 +1059,122 @@ const states = {
 				$("#menu").hide();
 				$("#root").hide();
 				displaySoftKeysLabels();
+				event.stopPropagation();
+			}
+		},
+	},
+	OPTIONS_COORDINATESFORMAT : {
+		softKeysLabels : {
+			fr : {
+					SoftLeft :	'',
+					Center : 	'Sélectionner',
+					SoftRight :	'Annuler'
+			},
+		},
+		keysActions : {
+			ArrowLeft: function(event) {
+				event.preventDefault();
+				menu.previous();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			},
+			ArrowRight: function(event) {
+				event.preventDefault();
+				menu.next();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			},
+			ArrowUp: function(event) {
+				event.preventDefault();
+				optionsCoordinatesFormat.previous();
+				event.stopPropagation();
+			},
+			ArrowDown: function(event) {
+				event.preventDefault();
+				optionsCoordinatesFormat.next();
+				event.stopPropagation();
+			},
+			SoftLeft: function(event) {
+				event.preventDefault();
+				event.stopPropagation();
+			},
+			Enter: function(event) {
+				event.preventDefault();
+				options.currentItem().rotatorValue(optionsCoordinatesFormat.currentItem().label);
+				state.options_value = "";
+				options.generateHtml();
+				gps.refreshCurrentPosition();
+				// No need to waypoints.generateHtml(); 
+				// Waypoint format will be updated when waypoint menu displayed
+				event.stopPropagation();
+			},
+			SoftRight: function(event) {
+				event.preventDefault();
+				state.options_value = "";
+				options.generateHtml();
+				event.stopPropagation();
+			},
+			Backspace: function(event) {
+				event.preventDefault();
+				state.options_value = "";
+				options.generateHtml();
+				event.stopPropagation();
+			}
+		},
+	},
+	OPTIONS_UNITS : {
+		softKeysLabels : {
+			fr : {
+					SoftLeft :	'',
+					Center : 	'Sélectionner',
+					SoftRight :	'Annuler'
+			},
+		},
+		keysActions : {
+			ArrowLeft: function(event) {
+				event.preventDefault();
+				menu.previous();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			},
+			ArrowRight: function(event) {
+				event.preventDefault();
+				menu.next();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			},
+			ArrowUp: function(event) {
+				event.preventDefault();
+				optionsUnits.previous();
+				event.stopPropagation();
+			},
+			ArrowDown: function(event) {
+				event.preventDefault();
+				optionsUnits.next();
+				event.stopPropagation();
+			},
+			SoftLeft: function(event) {
+				event.preventDefault();
+				event.stopPropagation();
+			},
+			Enter: function(event) {
+				event.preventDefault();
+				options.currentItem().rotatorValue(optionsUnits.currentItem().label);
+				state.options_value = "";
+				options.generateHtml();
+				gps.refreshCurrentPosition();
+				event.stopPropagation();
+			},
+			SoftRight: function(event) {
+				event.preventDefault();
+				state.options_value = "";
+				options.generateHtml();
+				event.stopPropagation();
+			},
+			Backspace: function(event) {
+				event.preventDefault();
+				state.options_value = "";
+				options.generateHtml();
 				event.stopPropagation();
 			}
 		},

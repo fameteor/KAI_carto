@@ -3,12 +3,10 @@
 // =================================================================
 
 let tracks_initialList = [
-	{label:"Essai",coords:[],color:'black',markerIsDisplayedOnTheMap:true},
-	{label:"Drau radweg Autriche",coords:drauRadweg,color:'red',markerIsDisplayedOnTheMap:true},
-	{label:"Drav radweg Slovénie",coords:drauSlovenia,color:'orange',markerIsDisplayedOnTheMap:true},
-	{label:"Mur radweg Slovénie",coords:murCroatia,color:'blue',markerIsDisplayedOnTheMap:true},
-	{label:"Mur radweg Autriche",coords:mur,color:'green',markerIsDisplayedOnTheMap:true},
-	{label:"Enregistrement actuel",coords:[],color:'purple',markerIsDisplayedOnTheMap:true}
+	{label:"Drau radweg Autriche",coords:drauRadweg,color:'red',trackIsDisplayedOnTheMap:true},
+	{label:"Drav radweg Slovénie",coords:drauSlovenia,color:'orange',trackIsDisplayedOnTheMap:true},
+	{label:"Mur radweg Slovénie",coords:murCroatia,color:'blue',trackIsDisplayedOnTheMap:true},
+	{label:"Mur radweg Autriche",coords:mur,color:'green',trackIsDisplayedOnTheMap:true}
 ];
 
 // -----------------------------------------------------------------
@@ -17,13 +15,11 @@ let tracks_initialList = [
 const Track = function(initial) {
 	// Properties --------------------------------------------------
 	this.coords = 						initial.coords ||	[];
-	/* future use
 	this.altitudes = 					initial.altitude || [];
 	this.timestamps = 					initial.timestamp || [];
-	*/
 	this.label = 						initial.label || 	null;
 	this.color = 						initial.color || 'red';
-	this.trackIsDisplayedOnTheMap = 	initial.markerIsDisplayedOnTheMap || true;
+	this.trackIsDisplayedOnTheMap = 	initial.trackIsDisplayedOnTheMap || true;
 	// Should be private -------------------------------------------
 	this.myMapTrack = 					null;		// Leaflet current position marker handler
 	// For Rotator usage only --------------------------------------
@@ -93,3 +89,33 @@ tracks.refreshMap = function() {
 		track.refreshMap();
 	});
 }
+
+// -----------------------------------------------------------------
+// tracks_actions ROTATOR
+// -----------------------------------------------------------------
+let tracks_actions_list = [
+	{	
+		label:"Renommer",
+		rotatorType:"MENU",
+		value:"rename"
+	},
+	{	
+		label:"Supprimer",
+		rotatorType:"MENU",
+		value:"delete"
+	},
+	{	
+		label:"Changer la couleur",
+		rotatorType:"MENU",
+		value:"changeColor"
+	},
+];
+
+const tracks_actions_options = {
+	"selectedItemIdPrefix" : 		"tracks_actions",
+	"targetDomSelector" : 			"#menuTarget_2"
+}
+
+
+
+const tracks_actions = new Rotator(tracks_actions_list,tracks_actions_options);

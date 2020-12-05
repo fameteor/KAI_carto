@@ -15,7 +15,26 @@ let waypoints_initialList = [
 		timestamp :						0,
 		label :							"Dravograd",
 		markerIsDisplayedOnTheMap : 	true
-	}
+	},
+	{
+		coords :						[46.6311885,14.9407725],
+		altitude :						null,
+		timestamp :						0,
+		label :							"Gästehaus Rettl - Lavamünd",
+		phone : 						"+436602206688",
+		markerIsDisplayedOnTheMap : 	true
+	},
+	{
+		coords :						[46.61194146405841, 15.170627071798565],
+		altitude :						null,
+		timestamp :						0,
+		label :							"Gostilna Pri Lipi - Muta",
+		phone : 						"+38628766090",
+		markerIsDisplayedOnTheMap : 	true
+	},
+	
+	
+	
 ];
 
 // -----------------------------------------------------------------
@@ -152,7 +171,7 @@ waypoints.target = function(targetWaypoint) {
 // -----------------------------------------------------------------
 let waypoints_options_list = [
 	{	
-		label:"Aller vers",
+		label:"Définir comme cible",
 		rotatorType:"MENU",
 		state:"goto"
 	},
@@ -160,6 +179,21 @@ let waypoints_options_list = [
 		label:"Renommer",
 		rotatorType:"MENU",
 		state:"rename"
+	},
+	{	
+		label:"Supprimer",
+		rotatorType:"MENU",
+		state:"delete"
+	},
+	{	
+		label:"Changer la couleur",
+		rotatorType:"MENU",
+		state:"changeColor"
+	},
+	{	
+		label:"Positionner la carte à cet endroit",
+		rotatorType:"MENU",
+		state:"positionMap"
 	}
 ];
 
