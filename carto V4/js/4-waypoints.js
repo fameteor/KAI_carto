@@ -115,7 +115,28 @@ Waypoint.prototype.refreshMap = function() {
 		if (this.myMapMarker) app.myMap.removeLayer(this.myMapMarker);
 		this.myMapMarker = null;
 	}
-}
+};
+
+// writeToDisk ------------------------------------------------------
+Waypoint.prototype.writeToSD = function() {
+	if (navigator.getDeviceStorage) {
+		var sdcard = navigator.getDeviceStorage("sdcard");
+		var file   = new Blob([JSON.stringify(this,["coords","altitude","timestamp","label"])], {type: "text/plain"});
+		var request = sdcard.addNamed(file, "carto/" + this.timestamp + ".wpt");
+
+		request.onsuccess = function () {
+		  var name = this.result;
+		  toastr.info('Fichier "' + name + '" ajouté sur la carte SD.');
+		}
+
+		// An error typically occur if a file with the same name already exist
+		request.onerror = function () {
+		  toastr.warning('Impossible d\'écrire sur la carte SD.')
+		  console.warn(this);
+		}
+	}
+	else console.log("Ecriture non supportée sur PC.");					
+};
 
 // -----------------------------------------------------------------
 // Waypoints ROTATOR

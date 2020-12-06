@@ -6,7 +6,7 @@ document.addEventListener("keydown", event => {
 			var sdcard = navigator.getDeviceStorage("sdcard");
 			var file   = new Blob(["This is a text file."], {type: "text/plain"});
 
-			var request = sdcard.addNamed(file, "carto/my-file3.txt");
+			var request = sdcard.addNamed(file, "carto/my-file10.txt");
 
 			request.onsuccess = function () {
 			  var name = this.result;
@@ -25,8 +25,7 @@ document.addEventListener("keydown", event => {
 });
 
 
-// Functions -------------------------------------------------------
-let init = function() {
+window.onload = function() {
 	// Map instance initialisation ---------------------------------
 	myMap = L.map(
 		'myMap', 
@@ -36,16 +35,17 @@ let init = function() {
 			zoomControl: false
 		}
 	);
-	console.log("ok")
+	console.log("ok2")
 	// We add the background ---------------------------------------
 	leafletBackgroundLayer = L.tileLayer(
-		"carteIgn/{z}/{x}/{y}.jpg", 
+		"https://a.tile.openstreetmap.org/{z}/{x}/{y}.png", 
 		{
 			attribution:  '',
-			maxZoom: 	10,
-			minZoom:	10,
+			maxZoom: 	12,
+			minZoom:	9,
 			id: 		'ignMap'
 		}
 	).addTo(myMap);
+	console.log("ok3")
 }
 

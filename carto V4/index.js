@@ -338,7 +338,7 @@ const infosOptionsOptions = {
 // -----------------------------------------------------------------
 // Initialisation
 // -----------------------------------------------------------------
-let init = function() {
+window.onload = function() {
 	// Hide tracing leds ---------------------------------------
 	$("#tracing_green").hide();
 	$("#tracing_orange").hide();
