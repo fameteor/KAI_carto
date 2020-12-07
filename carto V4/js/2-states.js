@@ -496,6 +496,7 @@ const states = {
 						options.generateHtml();
 						// We exit from waypoints actions
 						state.waypoints_options = false;
+						waypoints.generateHtml();
 						// We display the map
 						state.map = true;
 						$("#map").show();
