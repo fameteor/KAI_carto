@@ -51,6 +51,23 @@ let mapBackgroundsList = [
 		},
 	},
 	{
+		label:"web : OpenCycleMap",
+		url:"https://tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=" + keys["openCycleMap" ],
+		active:true,
+		rotatorType:"BOOLEAN",
+		rotatorIcon:"fas fa-globe",
+		rotatorValue:function(value) {
+			if (value != undefined) {
+				// Setter
+				this.active = value;
+			}
+			else {
+				// Getter
+				return this.active;
+			}
+		},
+	},
+	{
 		label:"local : IGN le Perrier Zoom 10",
 		url:"carteIgn/{z}/{x}/{y}.jpg",
 		active:false,
