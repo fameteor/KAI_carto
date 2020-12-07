@@ -53,7 +53,7 @@ let mapBackgroundsList = [
 	{
 		label:"web : OpenCycleMap",
 		url:"https://tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=" + keys["openCycleMap" ],
-		active:true,
+		active:false,
 		rotatorType:"BOOLEAN",
 		rotatorIcon:"fas fa-globe",
 		rotatorValue:function(value) {
