@@ -653,6 +653,8 @@ const states = {
 					// We delete the current track
 					app.currentTrack = new Track({});
 					app.currentTrack.refreshMap();
+					// We save it to SD card
+					tracks.currentItem().writeToSD();
 				}
 				else toastr.warning("La trace actuelle est vide.");
 				event.stopPropagation();
@@ -725,6 +727,8 @@ const states = {
 					// We delete the current track
 					app.currentTrack = new Track({});
 					app.currentTrack.refreshMap();
+					// We save it to SD card
+					tracks.currentItem().writeToSD();
 				}
 				else toastr.warning("La trace actuelle est vide.");
 				event.stopPropagation();
@@ -1314,7 +1318,46 @@ const states = {
 			}
 		},
 	},
-	
+	FILES : {
+		softKeysLabels : {
+			fr : {
+					SoftLeft :	'',
+					Center : 	'',
+					SoftRight :	'Actions'
+			},
+		},
+		keysActions : {
+			ArrowLeft: function(event) {
+				event.preventDefault();
+				menu.previous();
+				event.stopPropagation();
+			},
+			ArrowRight: function(event) {
+				event.preventDefault();
+				menu.next();
+				event.stopPropagation();
+			},
+			ArrowUp: function(event) {
+				event.preventDefault();
+				files.previous();
+				event.stopPropagation();
+			},
+			ArrowDown: function(event) {
+				event.preventDefault();
+				files.next();
+				event.stopPropagation();
+			},
+			Backspace: function(event) {
+				event.preventDefault();
+				state.map = true;
+				$("#map").show();
+				$("#menu").hide();
+				$("#root").hide();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			}
+		},
+	}
 }	
 
 // Firefox PC compatibility : -------------------------------------- 

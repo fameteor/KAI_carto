@@ -58,6 +58,27 @@ Track.prototype.refreshMap = function() {
 	}
 }
 
+// writeToDisk ------------------------------------------------------
+Track.prototype.writeToSD = function() {
+	if (navigator.getDeviceStorage) {
+		var sdcard = navigator.getDeviceStorage("sdcard");
+		var file   = new Blob([JSON.stringify(this,["coords","altitudes","timestamps","label"])], {type: "text/plain"});
+		var request = sdcard.addNamed(file, "carto/" + this.timestamps[0] + ".trk");
+
+		request.onsuccess = function () {
+		  var name = this.result;
+		  toastr.info('Fichier "' + name + '" ajouté sur la carte SD.');
+		}
+
+		// An error typically occur if a file with the same name already exist
+		request.onerror = function () {
+		  toastr.warning('Impossible d\'écrire sur la carte SD.')
+		  console.warn(this);
+		}
+	}
+	else console.log("Ecriture non supportée sur PC.");					
+};
+
 // -----------------------------------------------------------------
 // Tracks ROTATOR
 // -----------------------------------------------------------------

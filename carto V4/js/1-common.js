@@ -222,8 +222,6 @@ const Rotator = function(list,options) {
 
 const Menu = function(list,options) {
 	this.horizontalScrollToActiveElement = function() {
-		console.log("scroll : " + $(".menuSelected").position().left);
-		console.log(this.currentIndex)
 		document.getElementById("menu").scrollTo({left: $(".menuSelected").position().left, behavior: 'smooth'});
 	}
 
@@ -359,6 +357,9 @@ const state = {
 						}
 					}
 					if (options.currentItem().rotatorType === "INPUT")		currentState = "OPTIONS_INPUT";
+					break;
+				case "FILES":
+					return "FILES";
 					break;
 			}
 			return currentState;
