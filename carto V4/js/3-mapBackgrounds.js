@@ -68,6 +68,40 @@ let mapBackgroundsList = [
 		},
 	},
 	{
+		label:"web : Landscape",
+		url:"https://tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=" + keys["openCycleMap" ],
+		active:false,
+		rotatorType:"BOOLEAN",
+		rotatorIcon:"fas fa-globe",
+		rotatorValue:function(value) {
+			if (value != undefined) {
+				// Setter
+				this.active = value;
+			}
+			else {
+				// Getter
+				return this.active;
+			}
+		},
+	},
+	{
+		label:"web : Outdoors",
+		url:"https://tile.thunderforest.com/outdoors/{z}/{x}/{y}.png?apikey=" + keys["openCycleMap" ],
+		active:false,
+		rotatorType:"BOOLEAN",
+		rotatorIcon:"fas fa-globe",
+		rotatorValue:function(value) {
+			if (value != undefined) {
+				// Setter
+				this.active = value;
+			}
+			else {
+				// Getter
+				return this.active;
+			}
+		},
+	},
+	{
 		label:"local : IGN le Perrier Zoom 10",
 		url:"carteIgn/{z}/{x}/{y}.jpg",
 		active:false,

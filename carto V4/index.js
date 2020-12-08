@@ -8,6 +8,7 @@ let app = {
 	mapId : 					"myMap",
 	myMap : 					null,		// Leaflet map handler
 	myMapBackgroundLayer:		null,		// Leaflet background Layer handler
+	myMapLayer:					null,		// Leaflet Layer handler
 	zoomLevel :					13,
 	mapCenter:					[47,0], 	// [46.589187,15.0133661],
 	// GPS ------------------------------------------------------
@@ -135,7 +136,11 @@ let menuItems = [
 			}
 			else console.log("Accès aux fichiers non supporté sur PC.");	
 		}
-	}
+	},
+	{
+		label:"Calques",
+		statePrefix:"LAYERS"
+	},
 ];
 
 const menuOptions = {
@@ -396,6 +401,7 @@ window.onload = function() {
 	waypoints.generateHtml();
 	tracks.generateHtml();
 	mapBackgrounds.generateHtml();
+	layers.generateHtml();
 	// Display sofkeys -----------------------------------------
 	displaySoftKeysLabels();
 	// Map initialisation --------------------------------------
@@ -407,12 +413,19 @@ window.onload = function() {
 			zoomControl: 	false
 		}
 	);
-	// Background layer added
+	// Background layer added ----------------------------------
 	mapBackgrounds.refreshMap();
+	layers.refreshMap();
 	waypoints.refreshMap();
 	tracks.refreshMap();
 	gps.setAndDisplayCurrentPosition();
 	gps.refreshCurrentPosition();
+	// We add the scale ----------------------------------------
+	L.control.scale({
+		metric:true,
+		imperial:false,
+		position:'bottomleft'		
+	}).addTo(app.myMap);
 	// Start on map display ------------------------------------
 	$("#map").show();
 	$("#menu").hide();

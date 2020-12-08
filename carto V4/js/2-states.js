@@ -995,6 +995,100 @@ const states = {
 			}
 		},
 	},
+	LAYERS_ACTIVE : {
+		softKeysLabels : {
+			fr : {
+					SoftLeft :	'',
+					Center : 	'Désélectionner',
+					SoftRight :	''
+			},
+		},
+		keysActions : {
+			ArrowLeft: function(event) {
+				event.preventDefault();
+				menu.previous();
+				event.stopPropagation();
+			},
+			ArrowRight: function(event) {
+				event.preventDefault();
+				menu.next();
+				event.stopPropagation();
+			},
+			ArrowUp: function(event) {
+				event.preventDefault();
+				layers.previous();
+				event.stopPropagation();
+			},
+			ArrowDown: function(event) {
+				event.preventDefault();
+				layers.next();
+				event.stopPropagation();
+			},
+			Enter: function(event) {
+				event.preventDefault();
+				layers.currentItem().active = false;
+				layers.generateHtml();
+				layers.refreshMap();
+				event.stopPropagation();
+			},
+			Backspace: function(event) {
+				event.preventDefault();
+				state.map = true;
+				$("#map").show();
+				$("#menu").hide();
+				$("#root").hide();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			}
+		},
+	},
+	LAYERS_NOTACTIVE : {
+		softKeysLabels : {
+			fr : {
+					SoftLeft :	'',
+					Center : 	'sélectionner',
+					SoftRight :	''
+			},
+		},
+		keysActions : {
+			ArrowLeft: function(event) {
+				event.preventDefault();
+				menu.previous();
+				event.stopPropagation();
+			},
+			ArrowRight: function(event) {
+				event.preventDefault();
+				menu.next();
+				event.stopPropagation();
+			},
+			ArrowUp: function(event) {
+				event.preventDefault();
+				layers.previous();
+				event.stopPropagation();
+			},
+			ArrowDown: function(event) {
+				event.preventDefault();
+				layers.next();
+				event.stopPropagation();
+			},
+			Enter: function(event) {
+				event.preventDefault();
+				layers.activeItem(layers.currentItem());
+				layers.generateHtml();
+				layers.refreshMap();
+				event.stopPropagation();
+			},
+			Backspace: function(event) {
+				event.preventDefault();
+				state.map = true;
+				$("#map").show();
+				$("#menu").hide();
+				$("#root").hide();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			}
+		},
+	},
 	OPTIONS_ACTIVE : {
 		softKeysLabels : {
 			fr : {

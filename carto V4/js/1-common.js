@@ -340,6 +340,10 @@ const state = {
 					if (mapBackgrounds.currentItem().active) 	return "MAP_BACKGROUNDS_ACTIVE";
 					else 										return "MAP_BACKGROUNDS_NOTACTIVE";
 					break;
+				case "LAYERS":
+					if (layers.currentItem().active) 			return "LAYERS_ACTIVE";
+					else 										return "LAYERS_NOTACTIVE";
+					break;
 				case "OPTIONS":
 					if (options.currentItem().rotatorType === "BOOLEAN" && options.currentItem().rotatorValue() === true) 		currentState = "OPTIONS_ACTIVE";
 					if (options.currentItem().rotatorType === "BOOLEAN" && options.currentItem().rotatorValue() === false)		currentState = "OPTIONS_NOTACTIVE";
