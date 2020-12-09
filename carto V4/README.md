@@ -10,6 +10,9 @@
 * Calcul de l'ETA.
 * Echelle à afficher selon l'unité.
 * Bug : quand on change de fond de carte, il se trouve dessus l'éventuel layer affiché.
+* Recherche de lieux : le curseur et la sélection ne s'affichent pas.
+* Recherche de lieux : optimiser le choix de la source pour avoir des données optimales
+* Bug : le positionnement automatique du menu sélectionné n'est pas toujours correct.
 
 ## Fonctionnalités
 
@@ -19,7 +22,7 @@
 * Grouper les waypoints/tracks par directories ?
 * Gérer le current waypoint et la current track comme les autres (les mettre en index 0 : non supprimables et dont le nom est non éditable).
 * Obtenir le profil d'une track (via API Open route service) et l'enregistrer dans la track (voir sur SD si trace enregistrée).
-* Permettre de saisir un waypoint à partir d'un nom ou aller sur la carte à partir d'un nom (via API Open route service).
+* Recherche de lieux : offrir un menu : Afficher sur la carte, Enregistrer en waypoint...
 * Permettre le routage vers un waypoint pour voiture, vélo ou autre option (via API Open route service).
 	
 ## Utilitaire sur PC

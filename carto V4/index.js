@@ -141,6 +141,13 @@ let menuItems = [
 		label:"Calques",
 		statePrefix:"LAYERS"
 	},
+	{
+		label:"Chercher",
+		statePrefix:"FIND",
+		onSelected : function() {
+			searchAutocomplete.generateHtml();
+		}
+	},
 ];
 
 const menuOptions = {

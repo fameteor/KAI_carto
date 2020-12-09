@@ -1452,6 +1452,88 @@ const states = {
 				event.stopPropagation();
 			}
 		},
+	},
+	FIND : {
+		softKeysLabels : {
+			fr : {
+					SoftLeft :	'Chercher',
+					Center : 	'',
+					SoftRight :	'Afficher'
+			},
+		},
+		keysActions : {
+			ArrowLeft: function(event) {
+				// Check for focus on the input
+				if (!(document.activeElement === document.getElementById('searchInput'))) {
+					event.preventDefault();
+					menu.previous();
+					event.stopPropagation();
+				}
+				else console.log("Search input has focus");
+			},
+			ArrowRight: function(event) {
+				if (!(document.activeElement === document.getElementById('searchInput'))) {
+					event.preventDefault();
+					menu.next();
+					event.stopPropagation();
+				}
+				else console.log("Search input has focus");
+			},
+			ArrowUp: function(event) {
+				event.preventDefault();
+				searchAutocomplete.previous();
+				event.stopPropagation();
+			},
+			ArrowDown: function(event) {
+				event.preventDefault();
+				searchAutocomplete.next();
+				event.stopPropagation();
+			},
+			SoftLeft: function(event) {
+				event.preventDefault();
+				$('#searchInput').attr("type","text");
+				// To set focus on the input and select the input value
+				let input = $('#searchInput');
+				var strLength = input.val().length;
+				input.focus();
+				input[0].setSelectionRange(0, strLength);
+				event.stopPropagation();
+			},
+			Enter: function(event) {
+				event.preventDefault();
+				if ($("#searchInput").val().trim() != "") {
+					search.autocomplete($("#searchInput").val().trim());
+					// We hide the input
+					$('#searchInput').attr("type","hidden");
+					$('#searchInput').blur();
+				}
+				else toastr.warning("Merci d'indiquer un nom à chercher");
+				event.stopPropagation();
+			},
+			SoftRight: function(event) {
+				event.preventDefault();
+				// We disable the map centering on current position
+				app.options.mapIsCenteredOnGpsPosition = false;
+				options.generateHtml();
+				// We display the map
+				state.map = true;
+				$("#map").show();
+				$("#menu").hide();
+				$("#root").hide();
+				app.myMap.flyTo(searchAutocomplete.currentItem().coords);
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			},
+			Backspace: function(event) {
+				event.preventDefault();
+				state.map = true;
+				$("#map").show();
+				$("#menu").hide();
+				$("#root").hide();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			}
+		},
 	}
 }	
 
