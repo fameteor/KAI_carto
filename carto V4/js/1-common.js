@@ -48,12 +48,12 @@ const toastr = {
 	info : function (text) {
 		$("#toastrMsg").html('<center><i class="fas fa-info-circle" style="color:#b30086;"></i><br/>' + text + '</center>');
 		$("#toastr").attr("class","visible");
-		setTimeout(function(){ $("#toastr").attr("class","hidden"); }, 2000);
+		setTimeout(function(){ $("#toastr").attr("class","hidden"); }, 1000);
 	},
 	warning : function (text) {
 		$("#toastrMsg").html('<center><i class="fas fa-exclamation-circle" style="color:#b30086;"></i><br/>' + text + '</center>');
 		$("#toastr").attr("class","visible");
-		setTimeout(function(){ $("#toastr").attr("class","hidden"); }, 2000);
+		setTimeout(function(){ $("#toastr").attr("class","hidden"); }, 1000);
 	},
 	question : function(text) {
 		// state.push("QUESTION");
@@ -117,103 +117,109 @@ document.addEventListener("keydown", event => {
 
 const Rotator = function(list,options) {
 	this.options = options;
-	this.verticalScrollToActiveElement = function() {
-		if ($("tr[id^=" + this.options.selectedItemIdPrefix + "].active") && $("tr[id^=" + this.options.selectedItemIdPrefix + "].active").position()) document.getElementById("root").scrollTo({top: $("tr[id^=" + this.options.selectedItemIdPrefix + "].active").position().top, behavior: 'smooth'});
-	}
-
 	this.list = list;
-	this.currentIndex = (this.options && this.options.initialSelectionIndex) ? this.options.initialSelectionIndex() : 0
-	this.refreshSelection = function() {
-		// Refresh selection
-		if (this.options.selectedItemIdPrefix) {
-			const that = this;
-			this.list.forEach(function(item,index) {
-				if (index === that.currentIndex) 	$("#" +  that.options.selectedItemIdPrefix + index).addClass("active");
-				else								$("#" +  that.options.selectedItemIdPrefix + index).removeClass("active");
-			});
-		}
-		// Refresh accordingly hide/show
-		if (this.options.showDomElementPrefix) {
-			const that = this;
-			this.list.forEach(function(item,index) {
-				if (index === that.currentIndex) 	$(that.options.showDomElementPrefix + index).show();
-				else								$(that.options.showDomElementPrefix + index).hide();
-			});
-		}
-		displaySoftKeysLabels();
-		this.verticalScrollToActiveElement();
-	};
-	this.currentItem = function() {
-		return this.list[this.currentIndex];
-	};
-	this.next = function() {
-		if (this.currentIndex < this.list.length - 1) 	this.currentIndex += 1;
-		else 											this.currentIndex = 0;
-		this.refreshSelection();
-	};
-	this.previous = function() {
-		if (this.currentIndex != 0) this.currentIndex -= 1;
-		else 						this.currentIndex = this.list.length - 1;
-		this.refreshSelection();
-	};
-	this.generateHtml = function() {
-		this.refreshHTML();
-		this.refreshSelection();
-	};
-	this.refreshHTML = function() {
-		let html = '<table>';
-		const that = this;
-		this.list.forEach(function(option,index) {
-			html += `<tr id="{{id}}" class="list">
-						<td class="list">{{icon}}{{itemsNumbered}}</td>
-						<td class="list">
-							<label>{{label}}</label>
-							{{infos}}
-						</td>
-						<td class="text-center list">
-							{{type}}
-						</td>				
-					 </tr>`;
-			const id = that.options.selectedItemIdPrefix + index;
-			const label = option.label;
-			let itemsNumbered = "";
-			if (that.options.itemsNumbered === "reverse") itemsNumbered = '<br/><span class="info">' + (that.list.length - index) + '</span>';
-			let type = "";
-			switch(option.rotatorType) {
-				case "BOOLEAN":
-					if (option.rotatorValue) {
-						if (option.rotatorValue() === true) 	type = '<input type="checkbox" checked>';
-						else						type = '<input type="checkbox">';
-					}
-					else 							type = '<input type="checkbox">';
-					break;
-				case "MENU":
-					type = '<i class="fas fa-thumbs-up"></i>';
-					break;
-				default:
-					type = '<i class="fas fa-chevron-right"></i>' 
-					break;
-					
-			}
+	this.currentIndex = (this.options && this.options.initialSelectionIndex) ? this.options.initialSelectionIndex() : 0;
+}
 
-			if (option.rotatorInfos) {
-				const infos = '<div class="info">' + option.rotatorInfos() + '</div>';
-				html = html.replace('{{infos}}',infos);
-			}
-			else html = html.replace('{{infos}}',"");
-			if (option.rotatorIcon) {
-				const icon ='<label><i class="' + option.rotatorIcon + '"></i></label>';
-				html = html.replace('{{icon}}',icon);
-			}
-			else html = html.replace('{{icon}}',"");
-			html = html.replace('{{id}}',id);
-			html = html.replace('{{label}}',label);
-			html = html.replace('{{type}}',type);
-			html = html.replace('{{itemsNumbered}}',itemsNumbered);
+Rotator.prototype.verticalScrollToActiveElement = function() {
+	if ($("tr[id^=" + this.options.selectedItemIdPrefix + "].active") && $("tr[id^=" + this.options.selectedItemIdPrefix + "].active").position()) document.getElementById("root").scrollTo({top: $("tr[id^=" + this.options.selectedItemIdPrefix + "].active").position().top, behavior: 'smooth'});
+}
+
+Rotator.prototype.refreshSelection = function() {
+	// Refresh selection
+	if (this.options.selectedItemIdPrefix) {
+		const that = this;
+		this.list.forEach(function(item,index) {
+			if (index === that.currentIndex) 	$("#" +  that.options.selectedItemIdPrefix + index).addClass("active");
+			else								$("#" +  that.options.selectedItemIdPrefix + index).removeClass("active");
 		});
-		html += '</table>'
-		$(this.options.targetDomSelector).html(html);
 	}
+	// Refresh accordingly hide/show
+	if (this.options.showDomElementPrefix) {
+		const that = this;
+		this.list.forEach(function(item,index) {
+			if (index === that.currentIndex) 	$(that.options.showDomElementPrefix + index).show();
+			else								$(that.options.showDomElementPrefix + index).hide();
+		});
+	}
+	displaySoftKeysLabels();
+	this.verticalScrollToActiveElement();
+};
+
+Rotator.prototype.currentItem = function() {
+	return this.list[this.currentIndex];
+};
+
+Rotator.prototype.next = function() {
+	if (this.currentIndex < this.list.length - 1) 	this.currentIndex += 1;
+	else 											this.currentIndex = 0;
+	this.refreshSelection();
+};
+
+Rotator.prototype.previous = function() {
+	if (this.currentIndex != 0) this.currentIndex -= 1;
+	else 						this.currentIndex = this.list.length - 1;
+	this.refreshSelection();
+};
+
+Rotator.prototype.generateHtml = function() {
+	this.refreshHTML();
+	this.refreshSelection();
+};
+
+Rotator.prototype.refreshHTML = function() {
+	let html = '<table>';
+	const that = this;
+	this.list.forEach(function(option,index) {
+		html += `<tr id="{{id}}" class="list">
+					<td class="list">{{icon}}{{itemsNumbered}}</td>
+					<td class="list">
+						<label>{{label}}</label>
+						{{infos}}
+					</td>
+					<td class="text-center list">
+						{{type}}
+					</td>				
+				 </tr>`;
+		const id = that.options.selectedItemIdPrefix + index;
+		const label = option.label;
+		let itemsNumbered = "";
+		if (that.options.itemsNumbered === "reverse") itemsNumbered = '<br/><span class="info">' + (that.list.length - index) + '</span>';
+		let type = "";
+		switch(option.rotatorType) {
+			case "BOOLEAN":
+				if (option.rotatorValue) {
+					if (option.rotatorValue() === true) 	type = '<input type="checkbox" checked>';
+					else						type = '<input type="checkbox">';
+				}
+				else 							type = '<input type="checkbox">';
+				break;
+			case "MENU":
+				type = '<i class="fas fa-thumbs-up"></i>';
+				break;
+			default:
+				type = '<i class="fas fa-chevron-right"></i>' 
+				break;
+				
+		}
+
+		if (option.rotatorInfos) {
+			const infos = '<div class="info">' + option.rotatorInfos() + '</div>';
+			html = html.replace('{{infos}}',infos);
+		}
+		else html = html.replace('{{infos}}',"");
+		if (option.rotatorIcon) {
+			const icon ='<label><i class="' + option.rotatorIcon + '"></i></label>';
+			html = html.replace('{{icon}}',icon);
+		}
+		else html = html.replace('{{icon}}',"");
+		html = html.replace('{{id}}',id);
+		html = html.replace('{{label}}',label);
+		html = html.replace('{{type}}',type);
+		html = html.replace('{{itemsNumbered}}',itemsNumbered);
+	});
+	html += '</table>'
+	$(this.options.targetDomSelector).html(html);
 }
 
 // -----------------------------------------------------------------

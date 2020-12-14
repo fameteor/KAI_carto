@@ -95,7 +95,6 @@ let menuItems = [
 		statePrefix:"FILES",
 		onSelected : function() {
 			state.files_actions = false;
-			toastr.info("Lecture de la carte SD, veuillez patienter...");
 			files.getAndDisplayFilesFromSD();
 			displaySoftKeysLabels();
 		}
