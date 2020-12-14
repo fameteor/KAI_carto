@@ -1,7 +1,9 @@
 // -----------------------------------------------------------------
 // waypoints_initialList
 // -----------------------------------------------------------------
-let waypoints_initialList = [
+let waypoints_initialList = [];
+
+/*
 	{
 		coords :						[46.8087531,-2.0362527],
 		altitude :						null,
@@ -31,11 +33,9 @@ let waypoints_initialList = [
 		label :							"Gostilna Pri Lipi - Muta",
 		phone : 						"+38628766090",
 		markerIsDisplayedOnTheMap : 	true
-	},
-	
-	
-	
+	}
 ];
+*/
 
 // -----------------------------------------------------------------
 // ICONS
@@ -67,7 +67,7 @@ const Waypoint = function(initial) {
 	this.altitude = 					initial.altitude || null;
 	this.timestamp = 					initial.timestamp || (new Date().getTime());
 	this.label = 						initial.label || 	null;
-	this.markerIsDisplayedOnTheMap = 	initial.markerIsDisplayedOnTheMap || false;
+	this.markerIsDisplayedOnTheMap = 	initial.markerIsDisplayedOnTheMap || true;
 	this.markerIcon = 					initial.markerIcon || blueIcon;
 	// Should be private -------------------------------------------
 	this.myMapMarker = 					null;		// Leaflet current position marker handler
@@ -120,19 +120,24 @@ Waypoint.prototype.refreshMap = function() {
 // writeToDisk ------------------------------------------------------
 Waypoint.prototype.writeToSD = function() {
 	if (navigator.getDeviceStorage) {
-		var sdcard = navigator.getDeviceStorage("sdcard");
-		var file   = new Blob([JSON.stringify(this,["coords","altitude","timestamp","label"])], {type: "text/plain"});
-		var request = sdcard.addNamed(file, "carto/" + this.timestamp + ".wpt");
+		// WE build the name from the label, replacing unallowed caracters
+		let fileName = this.label.trim().replace(/[^A-Za-z0-9]/g, '_') + '.wpt';
+		let sdcard = navigator.getDeviceStorage("sdcard");
+		let file   = new Blob([JSON.stringify(this,["coords","altitude","timestamp","label"])], {type: "text/plain"});
+		let request = sdcard.addNamed(file, "carto/" + fileName);
 
 		request.onsuccess = function () {
-		  var name = this.result;
+		  const name = this.result;
 		  toastr.info('Fichier "' + name + '" ajouté sur la carte SD.');
 		}
 
 		// An error typically occur if a file with the same name already exist
 		request.onerror = function () {
-		  toastr.warning('Impossible d\'écrire sur la carte SD.')
-		  console.warn(this);
+			if (this.error && this.error.name === "NoModificationAllowedError")	  toastr.warning('Ecriture sur la carte SD impossible : ce fichier existe déjà.');
+			else {
+				toastr.warning('Ecriture sur la carte SD impossible.');
+				console.warn(this);
+			}
 		}
 	}
 	else console.log("Ecriture non supportée sur PC.");					
@@ -205,6 +210,11 @@ let waypoints_options_list = [
 		label:"Supprimer",
 		rotatorType:"MENU",
 		state:"delete"
+	},
+	{	
+		label:"Enregistrer sur la carte SD",
+		rotatorType:"MENU",
+		state:"writeToSD"
 	},
 	{	
 		label:"Changer la couleur",

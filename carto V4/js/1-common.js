@@ -290,11 +290,12 @@ const Menu = function(list,options) {
 const state = {
 	// Setter and Getter
 	map:true,
-	infos_startTracking_question : false,
-	waypoints_options : false,
-	waypoints_options_rename : false,
-	waypoints_options_delete : false,
-	tracks_actions : false,
+	infos_startTracking_question : 	false,
+	waypoints_options : 			false,
+	waypoints_options_rename : 		false,
+	waypoints_options_delete : 		false,
+	tracks_actions : 				false,
+	files_actions : 				false,
 	// infosOptionsValue : "",
 	options_value : "",
 	current: function() {
@@ -326,10 +327,12 @@ const state = {
 					break;
 				case "TRACKS":
 					if (this.tracks_actions) {
-						if (this.tracks_actions === "rename") 					currentState = "TRACKS_ACTIONS_rename";
-							else if (this.tracks_actions === "delete")			currentState = "TRACKS_ACTIONS_delete";
-								else if (this.tracks_actions === "changeColor")	currentState = "TRACKS_ACTIONS_changeColor";
-									else 										currentState = "TRACKS_ACTIONS";
+						console.log("this.tracks_actions : ", this.tracks_actions)
+						if (this.tracks_actions === "infos") 						currentState = "TRACKS_ACTIONS_infos";
+							else if (this.tracks_actions === "rename") 					currentState = "TRACKS_ACTIONS_rename";
+								else if (this.tracks_actions === "delete")			currentState = "TRACKS_ACTIONS_delete";
+									else if (this.tracks_actions === "changeColor")	currentState = "TRACKS_ACTIONS_changeColor";
+										else 										currentState = "TRACKS_ACTIONS";
 					}
 					else {
 						if (tracks.currentItem().rotatorValue()) 	currentState = "TRACKS_DISPLAYED";
@@ -359,7 +362,9 @@ const state = {
 					if (options.currentItem().rotatorType === "INPUT")		currentState = "OPTIONS_INPUT";
 					break;
 				case "FILES":
-					return "FILES";
+					if (this.files_actions) 					return "FILES_ACTIONS";
+					else 										return "FILES";
+					return "";
 					break;
 				case "LAYERS":
 					if (layers.currentItem().active) 			return "LAYERS_ACTIVE";

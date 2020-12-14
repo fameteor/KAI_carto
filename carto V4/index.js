@@ -94,47 +94,10 @@ let menuItems = [
 		label:"Fichiers",
 		statePrefix:"FILES",
 		onSelected : function() {
-			if (navigator.getDeviceStorage) {
-				var sdcard = navigator.getDeviceStorage("sdcard");
-				var cursor = sdcard.enumerate("carto");
-				var filesList = [];
-
-				cursor.onsuccess = function (e) {
-					// We recurse the files list until cursor.result empty
-					if(cursor.result) {
-						var file = cursor.result;
-						const fileNameWithoutPath = file.name.split("/").pop();
-						const fileExtension = fileNameWithoutPath.split(".").pop();
-						filesList.push({
-							label:				format_dateString(file.lastModifiedDate),
-							rotatorIcon: 		(fileExtension === "wpt") ? "fas fa-map-marker" : "fas fa-feather",
-							lastModifiedDate : 	file.lastModifiedDate,
-							rotatorInfos: function() {
-								return fileNameWithoutPath + " (" + format_dateString(file.lastModifiedDate) + ")";
-							}
-						});
-						this.continue();
-					}
-					// We execute the files list display
-					else {
-						console.log(filesList);
-						files = new Rotator(
-							filesList,
-							{
-								"selectedItemIdPrefix" : 	"file",
-								"targetDomSelector" : 		"#fileList",
-								"itemsNumbered":			"reverse"
-							}
-						);
-						files.generateHtml();
-					}
-				}
-
-				cursor.onerror = function () { 
-					console.log("No file found: " + this.error); 
-				}
-			}
-			else console.log("Accès aux fichiers non supporté sur PC.");	
+			state.files_actions = false;
+			toastr.info("Lecture de la carte SD, veuillez patienter...");
+			files.getAndDisplayFilesFromSD();
+			displaySoftKeysLabels();
 		}
 	},
 	{
@@ -145,7 +108,14 @@ let menuItems = [
 		label:"Chercher",
 		statePrefix:"FIND",
 		onSelected : function() {
-			searchAutocomplete.generateHtml();
+			// if (searchAutocomplete && searchAutocomplete.generateHtml) searchAutocomplete.generateHtml();
+			$('#searchInput').attr("type","text");
+			// To set focus on the input and select the input value
+			let input = $('#searchInput');
+			var strLength = input.val().length;
+			input.focus();
+			input[0].setSelectionRange(0, strLength);
+			displaySoftKeysLabels();
 		}
 	},
 ];

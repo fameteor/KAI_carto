@@ -256,6 +256,9 @@ div#tracing_green {
 	margin:5px;
 	z-index: 500;
 }
+#profileChart {
+	border:1px solid black;
+}
 
 
 	

@@ -490,6 +490,9 @@ const states = {
 						state.waypoints_options_delete = true;
 						displaySoftKeysLabels();
 						break;
+					case "writeToSD":
+						waypoints.currentItem().writeToSD();	
+						break;
 					case "positionMap" :
 						// We disable the map centering on current position
 						app.options.mapIsCenteredOnGpsPosition = false;
@@ -654,8 +657,6 @@ const states = {
 					// We delete the current track
 					app.currentTrack = new Track({});
 					app.currentTrack.refreshMap();
-					// We save it to SD card
-					tracks.currentItem().writeToSD();
 				}
 				else toastr.warning("La trace actuelle est vide.");
 				event.stopPropagation();
@@ -728,8 +729,6 @@ const states = {
 					// We delete the current track
 					app.currentTrack = new Track({});
 					app.currentTrack.refreshMap();
-					// We save it to SD card
-					tracks.currentItem().writeToSD();
 				}
 				else toastr.warning("La trace actuelle est vide.");
 				event.stopPropagation();
@@ -738,7 +737,7 @@ const states = {
 				event.preventDefault();
 				tracks.currentItem().rotatorValue(!tracks.currentItem().rotatorValue());
 				tracks.generateHtml();
-				tracks.refreshMap();
+				tracks.currentItem().refreshMap();
 				event.stopPropagation();
 			},
 			SoftRight: function(event) {
@@ -793,6 +792,9 @@ const states = {
 				state.tracks_actions = tracks_actions.currentItem().value;
 				displaySoftKeysLabels();
 				switch(tracks_actions.currentItem().value) {
+					case "infos":
+						tracks.currentItem().getDbAltitudes();
+						break;
 					case "rename":
 						console.log("ok")
 						input.generateHtml("Renommer la trace",tracks.currentItem().label,"#menuTarget_2");
@@ -800,6 +802,9 @@ const states = {
 					case "delete":
 						toastr.question("Voulez-vous supprimer définitivement la trace " + tracks.currentItem().label);
 						displaySoftKeysLabels();
+						break;
+					case "writeToSD":
+						tracks.currentItem().writeToSD();						
 						break;
 					case "changeColor":
 						
@@ -820,6 +825,31 @@ const states = {
 				state.tracks_actions = false;
 				tracks.generateHtml();
 				tracks.refreshMap();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			}
+		},
+	},
+	TRACKS_ACTIONS_infos: {
+		softKeysLabels : {
+			fr : {
+					SoftLeft :	'',
+					Center : 	'',
+					SoftRight :	'fermer'
+			},
+		},
+		keysActions : {
+			SoftRight: function(event) {
+				event.preventDefault();
+				state.tracks_actions = false;
+				tracks.generateHtml();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			},
+			Backspace: function(event) {
+				event.preventDefault();
+				state.tracks_actions = false;
+				tracks.generateHtml();
 				displaySoftKeysLabels();
 				event.stopPropagation();
 			}
@@ -1442,6 +1472,13 @@ const states = {
 				files.next();
 				event.stopPropagation();
 			},
+			SoftRight: function(event) {
+				event.preventDefault();
+				state.files_actions = true;
+				files_actions.generateHtml();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			},
 			Backspace: function(event) {
 				event.preventDefault();
 				state.map = true;
@@ -1453,12 +1490,72 @@ const states = {
 			}
 		},
 	},
+	FILES_ACTIONS : {
+		softKeysLabels : {
+			fr : {
+					SoftLeft :	'',
+					Center : 	'Choisir',
+					SoftRight :	'Annuler'
+			},
+		},
+		keysActions : {
+			ArrowLeft: function(event) {
+				event.preventDefault();
+				menu.previous();
+				event.stopPropagation();
+			},
+			ArrowRight: function(event) {
+				event.preventDefault();
+				menu.next();
+				event.stopPropagation();
+			},
+			ArrowUp: function(event) {
+				event.preventDefault();
+				files_actions.previous();
+				event.stopPropagation();
+			},
+			ArrowDown: function(event) {
+				event.preventDefault();
+				files_actions.next();
+				event.stopPropagation();
+			},
+			Enter: function(event) {
+				event.preventDefault();
+				switch(files_actions.currentItem().value) {
+					case "loadFromSD":
+						files.currentItem().readFromSD();
+						break;
+					case "rename":
+						toastr.info("A implémenter");
+						break;
+					case "delete":
+						toastr.info("A implémenter");
+						break;
+				}
+				event.stopPropagation();
+			},
+			SoftRight: function(event) {
+				event.preventDefault();
+				state.files_actions = false;
+				files.generateHtml();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			},
+			Backspace: function(event) {
+				event.preventDefault();
+				state.files_actions = false;
+				files.generateHtml();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			}
+		},
+	},
 	FIND : {
 		softKeysLabels : {
 			fr : {
-					SoftLeft :	'Chercher',
-					Center : 	'',
-					SoftRight :	'Afficher'
+					SoftLeft :	'Nouv. rech.',
+					Center : 	'Chercher',
+					SoftRight :	'Voir carte'
 			},
 		},
 		keysActions : {

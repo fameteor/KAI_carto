@@ -161,8 +161,6 @@ const gps = {
 				waypoints.generateHtml();
 				waypoints.refreshMap();
 				toastr.info("Point enregistré");
-				// We write the waypoint to SD
-				waypoints.currentItem().writeToSD();
 			}, 
 			function(error) {
 				toastr.warning("Erreur GPS : " + error.message);
@@ -373,7 +371,7 @@ const gps = {
 		};
 
 		const gpsWatchOptions = {
-			enableHighAccuracy: false,
+			enableHighAccuracy: true,
 			timeout: 5000,
 			maximumAge: 0
 		};
