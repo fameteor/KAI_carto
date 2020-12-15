@@ -486,7 +486,7 @@ const states = {
 						displaySoftKeysLabels();
 						break;
 					case "delete":
-						toastr.question("Voulez-vous supprimer définitivement le point " + waypoints.currentItem().label);
+						toastr.question("Voulez-vous supprimer définitivement le point " + waypoints.currentItem().label + " ?");
 						state.waypoints_options_delete = true;
 						displaySoftKeysLabels();
 						break;
@@ -800,7 +800,7 @@ const states = {
 						input.generateHtml("Renommer la trace",tracks.currentItem().label,"#menuTarget_2");
 						break;
 					case "delete":
-						toastr.question("Voulez-vous supprimer définitivement la trace " + tracks.currentItem().label);
+						toastr.question("Voulez-vous supprimer définitivement la trace " + tracks.currentItem().label + " ?");
 						displaySoftKeysLabels();
 						break;
 					case "writeToSD":
@@ -1529,7 +1529,9 @@ const states = {
 						toastr.info("A implémenter");
 						break;
 					case "delete":
-						toastr.info("A implémenter");
+						state.files_actions = files_actions.currentItem().value;
+						toastr.question("Voulez-vous supprimer définitivement le fichier " + files.currentItem().label + " ?");
+						displaySoftKeysLabels();
 						break;
 				}
 				event.stopPropagation();
@@ -1543,6 +1545,40 @@ const states = {
 			},
 			Backspace: function(event) {
 				event.preventDefault();
+				state.files_actions = false;
+				files.generateHtml();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			}
+		},
+	},
+	FILES_ACTIONS_delete: {
+		softKeysLabels : {
+			fr : {
+					SoftLeft :	'Supprimer',
+					Center : 	'',
+					SoftRight :	'Annuler'
+			},
+		},
+		keysActions : {
+			SoftLeft: function(event) {
+				event.preventDefault();
+				toastr.hide();
+				files.removeCurrentFileFromSdAndDisplay();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			},
+			SoftRight: function(event) {
+				event.preventDefault();
+				toastr.hide();
+				state.files_actions = false;
+				files.generateHtml();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			},
+			Backspace: function(event) {
+				event.preventDefault();
+				toastr.hide();
 				state.files_actions = false;
 				files.generateHtml();
 				displaySoftKeysLabels();

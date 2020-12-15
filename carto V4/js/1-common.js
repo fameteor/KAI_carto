@@ -333,7 +333,6 @@ const state = {
 					break;
 				case "TRACKS":
 					if (this.tracks_actions) {
-						console.log("this.tracks_actions : ", this.tracks_actions)
 						if (this.tracks_actions === "infos") 						currentState = "TRACKS_ACTIONS_infos";
 							else if (this.tracks_actions === "rename") 					currentState = "TRACKS_ACTIONS_rename";
 								else if (this.tracks_actions === "delete")			currentState = "TRACKS_ACTIONS_delete";
@@ -368,7 +367,10 @@ const state = {
 					if (options.currentItem().rotatorType === "INPUT")		currentState = "OPTIONS_INPUT";
 					break;
 				case "FILES":
-					if (this.files_actions) 					return "FILES_ACTIONS";
+					if (this.files_actions) {
+						if (this.files_actions === "delete")	return "FILES_ACTIONS_delete";
+						else									return "FILES_ACTIONS";
+					}
 					else 										return "FILES";
 					return "";
 					break;

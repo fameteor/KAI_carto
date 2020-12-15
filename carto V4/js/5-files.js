@@ -81,7 +81,7 @@ const filesOptions = {
 
 const files = new Rotator([],filesOptions);
 
-// We add the getAndDisplayFilesFromSD property --------------------
+// We add the getAndDisplayFilesFromSD method ----------------------
 files.getAndDisplayFilesFromSD = function() {
 	if (navigator.getDeviceStorage) {
 		toastr.info("Lecture de la carte SD, veuillez patienter...");
@@ -117,6 +117,33 @@ files.getAndDisplayFilesFromSD = function() {
 
 		cursor.onerror = function () { 
 			console.log("No file found: " + this.error); 
+		}
+	}
+	else console.log("Accès aux fichiers non supporté sur PC.");	
+}
+
+// We add the removeCurrentFileFromSdAndDisplay method ----------------------
+files.removeCurrentFileFromSdAndDisplay = function(indexToRemove) {
+	if (navigator.getDeviceStorage) {
+		const that = this;
+		const sdcard = navigator.getDeviceStorage("sdcard");
+		var request = sdcard.delete(that.currentItem().completePathName);
+
+		request.onsuccess = function () {
+			toastr.info("Fichier " + that.currentItem().label + " supprimé.");
+			// Delete the file in the list
+			const indexToDeleted = that.currentIndex;
+			that.list.splice(indexToDeleted, 1);
+			// Activate the previous one
+			let newSelectedIndex = (indexToDeleted != 0) ? (indexToDeleted - 1) : 0;
+			that.currentIndex = newSelectedIndex;
+			// We diplay the list
+			state.files_actions = false;
+			that.generateHtml();			
+		}
+
+		request.onerror = function () {
+			toastr.warning("Impossible de supprimer ce fichier : " + (this.error && this.error.name));
 		}
 	}
 	else console.log("Accès aux fichiers non supporté sur PC.");	
