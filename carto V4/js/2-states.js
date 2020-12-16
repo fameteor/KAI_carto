@@ -1622,7 +1622,7 @@ const states = {
 				let input = $("#searchInput").val().trim();
 				if (input != "") {
 					search.value = input;
-					search.autocomplete(input);
+					search.generateResultRotator(input);
 				}
 				else toastr.warning("Merci d'indiquer un nom à chercher");
 				event.stopPropagation();
@@ -1676,12 +1676,12 @@ const states = {
 			},
 			ArrowUp: function(event) {
 				event.preventDefault();
-				searchAutocomplete.previous();
+				search.resultRotator.previous();
 				event.stopPropagation();
 			},
 			ArrowDown: function(event) {
 				event.preventDefault();
-				searchAutocomplete.next();
+				search.resultRotator.next();
 				event.stopPropagation();
 			},
 			SoftLeft: function(event) {
@@ -1698,7 +1698,7 @@ const states = {
 				let input = $("#searchInput").val().trim();
 				if (input != "") {
 					search.value = input;
-					search.autocomplete(input);
+					search.generateResultRotator(input);
 				}
 				else toastr.warning("Merci d'indiquer un nom à chercher");
 				event.stopPropagation();
@@ -1821,7 +1821,7 @@ const states = {
 					case "positionMap":
 						// We return to the result state
 						state.search_state = "result";
-						searchAutocomplete.generateHtml();
+						search.resultRotator.generateHtml();
 						// We disable the map centering on current position
 						app.options.mapIsCenteredOnGpsPosition = false;
 						options.generateHtml();
@@ -1830,25 +1830,41 @@ const states = {
 						$("#map").show();
 						$("#menu").hide();
 						$("#root").hide();
-						app.myMap.flyTo(searchAutocomplete.currentItem().coords);
+						app.myMap.flyTo(search.resultRotator.currentItem().coords);
 						displaySoftKeysLabels();
 						break;
 					case "saveAsWaypoint":
-						toastr.info("saveAsWaypoint");
+						// Add new waypoint ---------------------------------
+						let waypoint = new Waypoint({
+							coords : 	search.resultRotator.currentItem().coords,
+							altitude : 	0,
+							timestamp : new Date().getTime(),
+							label : 	search.resultRotator.currentItem().label
+						});
+						
+						waypoints.list.unshift(waypoint);
+						// We select the new waypoint
+						waypoints.currentIndex = 0;
+						waypoints.generateHtml();
+						waypoints.refreshMap();
+						toastr.info("Point enregistré");
+						// We return to the result state
+						state.search_state = "result";
+						search.resultRotator.generateHtml();
 						break;
 				}
 				event.stopPropagation();
 			},
 			SoftRight: function(event) {
 				event.preventDefault();
-				searchAutocomplete.generateHtml()
+				search.resultRotator.generateHtml()
 				state.search_state = "result";
 				displaySoftKeysLabels();
 				event.stopPropagation();
 			},
 			Backspace: function(event) {
 				event.preventDefault();
-				searchAutocomplete.generateHtml()
+				search.resultRotator.generateHtml()
 				state.search_state = "result";
 				displaySoftKeysLabels();
 				event.stopPropagation();

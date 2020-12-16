@@ -1,4 +1,25 @@
-# Code documentation
+# Coding documentation
+
+There is one Javascript file per application tab, containing one object whose name is equal to the javascript file name.
+
+## `search` tab
+The `search` object in the `js/search.js` file manages the "search" tab.
+
+The "SEARCH" status can be :
+
+* `SEARCH_form`
+* `SEARCH_result`
+* `SEARCH_formOptions`
+* `SEARCH_resultActions`
+
+The available properties / methods are :
+
+* `search.resultRotator`
+* `resultActionsRotator`
+* `formOptionsRotator`
+* `generateHtml()`
+* `focusOnInput()`
+* `generateResultRotator()`
 
 # A faire
 

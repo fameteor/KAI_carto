@@ -225,6 +225,11 @@ let waypoints_options_list = [
 		label:"Positionner la carte à cet endroit",
 		rotatorType:"MENU",
 		state:"positionMap"
+	},
+	{	
+		label:"Itinéraire vers ce point",
+		rotatorType:"MENU",
+		state:"ItineraryToThisPoint"
 	}
 ];
 

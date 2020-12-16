@@ -1,9 +1,14 @@
-// Global variable -------------------------------------------------
-let searchAutocomplete = {};
+// -----------------------------------------------------------------
+// search OBJECT
+// -----------------------------------------------------------------
 
 search = {
 	// -------------------------------------------------------------
+	// Last value of the input field
 	"value" : "",
+	
+	// -------------------------------------------------------------
+	"resultRotator" : {},
 	
 	// -------------------------------------------------------------
 	"formOptions_list": [
@@ -49,7 +54,7 @@ search = {
 	],
 
 	// -------------------------------------------------------------
-	"generateHtml": function(text) {
+	"generateHtml": function() {
 		let html = '<input type="text" id="searchInput" value="' + this.value + '"></input>';
 		$("#menuTarget_7").html(html);
 	},
@@ -57,10 +62,11 @@ search = {
 		// To set focus on the input and select the input value
 		let input = $('#searchInput');
 		var strLength = input.val().length;
-		input.focus();
 		input[0].setSelectionRange(0, strLength);
+		input.focus();
 	},
-	"autocomplete": function(text) {
+	"generateResultRotator": function(text) {
+		let that = this;
 		console.log("search for : " + text);
 		let request = new XMLHttpRequest();
 		request.open('GET', 'https://api.openrouteservice.org/geocode/autocomplete?api_key=' + keys.openRouteService + '&text=' + text);
@@ -71,10 +77,10 @@ search = {
 				if (request.status === 200) {
 					const data = JSON.parse(request.responseText);
 					console.log(data);
-					let searchAutocompleteList = [];
+					let resultRotatorList = [];
 					if (data.features) {
 						// We extract the relevant data ------------
-						searchAutocompleteList = data.features.map(function(feature) {
+						resultRotatorList = data.features.map(function(feature) {
 							return {
 								label : 	feature.properties && (feature.properties.name + " - " + feature.properties.region + " (" + feature.properties.country +")"),
 								name:		feature.properties && feature.properties.name,
@@ -91,16 +97,16 @@ search = {
 								type: 		"MENU"
 							}
 						});
-						console.log(searchAutocompleteList);
-						// searchAutocomplete ROTATOR --------------
-						const searchAutocompleteOptions = {
-							"selectedItemIdPrefix" : 		"autocomplete",
+						console.log(resultRotatorList);
+						// resultRotator --------------
+						const resultRotatorOptions = {
+							"selectedItemIdPrefix" : 		"resultRotator",
 							"targetDomSelector" : 			"#menuTarget_7",
 							"itemsNumbered":				"reverse"
 						}
 
-						searchAutocomplete = new Rotator(searchAutocompleteList,searchAutocompleteOptions);
-						searchAutocomplete.generateHtml();
+						that.resultRotator = new Rotator(resultRotatorList,resultRotatorOptions);
+						that.resultRotator.generateHtml();
 						state.search_state = "result";
 						displaySoftKeysLabels();
 					}
