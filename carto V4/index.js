@@ -105,15 +105,10 @@ let menuItems = [
 	},
 	{
 		label:"Chercher",
-		statePrefix:"FIND",
+		statePrefix:"SEARCH",
 		onSelected : function() {
-			// if (searchAutocomplete && searchAutocomplete.generateHtml) searchAutocomplete.generateHtml();
-			$('#searchInput').attr("type","text");
-			// To set focus on the input and select the input value
-			let input = $('#searchInput');
-			var strLength = input.val().length;
-			input.focus();
-			input[0].setSelectionRange(0, strLength);
+			state.search_state = "form";
+			search.generateHtml();
 			displaySoftKeysLabels();
 		}
 	},

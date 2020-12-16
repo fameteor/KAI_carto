@@ -302,6 +302,7 @@ const state = {
 	waypoints_options_delete : 		false,
 	tracks_actions : 				false,
 	files_actions : 				false,
+	search_state :					"form",
 	// infosOptionsValue : "",
 	options_value : "",
 	current: function() {
@@ -378,8 +379,8 @@ const state = {
 					if (layers.currentItem().active) 			return "LAYERS_ACTIVE";
 					else 										return "LAYERS_NOTACTIVE";
 					break;
-				case "FIND":
-					return "FIND";
+				case "SEARCH":
+					return "SEARCH_" + this.search_state;
 					break;
 			}
 			return currentState;

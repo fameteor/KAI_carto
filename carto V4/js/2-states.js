@@ -1586,12 +1586,74 @@ const states = {
 			}
 		},
 	},
-	FIND : {
+	SEARCH_form : {
 		softKeysLabels : {
 			fr : {
-					SoftLeft :	'Nouv. rech.',
+					SoftLeft :	'Saisir',
 					Center : 	'Chercher',
-					SoftRight :	'Voir carte'
+					SoftRight :	'Options'
+			},
+		},
+		keysActions : {
+			ArrowLeft: function(event) {
+				// Check for focus on the input
+				if (!(document.activeElement === document.getElementById('searchInput'))) {
+					event.preventDefault();
+					menu.previous();
+					event.stopPropagation();
+				}
+				else console.log("Search input has focus");
+			},
+			ArrowRight: function(event) {
+				if (!(document.activeElement === document.getElementById('searchInput'))) {
+					event.preventDefault();
+					menu.next();
+					event.stopPropagation();
+				}
+				else console.log("Search input has focus");
+			},
+			SoftLeft: function(event) {
+				event.preventDefault();
+				search.focusOnInput();
+				event.stopPropagation();
+			},
+			Enter: function(event) {
+				event.preventDefault();
+				let input = $("#searchInput").val().trim();
+				if (input != "") {
+					search.value = input;
+					search.autocomplete(input);
+				}
+				else toastr.warning("Merci d'indiquer un nom à chercher");
+				event.stopPropagation();
+			},
+			SoftRight: function(event) {
+				event.preventDefault();
+				// We memorise the input value
+				search.value = $("#searchInput").val().trim();
+				// We display the search.formOptionsRotator
+				search.formOptionsRotator.generateHtml();
+				state.search_state = "formOptions";
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			},
+			Backspace: function(event) {
+				event.preventDefault();
+				state.map = true;
+				$("#map").show();
+				$("#menu").hide();
+				$("#root").hide();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			}
+		},
+	},
+	SEARCH_result : {
+		softKeysLabels : {
+			fr : {
+					SoftLeft :	'Saisir',
+					Center : 	'',
+					SoftRight :	'Actions'
 			},
 		},
 		keysActions : {
@@ -1624,36 +1686,28 @@ const states = {
 			},
 			SoftLeft: function(event) {
 				event.preventDefault();
-				$('#searchInput').attr("type","text");
-				// To set focus on the input and select the input value
-				let input = $('#searchInput');
-				var strLength = input.val().length;
-				input.focus();
-				input[0].setSelectionRange(0, strLength);
+				// We display the form state
+				search.generateHtml();
+				search.focusOnInput();
+				state.search_state = "form";
+				displaySoftKeysLabels();
 				event.stopPropagation();
 			},
 			Enter: function(event) {
 				event.preventDefault();
-				if ($("#searchInput").val().trim() != "") {
-					search.autocomplete($("#searchInput").val().trim());
-					// We hide the input
-					$('#searchInput').attr("type","hidden");
-					$('#searchInput').blur();
+				let input = $("#searchInput").val().trim();
+				if (input != "") {
+					search.value = input;
+					search.autocomplete(input);
 				}
 				else toastr.warning("Merci d'indiquer un nom à chercher");
 				event.stopPropagation();
 			},
 			SoftRight: function(event) {
 				event.preventDefault();
-				// We disable the map centering on current position
-				app.options.mapIsCenteredOnGpsPosition = false;
-				options.generateHtml();
-				// We display the map
-				state.map = true;
-				$("#map").show();
-				$("#menu").hide();
-				$("#root").hide();
-				app.myMap.flyTo(searchAutocomplete.currentItem().coords);
+				// We display the search.resultActionsRotator
+				search.resultActionsRotator.generateHtml();
+				state.search_state = "resultActions";
 				displaySoftKeysLabels();
 				event.stopPropagation();
 			},
@@ -1667,6 +1721,139 @@ const states = {
 				event.stopPropagation();
 			}
 		},
+	},
+	SEARCH_formOptions : {
+		softKeysLabels : {
+			fr : {
+					SoftLeft :	'',
+					Center : 	'Choisir',
+					SoftRight :	'Annuler'
+			},
+		},
+		keysActions : {
+			ArrowLeft: function(event) {
+				event.preventDefault();
+				menu.previous();
+				event.stopPropagation();
+			},
+			ArrowRight: function(event) {
+				event.preventDefault();
+				menu.next();
+				event.stopPropagation();
+			},
+			ArrowUp: function(event) {
+				event.preventDefault();
+				search.formOptionsRotator.previous();
+				event.stopPropagation();
+			},
+			ArrowDown: function(event) {
+				event.preventDefault();
+				search.formOptionsRotator.next();
+				event.stopPropagation();
+			},
+			Enter: function(event) {
+				event.preventDefault();
+				switch(search.formOptionsRotator.currentItem().value) {
+					/*
+					case "loadFromSD":
+						files.currentItem().readFromSD();
+						break;
+					case "rename":
+						toastr.info("A implémenter");
+						break;
+					case "delete":
+						state.files_actions = files_actions.currentItem().value;
+						toastr.question("Voulez-vous supprimer définitivement le fichier " + files.currentItem().label + " ?");
+						displaySoftKeysLabels();
+						break;
+						*/
+				}
+				event.stopPropagation();
+			},
+			SoftRight: function(event) {
+				event.preventDefault();
+				search.generateHtml();
+				state.search_state = "form";
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			},
+			Backspace: function(event) {
+				event.preventDefault();
+				search.generateHtml();
+				state.search_state = "form";
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			}
+		}
+	},
+	SEARCH_resultActions : {
+		softKeysLabels : {
+			fr : {
+					SoftLeft :	'',
+					Center : 	'Choisir',
+					SoftRight :	'Annuler'
+			},
+		},
+		keysActions : {
+			ArrowLeft: function(event) {
+				event.preventDefault();
+				menu.previous();
+				event.stopPropagation();
+			},
+			ArrowRight: function(event) {
+				event.preventDefault();
+				menu.next();
+				event.stopPropagation();
+			},
+			ArrowUp: function(event) {
+				event.preventDefault();
+				search.resultActionsRotator.previous();
+				event.stopPropagation();
+			},
+			ArrowDown: function(event) {
+				event.preventDefault();
+				search.resultActionsRotator.next();
+				event.stopPropagation();
+			},
+			Enter: function(event) {
+				event.preventDefault();
+				switch(search.resultActionsRotator.currentItem().value) {
+					case "positionMap":
+						// We return to the result state
+						state.search_state = "result";
+						searchAutocomplete.generateHtml();
+						// We disable the map centering on current position
+						app.options.mapIsCenteredOnGpsPosition = false;
+						options.generateHtml();
+						// We display the map
+						state.map = true;
+						$("#map").show();
+						$("#menu").hide();
+						$("#root").hide();
+						app.myMap.flyTo(searchAutocomplete.currentItem().coords);
+						displaySoftKeysLabels();
+						break;
+					case "saveAsWaypoint":
+						toastr.info("saveAsWaypoint");
+						break;
+				}
+				event.stopPropagation();
+			},
+			SoftRight: function(event) {
+				event.preventDefault();
+				searchAutocomplete.generateHtml()
+				state.search_state = "result";
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			},
+			Backspace: function(event) {
+				event.preventDefault();
+				searchAutocomplete.generateHtml()
+				state.search_state = "result";
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			}
+		}
 	}
 }	
 
