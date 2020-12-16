@@ -47,6 +47,8 @@ The available rotators are :
 * Obtenir le profil d'une track (via API Open route service) et l'enregistrer dans la track (voir sur SD si trace enregistrée).
 * Recherche de lieux : offrir un menu : Afficher sur la carte, Enregistrer en waypoint...
 * Permettre le routage vers un waypoint pour voiture, vélo ou autre option (via API Open route service).
+* Obtenir le profile d'un itinéraire.
+* Affichage de la durée et de la distance d'un itinéraire
 	
 ## Utilitaire sur PC
 

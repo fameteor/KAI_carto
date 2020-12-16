@@ -33,6 +33,7 @@ let app = {
 		mapIsCenteredOnGpsPosition: true,
 		waypointsNameAreDisplayed: 	false,
 		gpsPostProcessingisOn: 		true,
+		itineraryProfile:			"cycling-regular",
 		coordinatesFormat:			"DDD.xxxxxx",
 		units:						"Métriques"
 	}

@@ -229,7 +229,7 @@ let waypoints_options_list = [
 	{	
 		label:"Itinéraire vers ce point",
 		rotatorType:"MENU",
-		state:"ItineraryToThisPoint"
+		state:"itineraryToThisPoint"
 	}
 ];
 

@@ -508,6 +508,9 @@ const states = {
 						app.myMap.flyTo(waypoints.currentItem().coords,app.zoomLevel);
 						displaySoftKeysLabels();
 						break;
+					case "itineraryToThisPoint":
+						search.displayItinerary(app.currentPosition.coords,waypoints.currentItem().coords);
+						break;
 				}
 				event.stopPropagation();
 			},
@@ -1689,16 +1692,6 @@ const states = {
 				// We display the form state
 				search.displayInput();
 				search.focusOnInput();
-				event.stopPropagation();
-			},
-			Enter: function(event) {
-				event.preventDefault();
-				let input = $("#searchInput").val().trim();
-				if (input != "") {
-					search.value = input;
-					search.generateAndDisplayResultRotator(input);
-				}
-				else toastr.warning("Merci d'indiquer un nom à chercher");
 				event.stopPropagation();
 			},
 			SoftRight: function(event) {

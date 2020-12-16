@@ -70,9 +70,8 @@ search = {
 	},
 	"generateAndDisplayResultRotator": function(text) {
 		let that = this;
-		console.log("search for : " + text);
 		let request = new XMLHttpRequest();
-		request.open('GET', 'https://api.openrouteservice.org/geocode/autocomplete?api_key=' + keys.openRouteService + '&text=' + text);
+		request.open('GET', 'https://api.openrouteservice.org/geocode/search?api_key=' + keys.openRouteService + '&text=' + text);
 		request.setRequestHeader('Accept', 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8');
 
 		request.onreadystatechange = function () {
@@ -119,6 +118,32 @@ search = {
 						search.displayInput();
 						search.focusOnInput();
 					}
+				} else {
+					console.log('Requête impossible.');
+				}
+			}
+		};
+		
+		request.send();
+	},
+	"displayItinerary": function(coords1,coords2) {
+		let that = this;
+		let request = new XMLHttpRequest();
+		request.open('GET', 'https://api.openrouteservice.org/v2/directions/' + app.options.itineraryProfile + '?api_key=' + keys.openRouteService + '&start=' + coords1[1] + ',' + coords1[0] + '&end=' + coords2[1] + ',' + coords2[0]);
+		request.setRequestHeader('Accept', 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8');
+
+		request.onreadystatechange = function () {
+			if (request.readyState === XMLHttpRequest.DONE) {
+				if (request.status === 200) {
+					const data = JSON.parse(request.responseText);
+					console.log(data);
+					let coordsList = data.features[0].geometry.coordinates;
+					// data.features[0].properties.summary.distance and .duration
+					coordsList.forEach(function(coord) {coord.reverse();});
+					console.log(coordsList);
+					let itinerary = new Track({coords:coordsList,color:'green'});
+					itinerary.refreshMap();
+					
 				} else {
 					console.log('Requête impossible.');
 				}
