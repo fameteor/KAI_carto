@@ -33,8 +33,8 @@ The available rotators are :
 * Calcul de l'ETA.
 * Echelle à afficher selon l'unité.
 * Bug : quand on change de fond de carte, il se trouve dessus l'éventuel layer affiché.
-* Recherche de lieux : le curseur et la sélection ne s'affichent pas.
 * Recherche de lieux : optimiser le choix de la source pour avoir des données optimales
+* Recherche de lieux : gérer les pbs réseaux et codes erreurs serveur.
 * Bug : le positionnement automatique du menu sélectionné n'est pas toujours correct.
 
 ## Fonctionnalités

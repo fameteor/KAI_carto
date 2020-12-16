@@ -81,7 +81,7 @@ search = {
 					const data = JSON.parse(request.responseText);
 					console.log(data);
 					let resultRotatorList = [];
-					if (data.features) {
+					if (data.features && data.features.length > 0) {
 						// We extract the relevant data ------------
 						resultRotatorList = data.features.map(function(feature) {
 							return {
@@ -113,9 +113,14 @@ search = {
 						state.search_state = "result";
 						displaySoftKeysLabels();
 					}
+					else {
+						toastr.info("Aucun résultat trouvé.");
+						// We go back to the form state
+						search.displayInput();
+						search.focusOnInput();
+					}
 				} else {
-					console.log('Il y a eu un problème avec la requête : ' + request.status);
-					console.log(request.responseText);
+					console.log('Requête impossible.');
 				}
 			}
 		};
