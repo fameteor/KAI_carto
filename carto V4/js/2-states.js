@@ -1622,7 +1622,7 @@ const states = {
 				let input = $("#searchInput").val().trim();
 				if (input != "") {
 					search.value = input;
-					search.generateResultRotator(input);
+					search.generateAndDisplayResultRotator(input);
 				}
 				else toastr.warning("Merci d'indiquer un nom à chercher");
 				event.stopPropagation();
@@ -1687,10 +1687,8 @@ const states = {
 			SoftLeft: function(event) {
 				event.preventDefault();
 				// We display the form state
-				search.generateHtml();
+				search.displayInput();
 				search.focusOnInput();
-				state.search_state = "form";
-				displaySoftKeysLabels();
 				event.stopPropagation();
 			},
 			Enter: function(event) {
@@ -1698,7 +1696,7 @@ const states = {
 				let input = $("#searchInput").val().trim();
 				if (input != "") {
 					search.value = input;
-					search.generateResultRotator(input);
+					search.generateAndDisplayResultRotator(input);
 				}
 				else toastr.warning("Merci d'indiquer un nom à chercher");
 				event.stopPropagation();
@@ -1772,16 +1770,12 @@ const states = {
 			},
 			SoftRight: function(event) {
 				event.preventDefault();
-				search.generateHtml();
-				state.search_state = "form";
-				displaySoftKeysLabels();
+				search.displayInput();
 				event.stopPropagation();
 			},
 			Backspace: function(event) {
 				event.preventDefault();
-				search.generateHtml();
-				state.search_state = "form";
-				displaySoftKeysLabels();
+				search.displayInput();
 				event.stopPropagation();
 			}
 		}

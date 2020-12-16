@@ -107,9 +107,7 @@ let menuItems = [
 		label:"Chercher",
 		statePrefix:"SEARCH",
 		onSelected : function() {
-			state.search_state = "form";
-			search.generateHtml();
-			displaySoftKeysLabels();
+			search.displayInput();
 		}
 	},
 ];

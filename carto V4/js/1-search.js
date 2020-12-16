@@ -54,9 +54,12 @@ search = {
 	],
 
 	// -------------------------------------------------------------
-	"generateHtml": function() {
+	"displayInput": function() {
 		let html = '<input type="text" id="searchInput" value="' + this.value + '"></input>';
 		$("#menuTarget_7").html(html);
+		// We change to SEARCH_form state
+		state.search_state = "form";
+		displaySoftKeysLabels();
 	},
 	"focusOnInput": function() {
 		// To set focus on the input and select the input value
@@ -65,7 +68,7 @@ search = {
 		input[0].setSelectionRange(0, strLength);
 		input.focus();
 	},
-	"generateResultRotator": function(text) {
+	"generateAndDisplayResultRotator": function(text) {
 		let that = this;
 		console.log("search for : " + text);
 		let request = new XMLHttpRequest();

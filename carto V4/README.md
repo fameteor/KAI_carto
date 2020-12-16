@@ -5,21 +5,23 @@ There is one Javascript file per application tab, containing one object whose na
 ## `search` tab
 The `search` object in the `js/search.js` file manages the "search" tab.
 
-The "SEARCH" status can be :
+The "SEARCH" states can be :
 
 * `SEARCH_form`
 * `SEARCH_result`
 * `SEARCH_formOptions`
 * `SEARCH_resultActions`
 
-The available properties / methods are :
+The available methods are :
+* `search.displayInput()` : displays the search input field and go to the `SEARCH_form` state and keys display.
+* `search.focusOnInput()` : set the focus on the input field with input value selection.
+* `search.generateAndDisplayResultRotator()` : generates and display the `search.resultRotator` and go to the `SEARCH_result`  state and keys display.
 
-* `search.resultRotator`
-* `resultActionsRotator`
-* `formOptionsRotator`
-* `generateHtml()`
-* `focusOnInput()`
-* `generateResultRotator()`
+The available rotators are :
+
+* `search.resultRotator` : displays the search results.
+* `search.resultActionsRotator` : displays the available actions on results.
+* `search.formOptionsRotator` : displays the differents search options.
 
 # A faire
 
