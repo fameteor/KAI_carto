@@ -107,7 +107,19 @@ let menuItems = [
 		label:"Chercher",
 		statePrefix:"SEARCH",
 		onSelected : function() {
-			search.displayInput();
+			// If results are available, display results
+			if (	search.resultRotator &&
+					search.resultRotator.list &&
+					search.resultRotator.list.length > 0) {
+				// we go to the state result
+				search.resultRotator.generateHtml();
+				state.search_state = "result";
+				displaySoftKeysLabels();
+			}
+			// Otherwise display input
+			else {
+				search.displayInput();
+			}
 		}
 	},
 ];
