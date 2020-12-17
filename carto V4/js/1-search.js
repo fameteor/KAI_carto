@@ -126,7 +126,7 @@ search = {
 		
 		request.send();
 	},
-	"displayItinerary": function(coords1,coords2) {
+	"displayItinerary": function(coords1,coords2,label) {
 		let that = this;
 		let request = new XMLHttpRequest();
 		request.open('GET', 'https://api.openrouteservice.org/v2/directions/' + app.options.itineraryProfile + '?api_key=' + keys.openRouteService + '&start=' + coords1[1] + ',' + coords1[0] + '&end=' + coords2[1] + ',' + coords2[0]);
@@ -141,8 +141,13 @@ search = {
 					// data.features[0].properties.summary.distance and .duration
 					coordsList.forEach(function(coord) {coord.reverse();});
 					console.log(coordsList);
-					let itinerary = new Track({coords:coordsList,color:'green'});
-					itinerary.refreshMap();
+					let itinerary = new Track({
+						coords:coordsList,
+						label: label,
+						color:'green'
+					});
+					// We add the itinerary to the tracks and display it
+					tracks.addAndDisplay(itinerary);
 					
 				} else {
 					console.log('Requête impossible.');

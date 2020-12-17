@@ -509,7 +509,21 @@ const states = {
 						displaySoftKeysLabels();
 						break;
 					case "itineraryToThisPoint":
-						search.displayItinerary(app.currentPosition.coords,waypoints.currentItem().coords);
+						// We build and display itinerary
+						search.displayItinerary(app.currentPosition.coords,waypoints.currentItem().coords,"Vers " + waypoints.currentItem().label);
+						// We disable the map centering on current position
+						app.options.mapIsCenteredOnGpsPosition = true;
+						options.generateHtml();
+						// We exit from waypoints actions
+						state.waypoints_options = false;
+						waypoints.generateHtml();
+						// We display the map
+						state.map = true;
+						$("#map").show();
+						$("#menu").hide();
+						$("#root").hide();
+						app.myMap.flyTo(app.currentPosition.coords,app.zoomLevel);
+						displaySoftKeysLabels();
 						break;
 				}
 				event.stopPropagation();
@@ -722,13 +736,11 @@ const states = {
 				event.preventDefault();
 				//if track is not empty
 				if (app.currentTrack.coords.length != 0) {
-					// We add the current track and change its color
-					tracks.list.unshift(app.currentTrack);
-					tracks.list[0].color = "purple";
-					tracks.list[0].label = format_dateString(new Date());
-					tracks.currentIndex = 0;
-					tracks.generateHtml();
-					tracks.refreshMap();
+					// We change its color and name
+					app.currentTrack.color = "purple";
+					app.currentTrack.label = format_dateString(new Date());
+					// We add the current track and 
+					tracks.addAndDisplay(app.currentTrack);
 					// We delete the current track
 					app.currentTrack = new Track({});
 					app.currentTrack.refreshMap();

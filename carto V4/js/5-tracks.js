@@ -357,13 +357,22 @@ tracks_initialList = tracks_initialList.map(function(track) {
 });
 tracks_initialList.push(new Track(casa));
 
-
+// -----------------------------------------------------------------
+// tracks ROTATOR
+// -----------------------------------------------------------------
 const tracks = new Rotator(tracks_initialList,tracksOptions);
 
 tracks.refreshMap = function() {
 	this.list.forEach(function(track) {
 		track.refreshMap();
 	});
+}
+
+tracks.addAndDisplay = function(track) {
+	this.list.unshift(track);
+	this.currentIndex = 0;
+	this.generateHtml();
+	this.refreshMap();
 }
 
 // -----------------------------------------------------------------
