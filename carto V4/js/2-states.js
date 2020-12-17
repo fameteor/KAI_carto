@@ -511,7 +511,7 @@ const states = {
 					case "itineraryToThisPoint":
 						// We build and display itinerary
 						search.displayItinerary(app.currentPosition.coords,waypoints.currentItem().coords,"Vers " + waypoints.currentItem().label);
-						// We disable the map centering on current position
+						// We enable the map centering on current position
 						app.options.mapIsCenteredOnGpsPosition = true;
 						options.generateHtml();
 						// We exit from waypoints actions
@@ -1272,6 +1272,10 @@ const states = {
 						state.options_value = "units";
 						optionsUnits.generateHtml();
 						break;
+					case 7:
+						state.options_value = "profile";
+						optionsProfile.generateHtml();
+						break;
 				}
 				event.stopPropagation();
 			},
@@ -1383,6 +1387,63 @@ const states = {
 			Enter: function(event) {
 				event.preventDefault();
 				options.currentItem().rotatorValue(optionsUnits.currentItem().label);
+				state.options_value = "";
+				options.generateHtml();
+				gps.refreshCurrentPosition();
+				event.stopPropagation();
+			},
+			SoftRight: function(event) {
+				event.preventDefault();
+				state.options_value = "";
+				options.generateHtml();
+				event.stopPropagation();
+			},
+			Backspace: function(event) {
+				event.preventDefault();
+				state.options_value = "";
+				options.generateHtml();
+				event.stopPropagation();
+			}
+		},
+	},
+	OPTIONS_PROFILE : {
+		softKeysLabels : {
+			fr : {
+					SoftLeft :	'',
+					Center : 	'Sélectionner',
+					SoftRight :	'Annuler'
+			},
+		},
+		keysActions : {
+			ArrowLeft: function(event) {
+				event.preventDefault();
+				menu.previous();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			},
+			ArrowRight: function(event) {
+				event.preventDefault();
+				menu.next();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			},
+			ArrowUp: function(event) {
+				event.preventDefault();
+				optionsProfile.previous();
+				event.stopPropagation();
+			},
+			ArrowDown: function(event) {
+				event.preventDefault();
+				optionsProfile.next();
+				event.stopPropagation();
+			},
+			SoftLeft: function(event) {
+				event.preventDefault();
+				event.stopPropagation();
+			},
+			Enter: function(event) {
+				event.preventDefault();
+				options.currentItem().rotatorValue(optionsProfile.currentItem().label);
 				state.options_value = "";
 				options.generateHtml();
 				gps.refreshCurrentPosition();
@@ -1850,6 +1911,23 @@ const states = {
 						// We return to the result state
 						state.search_state = "result";
 						search.resultRotator.generateHtml();
+						break;
+					case "itineraryToThisPoint":
+						// We build and display itinerary
+						search.displayItinerary(app.currentPosition.coords,search.resultRotator.currentItem().coords,"Vers " + search.resultRotator.currentItem().label);
+						// We enable the map centering on current position
+						app.options.mapIsCenteredOnGpsPosition = true;
+						options.generateHtml();
+						// We return to the result state
+						state.search_state = "result";
+						search.resultRotator.generateHtml();
+						// We display the map
+						state.map = true;
+						$("#map").show();
+						$("#menu").hide();
+						$("#root").hide();
+						app.myMap.flyTo(app.currentPosition.coords,app.zoomLevel);
+						displaySoftKeysLabels();
 						break;
 				}
 				event.stopPropagation();

@@ -251,6 +251,24 @@ let optionsList = [
 		rotatorInfos: function() {
 			return app.options.units;
 		}
+	},
+	{	
+		label:"Mode de transport (itinéraires)",
+		rotatorType:"SELECT",
+		rotatorIcon:"fas fa-cog",
+		rotatorValue:function(value) {
+			if (value != undefined) {
+				// Setter
+				app.options.itineraryProfile = value;
+			}
+			else {
+				// Getter
+				return app.options.itineraryProfile
+			}
+		},
+		rotatorInfos: function() {
+			return app.options.itineraryProfile;
+		}
 	}
 ];
 
@@ -351,6 +369,109 @@ const optionsUnitsOptions = {
 
 
 const optionsUnits = new Rotator(optionsUnitsList,optionsUnitsOptions);
+
+// -----------------------------------------------------------------
+// OptionsProfile
+// -----------------------------------------------------------------
+let optionsProfileList = [
+	{	
+		label:"driving-car",
+		rotatorType:"BOOLEAN",
+		rotatorIcon:"fas fa-cog",
+		rotatorValue:function(value) {
+			// Getter only of the selected value
+			return this.label === app.options.itineraryProfile;
+		}
+	},
+	{	
+		label:"driving-hgv",
+		rotatorType:"BOOLEAN",
+		rotatorIcon:"fas fa-cog",
+		rotatorValue:function(value) {
+			// Getter only of the selected value
+			return this.label === app.options.itineraryProfile;
+		}
+	},
+	{	
+		label:"cycling-regular",
+		rotatorType:"BOOLEAN",
+		rotatorIcon:"fas fa-cog",
+		rotatorValue:function(value) {
+			// Getter only of the selected value
+			return this.label === app.options.itineraryProfile;
+		}
+	},
+	{	
+		label:"cycling-road",
+		rotatorType:"BOOLEAN",
+		rotatorIcon:"fas fa-cog",
+		rotatorValue:function(value) {
+			// Getter only of the selected value
+			return this.label === app.options.itineraryProfile;
+		}
+	},
+	{	
+		label:"cycling-mountain",
+		rotatorType:"BOOLEAN",
+		rotatorIcon:"fas fa-cog",
+		rotatorValue:function(value) {
+			// Getter only of the selected value
+			return this.label === app.options.itineraryProfile;
+		}
+	},
+	{	
+		label:"cycling-electric",
+		rotatorType:"BOOLEAN",
+		rotatorIcon:"fas fa-cog",
+		rotatorValue:function(value) {
+			// Getter only of the selected value
+			return this.label === app.options.itineraryProfile;
+		}
+	},
+	{	
+		label:"foot-walking",
+		rotatorType:"BOOLEAN",
+		rotatorIcon:"fas fa-cog",
+		rotatorValue:function(value) {
+			// Getter only of the selected value
+			return this.label === app.options.itineraryProfile;
+		}
+	},
+	{	
+		label:"foot-hiking",
+		rotatorType:"BOOLEAN",
+		rotatorIcon:"fas fa-cog",
+		rotatorValue:function(value) {
+			// Getter only of the selected value
+			return this.label === app.options.itineraryProfile;
+		}
+	},
+	{	
+		label:"wheelchair",
+		rotatorType:"BOOLEAN",
+		rotatorIcon:"fas fa-cog",
+		rotatorValue:function(value) {
+			// Getter only of the selected value
+			return this.label === app.options.itineraryProfile;
+		}
+	}
+];
+
+const optionsProfileOptions = {
+	"selectedItemIdPrefix" : 		"optionsProfileOptions",
+	"targetDomSelector" : 			"#menuTarget_4",
+	"initialSelectionIndex" : function() {
+		let initialSelectionIndex = 0;
+		optionsUnitsList.forEach((option,index) => {
+			if (option.label === app.options.itineraryProfile) initialSelectionIndex = index;
+		});
+		return initialSelectionIndex;
+	},
+}
+
+
+
+const optionsProfile = new Rotator(optionsProfileList,optionsProfileOptions);
 
 // -----------------------------------------------------------------
 // InfosOptions

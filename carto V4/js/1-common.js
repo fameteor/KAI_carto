@@ -360,6 +360,9 @@ const state = {
 							case "units":
 								currentState = "OPTIONS_UNITS";
 								break;
+							case "profile":
+								currentState = "OPTIONS_PROFILE";
+								break;
 							default :
 								currentState = "OPTIONS_SELECT";
 								break;
