@@ -204,7 +204,7 @@ Rotator.prototype.refreshHTML = function() {
 		}
 
 		if (option.rotatorInfos) {
-			const infos = '<div class="info">' + option.rotatorInfos() + '</div>';
+			const infos = '<div class="info">' + ((option.rotatorInfos instanceof Function) ? option.rotatorInfos() : option.rotatorInfos) + '</div>';
 			html = html.replace('{{infos}}',infos);
 		}
 		else html = html.replace('{{infos}}',"");

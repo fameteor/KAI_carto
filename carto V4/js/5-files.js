@@ -84,7 +84,6 @@ const files = new Rotator([],filesOptions);
 // We add the getAndDisplayFilesFromSD method ----------------------
 files.getAndDisplayFilesFromSD = function() {
 	if (navigator.getDeviceStorage) {
-		toastr.info("Lecture de la carte SD, veuillez patienter...");
 		const sdcard = navigator.getDeviceStorage("sdcard");
 		let cursor = sdcard.enumerate("carto");
 		const that = this;

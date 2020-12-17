@@ -36,7 +36,6 @@ The available rotators are :
 * Recherche de lieux : optimiser le choix de la source pour avoir des données optimales
 * Recherche de lieux : gérer les pbs réseaux et codes erreurs serveur.
 * Bug : le positionnement automatique du menu sélectionné n'est pas toujours correct.
-* Bug : option Profile : le premier affichage ne donne pas la valeur actuellement utilisée.
 * Gestion des erreurs : afficher message si pas de réseau ou si nb de points trops grand pour API.
 * Gérer le nombre de points trop grands pour l'obtention de la courbe de niveau.
 

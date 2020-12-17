@@ -381,7 +381,8 @@ let optionsProfileList = [
 		rotatorValue:function(value) {
 			// Getter only of the selected value
 			return this.label === app.options.itineraryProfile;
-		}
+		},
+		rotatorInfos: "(Voiture normale)"
 	},
 	{	
 		label:"driving-hgv",
@@ -390,7 +391,8 @@ let optionsProfileList = [
 		rotatorValue:function(value) {
 			// Getter only of the selected value
 			return this.label === app.options.itineraryProfile;
-		}
+		},
+		rotatorInfos: "(Véhicule > 3.5 tonnes)"
 	},
 	{	
 		label:"cycling-regular",
@@ -399,7 +401,8 @@ let optionsProfileList = [
 		rotatorValue:function(value) {
 			// Getter only of the selected value
 			return this.label === app.options.itineraryProfile;
-		}
+		},
+		rotatorInfos:"(Routes + importantes interdites)"
 	},
 	{	
 		label:"cycling-road",
@@ -408,7 +411,8 @@ let optionsProfileList = [
 		rotatorValue:function(value) {
 			// Getter only of the selected value
 			return this.label === app.options.itineraryProfile;
-		}
+		},
+		rotatorInfos:"(Pas revêtu = pousser, mais routes + importantes autorisées)"
 	},
 	{	
 		label:"cycling-mountain",
@@ -417,7 +421,8 @@ let optionsProfileList = [
 		rotatorValue:function(value) {
 			// Getter only of the selected value
 			return this.label === app.options.itineraryProfile;
-		}
+		},
+		rotatorInfos:"(On roule partout, routes + importantes interdites)"
 	},
 	{	
 		label:"cycling-electric",
@@ -426,7 +431,8 @@ let optionsProfileList = [
 		rotatorValue:function(value) {
 			// Getter only of the selected value
 			return this.label === app.options.itineraryProfile;
-		}
+		},
+		rotatorInfos:"(Vitesse non affectée par le dénivellé, routes + importantes interdites)"
 	},
 	{	
 		label:"foot-walking",
@@ -444,7 +450,8 @@ let optionsProfileList = [
 		rotatorValue:function(value) {
 			// Getter only of the selected value
 			return this.label === app.options.itineraryProfile;
-		}
+		},
+		rotatorInfos:"(Randonnée, y compris haute montagne semble-t-il)"
 	},
 	{	
 		label:"wheelchair",
@@ -462,7 +469,7 @@ const optionsProfileOptions = {
 	"targetDomSelector" : 			"#menuTarget_4",
 	"initialSelectionIndex" : function() {
 		let initialSelectionIndex = 0;
-		optionsUnitsList.forEach((option,index) => {
+		optionsProfileList.forEach((option,index) => {
 			if (option.label === app.options.itineraryProfile) initialSelectionIndex = index;
 		});
 		return initialSelectionIndex;
