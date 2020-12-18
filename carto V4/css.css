@@ -189,6 +189,7 @@ h1 {
 .red 		{color:red;}
 .green 		{color:green;}
 .orange 		{color:orange;}
+.yellow		{color:yellow;}
 .blue 		{color:blue;}
 .purple 		{color:purple;}
 .black 		{color:black;}
@@ -258,6 +259,29 @@ div#tracing_green {
 }
 #profileChart {
 	border:1px solid black;
+}
+
+/* table rotator --------------------------- */
+div.tableRotatorContainer {
+	margin-top:		15px;
+	margin-left:	15px;
+	display:		block;
+	box-sizing: 	border-box;
+	width: 			210px;
+	font-size: 		0;		/* To avoid white line between rows */
+}
+div.tableRotator {
+	display:		inline-block;
+	box-sizing: 	border-box;
+	height:			70px;
+	width: 			70px;
+	border:			5px solid #EEEEEE;
+	border-radius:  5px;
+	overflow: 		hidden;
+}
+
+div.tableRotator.active {
+	border:			6px solid #b30086;
 }
 
 

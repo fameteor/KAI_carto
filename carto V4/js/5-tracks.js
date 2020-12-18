@@ -2,15 +2,16 @@
 // TRACKS
 // =================================================================
 
-let tracks_initialList = [];
+let tracks_initialList = [
 /*
-	{label:"Drau radweg SHORT Autriche",coords:drauRadwegShort,color:'lightblue',trackIsDisplayedOnTheMap:true},
-	{label:"Drau radweg Autriche",coords:drauRadweg,color:'red',trackIsDisplayedOnTheMap:true},
-	{label:"Drav radweg Slovénie",coords:drauSlovenia,color:'orange',trackIsDisplayedOnTheMap:true},
-	{label:"Mur radweg Slovénie",coords:murCroatia,color:'blue',trackIsDisplayedOnTheMap:true},
-	{label:"Mur radweg Autriche",coords:mur,color:'green',trackIsDisplayedOnTheMap:true}
+	{label:"Drau radweg SHORT Autriche",coords:drauRadwegShort,color:'lightblue',trackIsDisplayedOnTheMap:true,type:"ITINERARY"},
+	{label:"Drau radweg Autriche",coords:drauRadweg,color:'red',trackIsDisplayedOnTheMap:true,type:"ITINERARY"},
+	{label:"Drav radweg Slovénie",coords:drauSlovenia,color:'orange',trackIsDisplayedOnTheMap:true,type:"ITINERARY"},
+	{label:"Mur radweg Slovénie",coords:murCroatia,color:'blue',trackIsDisplayedOnTheMap:true,type:"ITINERARY"},
+	{label:"Mur radweg Autriche",coords:mur,color:'green',trackIsDisplayedOnTheMap:true,type:"ITINERARY"}
+	*/
 ];
-*/
+
 
 // =================================================================
 // drawChart
@@ -158,6 +159,7 @@ function drawChart(data) {
 // -----------------------------------------------------------------
 const Track = function(initial) {
 	// Properties --------------------------------------------------
+	this.type = 						initial.type ||	"RECORD"; // ITINERARY or RECORD
 	this.coords = 						initial.coords ||	[];
 	this.altitudes = 					initial.altitudes || [];
 	this.timestamps = 					initial.timestamps || [];
@@ -169,13 +171,16 @@ const Track = function(initial) {
 	this.dbAltitudes = 					initial.dbAltitudes || [];
 	
 	this.label = 						initial.label || 	null;
-	this.color = 						initial.color || 'red';
+	this.color = 						initial.color || '#FF0000';
 	this.trackIsDisplayedOnTheMap = 	initial.trackIsDisplayedOnTheMap || true;
 	// Should be private -------------------------------------------
 	this.myMapTrack = 					null;		// Leaflet current position marker handler
 	// For Rotator usage only --------------------------------------
 	this.rotatorType = 					initial.rotatorType || "BOOLEAN";
-	this.rotatorIcon = 					initial.rotatorIcon || 'fas fa-feather ' + this.color;
+	
+	if (this.type === "RECORD")			this.rotatorIcon = initial.rotatorIcon || 'fas fa-feather ' + this.color;
+	else if (this.type === "ITINERARY")	this.rotatorIcon = initial.rotatorIcon || 'fas fa-project-diagram ' + this.color;
+		else							this.rotatorIcon = initial.rotatorIcon || 'fas fa-arrows-alt ' + this.color;
 	this.rotatorValue = 				initial.rotatorValue || function(value) {
 		if (value != undefined) {
 			// Setter
@@ -220,6 +225,7 @@ Track.prototype.writeToSD = function() {
 				JSON.stringify(
 					this,
 					[
+						"type",
 						"coords",
 						"altitudes",
 						"timestamps",
@@ -414,3 +420,88 @@ const tracks_actions_options = {
 
 
 const tracks_actions = new Rotator(tracks_actions_list,tracks_actions_options);
+
+// -----------------------------------------------------------------
+// colorsList TABLE ROTATOR
+// -----------------------------------------------------------------
+
+let colorsList = [
+	{
+		label:'White',
+		value:'#FFFFFF'
+	},
+	{
+		label:'Silver',
+		value:'#C0C0C0'
+	},
+	{
+		label:'Gray',
+		value:'#808080'
+	},
+	{
+		label:'Black',
+		value:'#000000'
+	},
+	{
+		label:'Red',
+		value:'#FF0000'
+	},
+	{
+		label:'Maroon',
+		value:'#800000'
+	},
+	{
+		label:'Yellow',
+		value:'#FFFF00'
+	},
+	{
+		label:'Olive',
+		value:'#808000'
+	},
+	{
+		label:'Lime',
+		value:'#00FF00'
+	},
+	{
+		label:'Green',
+		value:'#008000'
+	},
+	{
+		label:'Aqua',
+		value:'#00FFFF'
+	},
+	{
+		label:'Teal',
+		value:'#008080'
+	},
+	{
+		label:'Blue',
+		value:'#0000FF'
+	},
+	{
+		label:'Navy',
+		value:'#000080'
+	},
+	{
+		label:'Fuchsia',
+		value:'#FF00FF'
+	},
+	{
+		label:'Purple',
+		value:'#800080'
+	},
+];
+
+let colorsOptions = {
+	"selectedItemIdPrefix" : 		"colors",
+	"targetDomSelector" : 			"#menuTarget_1",
+	"initialSelectionIndex" : function() {
+		let initialSelectionIndex = 0;
+		colorsList.forEach((option,index) => {
+			if (option.value === tracks.currentItem().color) initialSelectionIndex = index;
+		});
+		return initialSelectionIndex;
+	},
+};
+
+let colors = new TableRotator(colorsList,colorsOptions);

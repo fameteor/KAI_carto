@@ -112,6 +112,102 @@ document.addEventListener("keydown", event => {
 });
 
 // -----------------------------------------------------------------
+// TableRotator
+// -----------------------------------------------------------------
+
+// Compulsory options : widthElementNb
+
+const TableRotator = function(list,options) {
+	this.options = options;
+	this.list = list;
+	this.currentIndex = (this.options && this.options.initialSelectionIndex) ? this.options.initialSelectionIndex() : 0;
+}
+
+TableRotator.prototype.currentItem = function() {
+	return this.list[this.currentIndex];
+};
+
+TableRotator.prototype.verticalScrollToActiveElement = function() {
+	document.getElementById("root").scrollTo({
+		top: Math.floor(this.currentIndex / 3) * 70,
+		behavior: 'smooth'
+	});
+}
+
+TableRotator.prototype.left = function() {
+	if (this.currentIndex % 3 === 0) 	{
+		this.currentIndex += 2;
+		if (this.currentIndex > this.list.length - 1) {
+			// We go to the element of the last column
+			this.currentIndex = this.list.length - 1;
+		}
+	}
+	else 								this.currentIndex -= 1;
+	this.refreshSelection();
+};
+
+TableRotator.prototype.right = function() {
+	if (this.currentIndex % 3 === 2) this.currentIndex -= 2;
+	else {
+		this.currentIndex += 1;
+		if (this.currentIndex > this.list.length - 1) {
+			// We go to the element of the first column
+			this.currentIndex = Math.floor((this.list.length - 1)/3) * 3;
+		}
+	}
+	this.refreshSelection();
+};
+
+TableRotator.prototype.up = function() {
+	// If we are on the first line, go to the last of the column
+	if (this.currentIndex < 3) 	{
+		let lastLineIndex = Math.floor((this.list.length - 1) / 3);
+		let lastIndexInThisColumn = (3 * lastLineIndex) + (this.currentIndex%3);
+		if (lastIndexInThisColumn > this.list.length - 1) this.currentIndex = lastIndexInThisColumn - 3;
+		else this.currentIndex = lastIndexInThisColumn;
+	}
+	else this.currentIndex -= 3;
+	this.refreshSelection();
+};
+
+TableRotator.prototype.down = function() {
+	this.currentIndex += 3;
+	// If out of scope, go to the start of the column
+	if (this.currentIndex > (this.list.length - 1)) this.currentIndex = this.currentIndex % 3;
+	this.refreshSelection();
+};
+
+TableRotator.prototype.refreshSelection = function() {
+	// Refresh selection
+	if (this.options.selectedItemIdPrefix) {
+		const that = this;
+		console.log("active");
+		this.list.forEach(function(item,index) {
+			if (index === that.currentIndex) 	$("#" +  that.options.selectedItemIdPrefix + index).addClass("active");
+			else								$("#" +  that.options.selectedItemIdPrefix + index).removeClass("active");
+		});
+	}
+	this.verticalScrollToActiveElement();
+}
+
+TableRotator.prototype.generateHtml = function() {
+	const that = this;
+	let html = '<div class="tableRotatorContainer">';
+	this.list.forEach(function(element,index) {
+		htmlFragment = '<div id="{{id}}" class="tableRotator" style="background-color:' + element.value + ';"></div>';
+		
+		const id = that.options.selectedItemIdPrefix + index;
+		htmlFragment = htmlFragment.replace('{{id}}',id);
+		
+		html += htmlFragment;
+	});
+	 html += '</div>';
+	console.log(html);
+	$(this.options.targetDomSelector).html(html);
+	this.refreshSelection();
+};
+
+// -----------------------------------------------------------------
 // Rotator
 // -----------------------------------------------------------------
 
@@ -123,6 +219,8 @@ const Rotator = function(list,options) {
 
 Rotator.prototype.verticalScrollToActiveElement = function() {
 	if ($("tr[id^=" + this.options.selectedItemIdPrefix + "].active") && $("tr[id^=" + this.options.selectedItemIdPrefix + "].active").position()) document.getElementById("root").scrollTo({top: $("tr[id^=" + this.options.selectedItemIdPrefix + "].active").position().top, behavior: 'smooth'});
+	// Other possibiity :
+	// document.getElementById("root").scrollTo({top: this.currentIndex * 70, behavior: 'smooth'});
 }
 
 Rotator.prototype.refreshSelection = function() {
@@ -209,7 +307,9 @@ Rotator.prototype.refreshHTML = function() {
 		}
 		else html = html.replace('{{infos}}',"");
 		if (option.rotatorIcon) {
-			const icon ='<label><i class="' + option.rotatorIcon + '"></i></label>';
+			let icon = '';
+			if (option.color)	icon ='<label><i class="' + option.rotatorIcon + '" style="color:' + option.color + ';"></i></label>';
+			else 				icon ='<label><i class="' + option.rotatorIcon + '"></i></label>';
 			html = html.replace('{{icon}}',icon);
 		}
 		else html = html.replace('{{icon}}',"");

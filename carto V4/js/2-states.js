@@ -148,7 +148,7 @@ const states = {
 			SoftLeft: function(event) {
 				event.preventDefault();
 				// We delete the current track
-				app.currentTrack = new Track({});
+				app.currentTrack = new Track({type:"RECORD"});
 				app.currentTrack.refreshMap();
 				// We hide the question
 				infos_startTracking_question = false;
@@ -635,80 +635,8 @@ const states = {
 		softKeysLabels : {
 			fr : {
 					SoftLeft :	'+ actuelle',
-					Center : 	'Cacher',
-					SoftRight :	'Actions'
-			},
-		},
-		keysActions : {
-			ArrowLeft: function(event) {
-				event.preventDefault();
-				menu.previous();
-				event.stopPropagation();
-			},
-			ArrowRight: function(event) {
-				event.preventDefault();
-				menu.next();
-				event.stopPropagation();
-			},
-			ArrowUp: function(event) {
-				event.preventDefault();
-				tracks.previous();
-				event.stopPropagation();
-			},
-			ArrowDown: function(event) {
-				event.preventDefault();
-				tracks.next();
-				event.stopPropagation();
-			},
-			SoftLeft: function(event) {
-				event.preventDefault();
-				//if track is not empty
-				if (app.currentTrack.coords.length != 0) {
-					// We add the current track and change its color
-					tracks.list.unshift(app.currentTrack);
-					tracks.list[0].color = "purple";
-					tracks.list[0].label = format_dateString(new Date());
-					tracks.currentIndex = 0;
-					tracks.generateHtml();
-					tracks.refreshMap();
-					// We delete the current track
-					app.currentTrack = new Track({});
-					app.currentTrack.refreshMap();
-				}
-				else toastr.warning("La trace actuelle est vide.");
-				event.stopPropagation();
-			},
-			Enter: function(event) {
-				event.preventDefault();
-				tracks.currentItem().rotatorValue(!tracks.currentItem().rotatorValue());
-				tracks.generateHtml();
-				tracks.refreshMap();
-				event.stopPropagation();
-			},
-			SoftRight: function(event) {
-				event.preventDefault();
-				state.tracks_actions = true;
-				displaySoftKeysLabels();
-				tracks_actions.generateHtml();
-				event.stopPropagation();
-			},
-			Backspace: function(event) {
-				event.preventDefault();
-				state.map = true;
-				$("#map").show();
-				$("#menu").hide();
-				$("#root").hide();
-				displaySoftKeysLabels();
-				event.stopPropagation();
-			}
-		},
-	},
-	TRACKS_NOTDISPLAYED : {
-		softKeysLabels : {
-			fr : {
-					SoftLeft :	'+ actuelle',
-					Center : 	'Afficher',
-					SoftRight :	'Actions'
+					Center : 	'Actions',
+					SoftRight :	'Cacher'
 			},
 		},
 		keysActions : {
@@ -742,7 +670,7 @@ const states = {
 					// We add the current track and 
 					tracks.addAndDisplay(app.currentTrack);
 					// We delete the current track
-					app.currentTrack = new Track({});
+					app.currentTrack = new Track({type:"RECORD"});
 					app.currentTrack.refreshMap();
 				}
 				else toastr.warning("La trace actuelle est vide.");
@@ -750,16 +678,86 @@ const states = {
 			},
 			Enter: function(event) {
 				event.preventDefault();
-				tracks.currentItem().rotatorValue(!tracks.currentItem().rotatorValue());
-				tracks.generateHtml();
-				tracks.currentItem().refreshMap();
+				state.tracks_actions = true;
+				displaySoftKeysLabels();
+				tracks_actions.generateHtml();
 				event.stopPropagation();
 			},
 			SoftRight: function(event) {
 				event.preventDefault();
+				tracks.currentItem().rotatorValue(!tracks.currentItem().rotatorValue());
+				tracks.generateHtml();
+				tracks.refreshMap();
+				event.stopPropagation();
+			},
+			Backspace: function(event) {
+				event.preventDefault();
+				state.map = true;
+				$("#map").show();
+				$("#menu").hide();
+				$("#root").hide();
+				displaySoftKeysLabels();
+				event.stopPropagation();
+			}
+		},
+	},
+	TRACKS_NOTDISPLAYED : {
+		softKeysLabels : {
+			fr : {
+					SoftLeft :	'+ actuelle',
+					Center : 	'Actions',
+					SoftRight :	'Afficher'
+			},
+		},
+		keysActions : {
+			ArrowLeft: function(event) {
+				event.preventDefault();
+				menu.previous();
+				event.stopPropagation();
+			},
+			ArrowRight: function(event) {
+				event.preventDefault();
+				menu.next();
+				event.stopPropagation();
+			},
+			ArrowUp: function(event) {
+				event.preventDefault();
+				tracks.previous();
+				event.stopPropagation();
+			},
+			ArrowDown: function(event) {
+				event.preventDefault();
+				tracks.next();
+				event.stopPropagation();
+			},
+			SoftLeft: function(event) {
+				event.preventDefault();
+				//if track is not empty
+				if (app.currentTrack.coords.length != 0) {
+					// We change its color and name
+					app.currentTrack.color = "#800080";
+					app.currentTrack.label = format_dateString(new Date());
+					// We add the current track and 
+					tracks.addAndDisplay(app.currentTrack);
+					// We delete the current track
+					app.currentTrack = new Track({type:"RECORD"});
+					app.currentTrack.refreshMap();
+				}
+				else toastr.warning("La trace actuelle est vide.");
+				event.stopPropagation();
+			},
+			Enter: function(event) {
+				event.preventDefault();
 				state.tracks_actions = true;
 				displaySoftKeysLabels();
 				tracks_actions.generateHtml();
+				event.stopPropagation();
+			},
+			SoftRight: function(event) {
+				event.preventDefault();
+				tracks.currentItem().rotatorValue(!tracks.currentItem().rotatorValue());
+				tracks.generateHtml();
+				tracks.currentItem().refreshMap();
 				event.stopPropagation();
 			},
 			Backspace: function(event) {
@@ -822,7 +820,9 @@ const states = {
 						tracks.currentItem().writeToSD();						
 						break;
 					case "changeColor":
-						
+						// We use the color tableRotator here
+						colors.options.targetDomSelector = "#menuTarget_2",
+						colors.generateHtml();
 						break;
 				}
 				event.stopPropagation();
@@ -949,6 +949,60 @@ const states = {
 				toastr.hide();
 				state.tracks_actions = true;
 				displaySoftKeysLabels();
+				event.stopPropagation();
+			}
+		},
+	},
+	TRACKS_ACTIONS_changeColor : {
+		softKeysLabels : {
+			fr : {
+					SoftLeft :	'',
+					Center : 	'Choisir',
+					SoftRight :	'Annuler'
+			},
+		},
+		keysActions : {
+			ArrowLeft: function(event) {
+				event.preventDefault();
+				colors.left();
+				event.stopPropagation();
+			},
+			ArrowRight: function(event) {
+				event.preventDefault();
+				colors.right();
+				event.stopPropagation();
+			},
+			ArrowUp: function(event) {
+				event.preventDefault();
+				colors.up();
+				event.stopPropagation();
+			},
+			ArrowDown: function(event) {
+				event.preventDefault();
+				colors.down();
+				event.stopPropagation();
+			},
+			Enter: function(event) {
+				event.preventDefault();
+				tracks.currentItem().color = colors.currentItem().value;
+				state.tracks_actions = false;
+				displaySoftKeysLabels();
+				tracks.generateHtml();
+				tracks.refreshMap();
+				event.stopPropagation();
+			},
+			SoftRight: function(event) {
+				event.preventDefault();
+				state.tracks_actions = true;
+				displaySoftKeysLabels();
+				tracks_actions.generateHtml();
+				event.stopPropagation();
+			},
+			Backspace: function(event) {
+				event.preventDefault();
+				state.tracks_actions = true;
+				displaySoftKeysLabels();
+				tracks_actions.generateHtml();
 				event.stopPropagation();
 			}
 		},

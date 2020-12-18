@@ -140,11 +140,11 @@ search = {
 					let coordsList = data.features[0].geometry.coordinates;
 					// data.features[0].properties.summary.distance and .duration
 					coordsList.forEach(function(coord) {coord.reverse();});
-					console.log(coordsList);
 					let itinerary = new Track({
-						coords:coordsList,
-						label: label,
-						color:'green'
+						type:	"ITINERARY",
+						coords:	coordsList,
+						label: 	label,
+						color:	'#008000'
 					});
 					// We add the itinerary to the tracks and display it
 					tracks.addAndDisplay(itinerary);
