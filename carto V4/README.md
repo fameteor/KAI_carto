@@ -44,7 +44,8 @@ The available rotators are :
 * Bug : le positionnement automatique du menu sélectionné n'est pas toujours correct.
 * Gestion des erreurs : afficher message si pas de réseau ou si nb de points trops grand pour API.
 * Gérer le nombre de points trop grands pour l'obtention de la courbe de niveau.
-* Bug rotator et tableRotator : la sélection de la valeur adapté au menu précédent n'est bonne que pour le démarrage generateHtml ! 
+* Bug rotator et tableRotator : la sélection de la valeur adapté au menu précédent n'est bonne que pour le démarrage generateHtml !
+* En mode trace, quand il y a des pbs de réception, doublon de positions GPS avec un timestamp non synchonisé sur la seconde juste.
 
 ## Fonctionnalités
 

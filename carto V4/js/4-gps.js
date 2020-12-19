@@ -283,8 +283,11 @@ const gps = {
 	watchStart : function() {
 		let that = this;
 		let gpsPoints = [];
+		let gpsPointsNb = 0;
 
 		const gpsWatchOnSuccess = function(position) {
+			// Record raw data if requested --------------------------------
+			if (app.options.recordRawCoords) app.currentTrack.rawPosition.push(position);
 			// Only if different GPS point ---------------------------------
 			if (!(position.coords.latitude === app.currentPosition.coords[0] && position.coords.longitude === app.currentPosition.coords[1])) {
 				console.log(position);
@@ -312,7 +315,10 @@ const gps = {
 					app.currentTrack.refreshMap();
 				}
 				else {
-					if ((position.timestamp % 5000) === 0) {
+					gpsPointsNb += 1;
+					// Mean calculation every n seconds
+					if (gpsPointsNb >= 5) {
+						gpsPointsNb = 0;
 						gpsPoints.push(position);
 						// Average position calculation --------------------
 						let latitude = 0;

@@ -77,8 +77,8 @@ const states = {
 		softKeysLabels : {
 			fr : {
 					SoftLeft :	'Tracer',
-					Center : 	'Rafraîchir',
-					SoftRight :	'Options'
+					Center : 	'Options',
+					SoftRight :	'Rafraîchir'
 			},
 		},
 		keysActions : {
@@ -106,11 +106,11 @@ const states = {
 			},
 			Enter: function(event) {
 				event.preventDefault();
-				gps.setAndDisplayCurrentPosition();
 				event.stopPropagation();
 			},
 			SoftRight: function(event) {
 				event.preventDefault();
+				gps.setAndDisplayCurrentPosition();
 				event.stopPropagation();
 			},
 			Backspace: function(event) {
@@ -195,8 +195,8 @@ const states = {
 		softKeysLabels : {
 			fr : {
 					SoftLeft :	'Stop trace',
-					Center : 	'',
-					SoftRight :	'Actions'
+					Center : 	'Actions',
+					SoftRight :	''
 			},
 		},
 		keysActions : {
@@ -216,6 +216,11 @@ const states = {
 				event.preventDefault();
 				gps.watchStop();
 				displaySoftKeysLabels();
+				event.stopPropagation();
+			},
+			Enter: function(event) {
+				event.preventDefault();
+				
 				event.stopPropagation();
 			},
 			SoftRight: function(event) {
@@ -327,8 +332,8 @@ const states = {
 		softKeysLabels : {
 			fr : {
 					SoftLeft :	'Ajouter ici',
-					Center : 	'Cacher',
-					SoftRight :	'Actions'
+					Center : 	'Actions',
+					SoftRight :	'Cacher'
 			},
 		},
 		keysActions : {
@@ -359,16 +364,16 @@ const states = {
 			},
 			Enter: function(event) {
 				event.preventDefault();
-				waypoints.currentItem().rotatorValue(!waypoints.currentItem().rotatorValue());
-				waypoints.generateHtml();
-				waypoints.refreshMap();
+				state.waypoints_options = true;
+				displaySoftKeysLabels();
+				waypoints_options.generateHtml();
 				event.stopPropagation();
 			},
 			SoftRight: function(event) {
 				event.preventDefault();
-				state.waypoints_options = true;
-				displaySoftKeysLabels();
-				waypoints_options.generateHtml();
+				waypoints.currentItem().rotatorValue(!waypoints.currentItem().rotatorValue());
+				waypoints.generateHtml();
+				waypoints.refreshMap();
 				event.stopPropagation();
 			},
 			Backspace: function(event) {
@@ -386,8 +391,8 @@ const states = {
 		softKeysLabels : {
 			fr : {
 					SoftLeft :	'Ajouter ici',
-					Center : 	'Afficher',
-					SoftRight :	'Actions'
+					Center : 	'Actions',
+					SoftRight :	'Afficher'
 			},
 		},
 		keysActions : {
@@ -418,16 +423,16 @@ const states = {
 			},
 			Enter: function(event) {
 				event.preventDefault();
-				waypoints.currentItem().rotatorValue(!waypoints.currentItem().rotatorValue());
-				waypoints.generateHtml();
-				waypoints.refreshMap();
+				state.waypoints_options = true;
+				displaySoftKeysLabels();
+				waypoints_options.generateHtml();
 				event.stopPropagation();
 			},
 			SoftRight: function(event) {
 				event.preventDefault();
-				state.waypoints_options = true;
-				displaySoftKeysLabels();
-				waypoints_options.generateHtml();
+				waypoints.currentItem().rotatorValue(!waypoints.currentItem().rotatorValue());
+				waypoints.generateHtml();
+				waypoints.refreshMap();
 				event.stopPropagation();
 			},
 			Backspace: function(event) {
@@ -446,7 +451,7 @@ const states = {
 			fr : {
 					SoftLeft :	'',
 					Center : 	'Choisir',
-					SoftRight :	'Annuler'
+					SoftRight :	''
 			},
 		},
 		keysActions : {
@@ -526,13 +531,6 @@ const states = {
 						displaySoftKeysLabels();
 						break;
 				}
-				event.stopPropagation();
-			},
-			SoftRight: function(event) {
-				event.preventDefault();
-				state.waypoints_options = false;
-				waypoints.generateHtml();
-				displaySoftKeysLabels();
 				event.stopPropagation();
 			},
 			Backspace: function(event) {
@@ -776,7 +774,7 @@ const states = {
 			fr : {
 					SoftLeft :	'',
 					Center : 	'Choisir',
-					SoftRight :	'Annuler'
+					SoftRight :	''
 			},
 		},
 		keysActions : {
@@ -821,18 +819,9 @@ const states = {
 						break;
 					case "changeColor":
 						// We use the color tableRotator here
-						colors.options.targetDomSelector = "#menuTarget_2",
-						colors.generateHtml();
+						tracks_colorsRotator.generateHtml();
 						break;
 				}
-				event.stopPropagation();
-			},
-			SoftRight: function(event) {
-				event.preventDefault();
-				state.tracks_actions = false;
-				tracks.generateHtml();
-				tracks.refreshMap();
-				displaySoftKeysLabels();
 				event.stopPropagation();
 			},
 			Backspace: function(event) {
@@ -850,7 +839,7 @@ const states = {
 			fr : {
 					SoftLeft :	'',
 					Center : 	'',
-					SoftRight :	'fermer'
+					SoftRight :	'Fermer'
 			},
 		},
 		keysActions : {
@@ -957,45 +946,38 @@ const states = {
 		softKeysLabels : {
 			fr : {
 					SoftLeft :	'',
-					Center : 	'Choisir',
-					SoftRight :	'Annuler'
+					Center : 	'',
+					SoftRight :	'Choisir'
 			},
 		},
 		keysActions : {
 			ArrowLeft: function(event) {
 				event.preventDefault();
-				colors.left();
+				tracks_colorsRotator.left();
 				event.stopPropagation();
 			},
 			ArrowRight: function(event) {
 				event.preventDefault();
-				colors.right();
+				tracks_colorsRotator.right();
 				event.stopPropagation();
 			},
 			ArrowUp: function(event) {
 				event.preventDefault();
-				colors.up();
+				tracks_colorsRotator.up();
 				event.stopPropagation();
 			},
 			ArrowDown: function(event) {
 				event.preventDefault();
-				colors.down();
-				event.stopPropagation();
-			},
-			Enter: function(event) {
-				event.preventDefault();
-				tracks.currentItem().color = colors.currentItem().value;
-				state.tracks_actions = false;
-				displaySoftKeysLabels();
-				tracks.generateHtml();
-				tracks.refreshMap();
+				tracks_colorsRotator.down();
 				event.stopPropagation();
 			},
 			SoftRight: function(event) {
 				event.preventDefault();
-				state.tracks_actions = true;
+				tracks.currentItem().color = tracks_colorsRotator.currentItem().value;
+				state.tracks_actions = false;
 				displaySoftKeysLabels();
-				tracks_actions.generateHtml();
+				tracks.generateHtml();
+				tracks.refreshMap();
 				event.stopPropagation();
 			},
 			Backspace: function(event) {
@@ -1012,7 +994,7 @@ const states = {
 			fr : {
 					SoftLeft :	'',
 					Center : 	'',
-					SoftRight :	''
+					SoftRight :	'Choisir'
 			},
 		},
 		keysActions : {
@@ -1051,8 +1033,8 @@ const states = {
 		softKeysLabels : {
 			fr : {
 					SoftLeft :	'',
-					Center : 	'sélectionner',
-					SoftRight :	''
+					Center : 	'',
+					SoftRight :	'Choisir'
 			},
 		},
 		keysActions : {
@@ -1076,7 +1058,7 @@ const states = {
 				mapBackgrounds.next();
 				event.stopPropagation();
 			},
-			Enter: function(event) {
+			SoftRight: function(event) {
 				event.preventDefault();
 				mapBackgrounds.activeItem(mapBackgrounds.currentItem());
 				mapBackgrounds.generateHtml();
@@ -1098,8 +1080,8 @@ const states = {
 		softKeysLabels : {
 			fr : {
 					SoftLeft :	'',
-					Center : 	'Désélectionner',
-					SoftRight :	''
+					Center : 	'',
+					SoftRight :	'Enlever'
 			},
 		},
 		keysActions : {
@@ -1123,7 +1105,7 @@ const states = {
 				layers.next();
 				event.stopPropagation();
 			},
-			Enter: function(event) {
+			SoftRight: function(event) {
 				event.preventDefault();
 				layers.currentItem().active = false;
 				layers.generateHtml();
@@ -1145,8 +1127,8 @@ const states = {
 		softKeysLabels : {
 			fr : {
 					SoftLeft :	'',
-					Center : 	'sélectionner',
-					SoftRight :	''
+					Center : 	'',
+					SoftRight :	'Ajouter'
 			},
 		},
 		keysActions : {
@@ -1170,7 +1152,7 @@ const states = {
 				layers.next();
 				event.stopPropagation();
 			},
-			Enter: function(event) {
+			SoftRight: function(event) {
 				event.preventDefault();
 				layers.activeItem(layers.currentItem());
 				layers.generateHtml();
@@ -1192,8 +1174,8 @@ const states = {
 		softKeysLabels : {
 			fr : {
 					SoftLeft :	'',
-					Center : 	'decocher',
-					SoftRight :	''
+					Center : 	'',
+					SoftRight :	'Décocher'
 			},
 		},
 		keysActions : {
@@ -1217,7 +1199,7 @@ const states = {
 				options.next();
 				event.stopPropagation();
 			},
-			Enter: function(event) {
+			SoftRight: function(event) {
 				event.preventDefault();
 				options.currentItem().rotatorValue(!options.currentItem().rotatorValue());
 				options.generateHtml();
@@ -1241,8 +1223,8 @@ const states = {
 		softKeysLabels : {
 			fr : {
 					SoftLeft :	'',
-					Center : 	'cocher',
-					SoftRight :	''
+					Center : 	'',
+					SoftRight :	'Cocher'
 			},
 		},
 		keysActions : {
@@ -1266,7 +1248,7 @@ const states = {
 				options.next();
 				event.stopPropagation();
 			},
-			Enter: function(event) {
+			SoftRight: function(event) {
 				event.preventDefault();
 				options.currentItem().rotatorValue(!options.currentItem().rotatorValue());
 				options.generateHtml();
@@ -1317,17 +1299,17 @@ const states = {
 			},
 			Enter: function(event) {
 				event.preventDefault();
-				switch (options.currentIndex) {
-					case 5:
+				switch (options.currentItem().value) {
+					case "coordinatesFormat":
 						state.options_value = "coordinatesFormat";
 						optionsCoordinatesFormat.generateHtml();
 						break;
-					case 6:
+					case "units":
 						state.options_value = "units";
 						optionsUnits.generateHtml();
 						break;
-					case 7:
-						state.options_value = "profile";
+					case "itineraryProfile":
+						state.options_value = "itineraryProfile";
 						optionsProfile.generateHtml();
 						break;
 				}
@@ -1348,8 +1330,8 @@ const states = {
 		softKeysLabels : {
 			fr : {
 					SoftLeft :	'',
-					Center : 	'Sélectionner',
-					SoftRight :	'Annuler'
+					Center : 	'',
+					SoftRight :	'Choisir'
 			},
 		},
 		keysActions : {
@@ -1375,11 +1357,7 @@ const states = {
 				optionsCoordinatesFormat.next();
 				event.stopPropagation();
 			},
-			SoftLeft: function(event) {
-				event.preventDefault();
-				event.stopPropagation();
-			},
-			Enter: function(event) {
+			SoftRight: function(event) {
 				event.preventDefault();
 				options.currentItem().rotatorValue(optionsCoordinatesFormat.currentItem().label);
 				state.options_value = "";
@@ -1387,12 +1365,6 @@ const states = {
 				gps.refreshCurrentPosition();
 				// No need to waypoints.generateHtml(); 
 				// Waypoint format will be updated when waypoint menu displayed
-				event.stopPropagation();
-			},
-			SoftRight: function(event) {
-				event.preventDefault();
-				state.options_value = "";
-				options.generateHtml();
 				event.stopPropagation();
 			},
 			Backspace: function(event) {
@@ -1407,8 +1379,8 @@ const states = {
 		softKeysLabels : {
 			fr : {
 					SoftLeft :	'',
-					Center : 	'Sélectionner',
-					SoftRight :	'Annuler'
+					Center : 	'',
+					SoftRight :	'Choisir'
 			},
 		},
 		keysActions : {
@@ -1434,22 +1406,12 @@ const states = {
 				optionsUnits.next();
 				event.stopPropagation();
 			},
-			SoftLeft: function(event) {
-				event.preventDefault();
-				event.stopPropagation();
-			},
-			Enter: function(event) {
+			SoftRight: function(event) {
 				event.preventDefault();
 				options.currentItem().rotatorValue(optionsUnits.currentItem().label);
 				state.options_value = "";
 				options.generateHtml();
 				gps.refreshCurrentPosition();
-				event.stopPropagation();
-			},
-			SoftRight: function(event) {
-				event.preventDefault();
-				state.options_value = "";
-				options.generateHtml();
 				event.stopPropagation();
 			},
 			Backspace: function(event) {
@@ -1464,8 +1426,8 @@ const states = {
 		softKeysLabels : {
 			fr : {
 					SoftLeft :	'',
-					Center : 	'Sélectionner',
-					SoftRight :	'Annuler'
+					Center : 	'',
+					SoftRight :	'Choisir'
 			},
 		},
 		keysActions : {
@@ -1491,11 +1453,7 @@ const states = {
 				optionsProfile.next();
 				event.stopPropagation();
 			},
-			SoftLeft: function(event) {
-				event.preventDefault();
-				event.stopPropagation();
-			},
-			Enter: function(event) {
+			SoftRight: function(event) {
 				event.preventDefault();
 				options.currentItem().rotatorValue(optionsProfile.currentItem().label);
 				state.options_value = "";
@@ -1503,72 +1461,10 @@ const states = {
 				gps.refreshCurrentPosition();
 				event.stopPropagation();
 			},
-			SoftRight: function(event) {
-				event.preventDefault();
-				state.options_value = "";
-				options.generateHtml();
-				event.stopPropagation();
-			},
 			Backspace: function(event) {
 				event.preventDefault();
 				state.options_value = "";
 				options.generateHtml();
-				event.stopPropagation();
-			}
-		},
-	},
-	OPTIONS_INPUT : {
-		softKeysLabels : {
-			fr : {
-					SoftLeft :	'inactif',
-					Center : 	'modifier',
-					SoftRight :	'inactif'
-			},
-		},
-		keysActions : {
-			ArrowLeft: function(event) {
-				event.preventDefault();
-				menu.previous();
-				event.stopPropagation();
-			},
-			ArrowRight: function(event) {
-				event.preventDefault();
-				menu.next();
-				event.stopPropagation();
-			},
-			ArrowUp: function(event) {
-				event.preventDefault();
-				options.previous();
-				event.stopPropagation();
-			},
-			ArrowDown: function(event) {
-				event.preventDefault();
-				options.next();
-				event.stopPropagation();
-			},
-			SoftLeft: function(event) {
-				event.preventDefault();
-				menu.hide();
-				$("#root").height(235 + 28);
-				event.stopPropagation();
-			},
-			Enter: function(event) {
-				event.preventDefault();
-				event.stopPropagation();
-			},
-			SoftRight: function(event) {
-				event.preventDefault();
-				menu.show();
-				$("#root").height(235);
-				event.stopPropagation();
-			},
-			Backspace: function(event) {
-				event.preventDefault();
-				state.map = true;
-				$("#map").show();
-				$("#menu").hide();
-				$("#root").hide();
-				displaySoftKeysLabels();
 				event.stopPropagation();
 			}
 		},
@@ -1577,8 +1473,8 @@ const states = {
 		softKeysLabels : {
 			fr : {
 					SoftLeft :	'',
-					Center : 	'',
-					SoftRight :	'Actions'
+					Center : 	'Actions',
+					SoftRight :	''
 			},
 		},
 		keysActions : {
@@ -1602,7 +1498,7 @@ const states = {
 				files.next();
 				event.stopPropagation();
 			},
-			SoftRight: function(event) {
+			Enter: function(event) {
 				event.preventDefault();
 				state.files_actions = true;
 				files_actions.generateHtml();
@@ -1625,7 +1521,7 @@ const states = {
 			fr : {
 					SoftLeft :	'',
 					Center : 	'Choisir',
-					SoftRight :	'Annuler'
+					SoftRight :	''
 			},
 		},
 		keysActions : {
@@ -1664,13 +1560,6 @@ const states = {
 						displaySoftKeysLabels();
 						break;
 				}
-				event.stopPropagation();
-			},
-			SoftRight: function(event) {
-				event.preventDefault();
-				state.files_actions = false;
-				files.generateHtml();
-				displaySoftKeysLabels();
 				event.stopPropagation();
 			},
 			Backspace: function(event) {

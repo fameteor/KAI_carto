@@ -164,6 +164,8 @@ const Track = function(initial) {
 	this.altitudes = 					initial.altitudes || [];
 	this.timestamps = 					initial.timestamps || [];
 	
+	this.rawPosition = 					initial.rawPosition ||	[];
+	
 	this.segmentsLength = 				initial.segmentsLength || [];
 	this.segmentsCumulatedLength = 		initial.segmentsCumulatedLength || [];
 	this.segmentsDuration = 			initial.segmentsDuration || [];
@@ -192,7 +194,9 @@ const Track = function(initial) {
 		}
 	};
 	this.rotatorInfos = 				initial.rotatorInfos || function() {
-		return this.coords.length + " point" + (this.coords.length != 0 ? "s" : "");
+		let infos = this.coords.length + " point" + (this.coords.length > 1 ? "s " : " ");
+		if (this.rawPosition && this.rawPosition.length > 0) infos += "(" + this.rawPosition.length + " points bruts)";
+		return infos;
 	};
 }
 
@@ -229,6 +233,7 @@ Track.prototype.writeToSD = function() {
 						"coords",
 						"altitudes",
 						"timestamps",
+						"rawPosition",
 						"label",
 						"color",
 						"segmentsLength",
@@ -425,83 +430,45 @@ const tracks_actions = new Rotator(tracks_actions_list,tracks_actions_options);
 // colorsList TABLE ROTATOR
 // -----------------------------------------------------------------
 
-let colorsList = [
-	{
-		label:'White',
-		value:'#FFFFFF'
-	},
-	{
-		label:'Silver',
-		value:'#C0C0C0'
-	},
-	{
-		label:'Gray',
-		value:'#808080'
-	},
-	{
-		label:'Black',
-		value:'#000000'
-	},
-	{
-		label:'Red',
-		value:'#FF0000'
-	},
-	{
-		label:'Maroon',
-		value:'#800000'
-	},
-	{
-		label:'Yellow',
-		value:'#FFFF00'
-	},
-	{
-		label:'Olive',
-		value:'#808000'
-	},
-	{
-		label:'Lime',
-		value:'#00FF00'
-	},
-	{
-		label:'Green',
-		value:'#008000'
-	},
-	{
-		label:'Aqua',
-		value:'#00FFFF'
-	},
-	{
-		label:'Teal',
-		value:'#008080'
-	},
-	{
-		label:'Blue',
-		value:'#0000FF'
-	},
-	{
-		label:'Navy',
-		value:'#000080'
-	},
-	{
-		label:'Fuchsia',
-		value:'#FF00FF'
-	},
-	{
-		label:'Purple',
-		value:'#800080'
-	},
+let tracks_colorsList = [
+	// Rouges
+	{value:'#FF0000'},
+	// Oranges
+	{value:'#FF6C00'},
+	// Jaunes
+	{value:'#FFFF00'},
+	// Verts
+	{value:'#808000'},
+	{value:'#008000'},
+	{value:'#00FF00'},
+	// Bleus
+	{value:'#000080'},
+	{value:'#0000FF'},
+	{value:'#00FFFF'},
+	// Divers
+	{value:'#800000'},
+	{value:'#6600cc'},
+	{value:'#008080'},
+	// Violets
+	{value:'#800080'},
+	{value:'#FF00FF'},
+	{value:'#ff99cc'},
+	// Noir -> Blanc
+	{value:'#000000'},
+	{value:'#A0A0A0'},
+	{value:'#FFFFFF'}
 ];
 
-let colorsOptions = {
+let tracks_colorsOptions = {
 	"selectedItemIdPrefix" : 		"colors",
-	"targetDomSelector" : 			"#menuTarget_1",
+	"targetDomSelector" : 			"#menuTarget_2",
 	"initialSelectionIndex" : function() {
 		let initialSelectionIndex = 0;
-		colorsList.forEach((option,index) => {
+		tracks_colorsList.forEach((option,index) => {
 			if (option.value === tracks.currentItem().color) initialSelectionIndex = index;
 		});
 		return initialSelectionIndex;
 	},
 };
 
-let colors = new TableRotator(colorsList,colorsOptions);
+let tracks_colorsRotator = new TableRotator(tracks_colorsList,tracks_colorsOptions);

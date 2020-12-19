@@ -194,15 +194,13 @@ TableRotator.prototype.generateHtml = function() {
 	const that = this;
 	let html = '<div class="tableRotatorContainer">';
 	this.list.forEach(function(element,index) {
-		htmlFragment = '<div id="{{id}}" class="tableRotator" style="background-color:' + element.value + ';"></div>';
-		
-		const id = that.options.selectedItemIdPrefix + index;
-		htmlFragment = htmlFragment.replace('{{id}}',id);
-		
-		html += htmlFragment;
+		html += '<div id="' 
+			+ that.options.selectedItemIdPrefix + index 
+			+ '" class="tableRotator" style="background-color:' 
+			+ element.value 
+			+ ';"></div>';;
 	});
-	 html += '</div>';
-	console.log(html);
+	html += '</div>';
 	$(this.options.targetDomSelector).html(html);
 	this.refreshSelection();
 };
@@ -460,7 +458,7 @@ const state = {
 							case "units":
 								currentState = "OPTIONS_UNITS";
 								break;
-							case "profile":
+							case "itineraryProfile":
 								currentState = "OPTIONS_PROFILE";
 								break;
 							default :
@@ -468,7 +466,6 @@ const state = {
 								break;
 						}
 					}
-					if (options.currentItem().rotatorType === "INPUT")		currentState = "OPTIONS_INPUT";
 					break;
 				case "FILES":
 					if (this.files_actions) {

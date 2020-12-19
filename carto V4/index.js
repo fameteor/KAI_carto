@@ -33,6 +33,7 @@ let app = {
 		mapIsCenteredOnGpsPosition: true,
 		waypointsNameAreDisplayed: 	false,
 		gpsPostProcessingisOn: 		true,
+		recordRawCoords:			true,
 		itineraryProfile:			"cycling-regular",
 		coordinatesFormat:			"DDD.xxxxxx",
 		units:						"Métriques"
@@ -217,7 +218,23 @@ let optionsList = [
 		}
 	},
 	{	
+		label:"Enregistrement de la trace non filtée en plus",
+		rotatorType:"BOOLEAN",
+		rotatorIcon:"fas fa-cog",
+		rotatorValue:function(value) {
+			if (value != undefined) {
+				// Setter
+				app.options.recordRawCoords = value;
+			}
+			else {
+				// Getter
+				return app.options.recordRawCoords;
+			}
+		}
+	},
+	{	
 		label:"Format des coordonnées",
+		value:"coordinatesFormat",
 		rotatorType:"SELECT",
 		rotatorIcon:"fas fa-cog",
 		rotatorValue:function(value) {
@@ -236,6 +253,7 @@ let optionsList = [
 	},
 	{	
 		label:"Unités",
+		value:"units",
 		rotatorType:"SELECT",
 		rotatorIcon:"fas fa-cog",
 		rotatorValue:function(value) {
@@ -254,6 +272,7 @@ let optionsList = [
 	},
 	{	
 		label:"Mode de transport (itinéraires)",
+		value:"itineraryProfile",
 		rotatorType:"SELECT",
 		rotatorIcon:"fas fa-cog",
 		rotatorValue:function(value) {
