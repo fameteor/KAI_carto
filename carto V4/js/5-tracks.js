@@ -180,9 +180,9 @@ const Track = function(initial) {
 	// For Rotator usage only --------------------------------------
 	this.rotatorType = 					initial.rotatorType || "BOOLEAN";
 	
-	if (this.type === "RECORD")			this.rotatorIcon = initial.rotatorIcon || 'fas fa-feather ' + this.color;
-	else if (this.type === "ITINERARY")	this.rotatorIcon = initial.rotatorIcon || 'fas fa-project-diagram ' + this.color;
-		else							this.rotatorIcon = initial.rotatorIcon || 'fas fa-arrows-alt ' + this.color;
+	if (this.type === "RECORD")			this.rotatorIcon = initial.rotatorIcon || 'fas fa-feather';
+	else if (this.type === "ITINERARY")	this.rotatorIcon = initial.rotatorIcon || 'fas fa-project-diagram';
+		else							this.rotatorIcon = initial.rotatorIcon || 'fas fa-arrows-alt';
 	this.rotatorValue = 				initial.rotatorValue || function(value) {
 		if (value != undefined) {
 			// Setter
@@ -240,7 +240,8 @@ Track.prototype.writeToSD = function() {
 						"segmentsCumulatedLength",
 						"segmentsDuration",
 						"segmentsSpeed",
-						"dbAltitudes"
+						"dbAltitudes",
+						"rotatorIcon"
 					]
 				)
 			], 
@@ -414,6 +415,11 @@ let tracks_actions_list = [
 		label:"Changer la couleur",
 		rotatorType:"MENU",
 		value:"changeColor"
+	},
+	{	
+		label:"Changer l'icône",
+		rotatorType:"MENU",
+		value:"changeIcon"
 	}
 ];
 
@@ -427,7 +433,7 @@ const tracks_actions_options = {
 const tracks_actions = new Rotator(tracks_actions_list,tracks_actions_options);
 
 // -----------------------------------------------------------------
-// colorsList TABLE ROTATOR
+// colors TABLE ROTATOR
 // -----------------------------------------------------------------
 
 let tracks_colorsList = [
@@ -469,6 +475,44 @@ let tracks_colorsOptions = {
 		});
 		return initialSelectionIndex;
 	},
+	"cellHtmlContent": function(element,index,selectedItemIdPrefix) {
+		return '<div id="' 
+			+ selectedItemIdPrefix + index 
+			+ '" class="tableRotator" style="background-color:' 
+			+ element.value 
+			+ ';"></div>';
+	}
 };
 
 let tracks_colorsRotator = new TableRotator(tracks_colorsList,tracks_colorsOptions);
+
+// -----------------------------------------------------------------
+// icons TABLE ROTATOR
+// -----------------------------------------------------------------
+
+let tracks_iconsList = [
+	{value:'fas fa-feather'},
+	{value:'fas fa-project-diagram'},
+	{value:'fas fa-arrows-alt'},
+	{value:'fas fa-bicycle'},
+	{value:'fas fa-car'},
+];
+
+let tracks_iconsOptions = {
+	"selectedItemIdPrefix" : 		"colors",
+	"targetDomSelector" : 			"#menuTarget_2",
+	"initialSelectionIndex" : function() {
+		let initialSelectionIndex = 0;
+		tracks_iconsList.forEach((option,index) => {
+			if (option.value === tracks.currentItem().rotatorIcon) initialSelectionIndex = index;
+		});
+		return initialSelectionIndex;
+	},
+	"cellHtmlContent": function(element,index,selectedItemIdPrefix) {
+		return '<div id="' 
+			+ selectedItemIdPrefix + index 
+			+ '" class="tableRotator iconsRotator"><i class="iconsRotator ' + element.value + '"></i></div>';
+	}
+};
+
+let tracks_iconsRotator = new TableRotator(tracks_iconsList,tracks_iconsOptions);

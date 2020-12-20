@@ -194,13 +194,10 @@ TableRotator.prototype.generateHtml = function() {
 	const that = this;
 	let html = '<div class="tableRotatorContainer">';
 	this.list.forEach(function(element,index) {
-		html += '<div id="' 
-			+ that.options.selectedItemIdPrefix + index 
-			+ '" class="tableRotator" style="background-color:' 
-			+ element.value 
-			+ ';"></div>';;
+		if (that.options.cellHtmlContent) html += that.options.cellHtmlContent(element,index,that.options.selectedItemIdPrefix);
 	});
 	html += '</div>';
+	console.log(html)
 	$(this.options.targetDomSelector).html(html);
 	this.refreshSelection();
 };
@@ -432,11 +429,12 @@ const state = {
 					break;
 				case "TRACKS":
 					if (this.tracks_actions) {
-						if (this.tracks_actions === "infos") 						currentState = "TRACKS_ACTIONS_infos";
+						if (this.tracks_actions === "infos") 							currentState = "TRACKS_ACTIONS_infos";
 							else if (this.tracks_actions === "rename") 					currentState = "TRACKS_ACTIONS_rename";
-								else if (this.tracks_actions === "delete")			currentState = "TRACKS_ACTIONS_delete";
-									else if (this.tracks_actions === "changeColor")	currentState = "TRACKS_ACTIONS_changeColor";
-										else 										currentState = "TRACKS_ACTIONS";
+								else if (this.tracks_actions === "delete")				currentState = "TRACKS_ACTIONS_delete";
+									else if (this.tracks_actions === "changeColor")		currentState = "TRACKS_ACTIONS_changeColor";
+										else if (this.tracks_actions === "changeIcon")	currentState = "TRACKS_ACTIONS_changeIcon";
+											else 										currentState = "TRACKS_ACTIONS";
 					}
 					else {
 						if (tracks.currentItem().rotatorValue()) 	currentState = "TRACKS_DISPLAYED";

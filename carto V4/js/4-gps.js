@@ -317,7 +317,7 @@ const gps = {
 				else {
 					gpsPointsNb += 1;
 					// Mean calculation every n seconds
-					if (gpsPointsNb >= 5) {
+					if (gpsPointsNb >= 10) {
 						gpsPointsNb = 0;
 						gpsPoints.push(position);
 						// Average position calculation --------------------

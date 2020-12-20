@@ -821,6 +821,10 @@ const states = {
 						// We use the color tableRotator here
 						tracks_colorsRotator.generateHtml();
 						break;
+					case "changeIcon":
+						// We use the color tableRotator here
+						tracks_iconsRotator.generateHtml();
+						break;
 				}
 				event.stopPropagation();
 			},
@@ -974,6 +978,53 @@ const states = {
 			SoftRight: function(event) {
 				event.preventDefault();
 				tracks.currentItem().color = tracks_colorsRotator.currentItem().value;
+				state.tracks_actions = false;
+				displaySoftKeysLabels();
+				tracks.generateHtml();
+				tracks.refreshMap();
+				event.stopPropagation();
+			},
+			Backspace: function(event) {
+				event.preventDefault();
+				state.tracks_actions = true;
+				displaySoftKeysLabels();
+				tracks_actions.generateHtml();
+				event.stopPropagation();
+			}
+		},
+	},
+	TRACKS_ACTIONS_changeIcon : {
+		softKeysLabels : {
+			fr : {
+					SoftLeft :	'',
+					Center : 	'',
+					SoftRight :	'Choisir'
+			},
+		},
+		keysActions : {
+			ArrowLeft: function(event) {
+				event.preventDefault();
+				tracks_iconsRotator.left();
+				event.stopPropagation();
+			},
+			ArrowRight: function(event) {
+				event.preventDefault();
+				tracks_iconsRotator.right();
+				event.stopPropagation();
+			},
+			ArrowUp: function(event) {
+				event.preventDefault();
+				tracks_iconsRotator.up();
+				event.stopPropagation();
+			},
+			ArrowDown: function(event) {
+				event.preventDefault();
+				tracks_iconsRotator.down();
+				event.stopPropagation();
+			},
+			SoftRight: function(event) {
+				event.preventDefault();
+				tracks.currentItem().rotatorIcon = tracks_iconsRotator.currentItem().value;
 				state.tracks_actions = false;
 				displaySoftKeysLabels();
 				tracks.generateHtml();
@@ -1671,8 +1722,8 @@ const states = {
 		softKeysLabels : {
 			fr : {
 					SoftLeft :	'Saisir',
-					Center : 	'',
-					SoftRight :	'Actions'
+					Center : 	'Actions',
+					SoftRight :	''
 			},
 		},
 		keysActions : {
@@ -1710,7 +1761,7 @@ const states = {
 				search.focusOnInput();
 				event.stopPropagation();
 			},
-			SoftRight: function(event) {
+			Enter: function(event) {
 				event.preventDefault();
 				// We display the search.resultActionsRotator
 				search.resultActionsRotator.generateHtml();
@@ -1734,7 +1785,7 @@ const states = {
 			fr : {
 					SoftLeft :	'',
 					Center : 	'Choisir',
-					SoftRight :	'Annuler'
+					SoftRight :	''
 			},
 		},
 		keysActions : {
@@ -1777,11 +1828,6 @@ const states = {
 				}
 				event.stopPropagation();
 			},
-			SoftRight: function(event) {
-				event.preventDefault();
-				search.displayInput();
-				event.stopPropagation();
-			},
 			Backspace: function(event) {
 				event.preventDefault();
 				search.displayInput();
@@ -1794,7 +1840,7 @@ const states = {
 			fr : {
 					SoftLeft :	'',
 					Center : 	'Choisir',
-					SoftRight :	'Annuler'
+					SoftRight :	''
 			},
 		},
 		keysActions : {
@@ -1873,13 +1919,6 @@ const states = {
 						displaySoftKeysLabels();
 						break;
 				}
-				event.stopPropagation();
-			},
-			SoftRight: function(event) {
-				event.preventDefault();
-				search.resultRotator.generateHtml()
-				state.search_state = "result";
-				displaySoftKeysLabels();
 				event.stopPropagation();
 			},
 			Backspace: function(event) {
