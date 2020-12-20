@@ -415,8 +415,8 @@ const state = {
 					break;
 				case "WAYPOINTS":
 					if (this.waypoints_options) {
-						if (this.waypoints_options_rename) 						currentState = "WAYPOINTS_OPTIONS_RENAME";
-							else if (this.waypoints_options_delete)				currentState = "WAYPOINTS_OPTIONS_DELETE";
+						if (this.waypoints_options_rename) 						currentState = "WAYPOINTS_OPTIONS_rename";
+							else if (this.waypoints_options_delete)				currentState = "WAYPOINTS_OPTIONS_delete";
 								else if (this.waypoints_options_changeIcon)		currentState = "WAYPOINTS_OPTIONS_changeIcon";
 								else 											currentState = "WAYPOINTS_OPTIONS";
 					}						

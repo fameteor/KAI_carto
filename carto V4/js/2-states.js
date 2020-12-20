@@ -548,7 +548,7 @@ const states = {
 			}
 		},
 	},
-	WAYPOINTS_OPTIONS_RENAME: {
+	WAYPOINTS_OPTIONS_rename: {
 		softKeysLabels : {
 			fr : {
 					SoftLeft :	'',
@@ -587,7 +587,7 @@ const states = {
 			}
 		},
 	},
-	WAYPOINTS_OPTIONS_DELETE: {
+	WAYPOINTS_OPTIONS_delete: {
 		softKeysLabels : {
 			fr : {
 					SoftLeft :	'Supprimer',
@@ -668,6 +668,7 @@ const states = {
 				event.preventDefault();
 				waypoints.currentItem().markerIcon = waypoints_iconsRotator.currentItem().value;
 				state.waypoints_options_changeIcon = false;
+				state.waypoints_options = false;
 				displaySoftKeysLabels();
 				waypoints.generateHtml();
 				waypoints.currentItem().refreshMap();
@@ -676,6 +677,7 @@ const states = {
 			Backspace: function(event) {
 				event.preventDefault();
 				state.waypoints_options_changeIcon = false;
+				state.waypoints_options = false;
 				displaySoftKeysLabels();
 				waypoints.generateHtml();
 				event.stopPropagation();
@@ -877,6 +879,36 @@ const states = {
 					case "changeIcon":
 						// We use the color tableRotator here
 						tracks_iconsRotator.generateHtml();
+						break;
+					case "positionMapAtStart":
+						// We disable the map centering on current position
+						app.options.mapIsCenteredOnGpsPosition = false;
+						options.generateHtml();
+						// We exit from tracks actions
+						state.tracks_actions = false;
+						tracks.generateHtml();
+						// We display the map
+						state.map = true;
+						$("#map").show();
+						$("#menu").hide();
+						$("#root").hide();
+						app.myMap.flyTo(tracks.currentItem().coords[0],app.zoomLevel);
+						displaySoftKeysLabels();
+						break;
+					case "positionMapAtEnd":
+						// We disable the map centering on current position
+						app.options.mapIsCenteredOnGpsPosition = false;
+						options.generateHtml();
+						// We exit from tracks actions
+						state.tracks_actions = false;
+						tracks.generateHtml();
+						// We display the map
+						state.map = true;
+						$("#map").show();
+						$("#menu").hide();
+						$("#root").hide();
+						app.myMap.flyTo(tracks.currentItem().coords[tracks.currentItem().coords.length - 1],app.zoomLevel);
+						displaySoftKeysLabels();
 						break;
 				}
 				event.stopPropagation();

@@ -417,6 +417,16 @@ let tracks_actions_list = [
 		label:"Changer l'icône",
 		rotatorType:"MENU",
 		value:"changeIcon"
+	},
+	{	
+		label:"Positionner la carte au début de cette trace",
+		rotatorType:"MENU",
+		value:"positionMapAtStart"
+	},
+	{	
+		label:"Positionner la carte à la fin de cette trace",
+		rotatorType:"MENU",
+		value:"positionMapAtEnd"
 	}
 ];
 
