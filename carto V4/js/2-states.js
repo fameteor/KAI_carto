@@ -171,7 +171,7 @@ const states = {
 				// We hide the question
 				infos_startTracking_question = false;
 				toastr.hide();
-				// We start trhe tracking
+				// We start the tracking
 				gps.watchStart();
 				displaySoftKeysLabels();
 				event.stopPropagation();
@@ -179,7 +179,7 @@ const states = {
 			Backspace: function(event) {
 				event.preventDefault();
 				// We hide the question
-				infos_startTracking_question = true;
+				infos_startTracking_question = false;
 				toastr.hide();
 				// We display the map
 				state.map = true;
@@ -530,6 +530,12 @@ const states = {
 						app.myMap.flyTo(app.currentPosition.coords,app.zoomLevel);
 						displaySoftKeysLabels();
 						break;
+					case "changeIcon":
+						// We use the icon tableRotator here
+						state.waypoints_options_changeIcon = true;
+						displaySoftKeysLabels();
+						waypoints_iconsRotator.generateHtml();
+						break;
 				}
 				event.stopPropagation();
 			},
@@ -625,6 +631,53 @@ const states = {
 				toastr.hide();
 				state.waypoints_options_delete = false;
 				displaySoftKeysLabels();
+				event.stopPropagation();
+			}
+		},
+	},
+	WAYPOINTS_OPTIONS_changeIcon : {
+		softKeysLabels : {
+			fr : {
+					SoftLeft :	'',
+					Center : 	'',
+					SoftRight :	'Choisir'
+			},
+		},
+		keysActions : {
+			ArrowLeft: function(event) {
+				event.preventDefault();
+				waypoints_iconsRotator.left();
+				event.stopPropagation();
+			},
+			ArrowRight: function(event) {
+				event.preventDefault();
+				waypoints_iconsRotator.right();
+				event.stopPropagation();
+			},
+			ArrowUp: function(event) {
+				event.preventDefault();
+				waypoints_iconsRotator.up();
+				event.stopPropagation();
+			},
+			ArrowDown: function(event) {
+				event.preventDefault();
+				waypoints_iconsRotator.down();
+				event.stopPropagation();
+			},
+			SoftRight: function(event) {
+				event.preventDefault();
+				waypoints.currentItem().markerIcon = waypoints_iconsRotator.currentItem().value;
+				state.waypoints_options_changeIcon = false;
+				displaySoftKeysLabels();
+				waypoints.generateHtml();
+				waypoints.currentItem().refreshMap();
+				event.stopPropagation();
+			},
+			Backspace: function(event) {
+				event.preventDefault();
+				state.waypoints_options_changeIcon = false;
+				displaySoftKeysLabels();
+				waypoints.generateHtml();
 				event.stopPropagation();
 			}
 		},

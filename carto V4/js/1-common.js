@@ -197,7 +197,6 @@ TableRotator.prototype.generateHtml = function() {
 		if (that.options.cellHtmlContent) html += that.options.cellHtmlContent(element,index,that.options.selectedItemIdPrefix);
 	});
 	html += '</div>';
-	console.log(html)
 	$(this.options.targetDomSelector).html(html);
 	this.refreshSelection();
 };
@@ -395,6 +394,7 @@ const state = {
 	waypoints_options : 			false,
 	waypoints_options_rename : 		false,
 	waypoints_options_delete : 		false,
+	waypoints_options_changeIcon : 	false,
 	tracks_actions : 				false,
 	files_actions : 				false,
 	search_state :					"form",
@@ -415,9 +415,10 @@ const state = {
 					break;
 				case "WAYPOINTS":
 					if (this.waypoints_options) {
-						if (this.waypoints_options_rename) 			currentState = "WAYPOINTS_OPTIONS_RENAME";
-							else if (this.waypoints_options_delete)	currentState = "WAYPOINTS_OPTIONS_DELETE";
-								else 								currentState = "WAYPOINTS_OPTIONS";
+						if (this.waypoints_options_rename) 						currentState = "WAYPOINTS_OPTIONS_RENAME";
+							else if (this.waypoints_options_delete)				currentState = "WAYPOINTS_OPTIONS_DELETE";
+								else if (this.waypoints_options_changeIcon)		currentState = "WAYPOINTS_OPTIONS_changeIcon";
+								else 											currentState = "WAYPOINTS_OPTIONS";
 					}						
 					else {
 						if (waypoints.list.length > 0) {

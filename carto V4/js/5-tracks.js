@@ -3,13 +3,10 @@
 // =================================================================
 
 let tracks_initialList = [
-/*
-	{label:"Drau radweg SHORT Autriche",coords:drauRadwegShort,color:'lightblue',trackIsDisplayedOnTheMap:true,type:"ITINERARY"},
-	{label:"Drau radweg Autriche",coords:drauRadweg,color:'red',trackIsDisplayedOnTheMap:true,type:"ITINERARY"},
-	{label:"Drav radweg Slovénie",coords:drauSlovenia,color:'orange',trackIsDisplayedOnTheMap:true,type:"ITINERARY"},
-	{label:"Mur radweg Slovénie",coords:murCroatia,color:'blue',trackIsDisplayedOnTheMap:true,type:"ITINERARY"},
-	{label:"Mur radweg Autriche",coords:mur,color:'green',trackIsDisplayedOnTheMap:true,type:"ITINERARY"}
-	*/
+	{label:"Drau radweg Autriche",coords:drauRadweg,color:'red',trackIsDisplayedOnTheMap:true,type:"ITINERARY",rotatorIcon:'fas fa-bicycle'},
+	{label:"Drau radweg Slovenie",coords:drauSlovenia,color:'orange',trackIsDisplayedOnTheMap:true,type:"ITINERARY",rotatorIcon:'fas fa-bicycle'},
+	{label:"Mur radweg Autriche",coords:mur,color:'green',trackIsDisplayedOnTheMap:true,type:"ITINERARY",rotatorIcon:'fas fa-bicycle'},
+	{label:"Mur radweg Slovenie",coords:murCroatia,color:'blue',trackIsDisplayedOnTheMap:true,type:"ITINERARY",rotatorIcon:'fas fa-bicycle'},
 ];
 
 
@@ -499,7 +496,7 @@ let tracks_iconsList = [
 ];
 
 let tracks_iconsOptions = {
-	"selectedItemIdPrefix" : 		"colors",
+	"selectedItemIdPrefix" : 		"icons",
 	"targetDomSelector" : 			"#menuTarget_2",
 	"initialSelectionIndex" : function() {
 		let initialSelectionIndex = 0;

@@ -1,9 +1,7 @@
 // -----------------------------------------------------------------
 // waypoints_initialList
 // -----------------------------------------------------------------
-let waypoints_initialList = [];
-
-/*
+let waypoints_initialList = [
 	{
 		coords :						[46.8087531,-2.0362527],
 		altitude :						null,
@@ -35,27 +33,99 @@ let waypoints_initialList = [];
 		markerIsDisplayedOnTheMap : 	true
 	}
 ];
-*/
+
 
 // -----------------------------------------------------------------
 // ICONS
 // -----------------------------------------------------------------
-const redIcon = new L.Icon({
-	iconUrl: 'icons/marker-icon-red.png',
-	shadowUrl: 'icons/marker-shadow.png',
-	iconSize: [25, 41],
-	iconAnchor: [12, 41],
-	popupAnchor: [1, -34],
-	shadowSize: [41, 41]
-});
+const waypoints_iconsList = [
+	{
+		label:"redIcon",
+		iconUrl: 'icons/marker-icon-red.png',
+		shadowUrl: 'icons/marker-shadow.png',
+		iconSize: [25, 41],
+		iconAnchor: [12, 41],
+		popupAnchor: [1, -34],
+		shadowSize: [41, 41]
+	},
+	{
+		label:"blueIcon",
+		iconUrl: 'icons/marker-icon-blue.png',
+		shadowUrl: 'icons/marker-shadow.png',
+		iconSize: [25, 41],
+		iconAnchor: [12, 41],
+		popupAnchor: [1, -34],
+		shadowSize: [41, 41]
+	},
+	{
+		label:"blackIcon",
+		iconUrl: 'icons/marker-icon-black.png',
+		shadowUrl: 'icons/marker-shadow.png',
+		iconSize: [25, 41],
+		iconAnchor: [12, 41],
+		popupAnchor: [1, -34],
+		shadowSize: [41, 41]
+	},
+	{
+		label:"goldIcon",
+		iconUrl: 'icons/marker-icon-gold.png',
+		shadowUrl: 'icons/marker-shadow.png',
+		iconSize: [25, 41],
+		iconAnchor: [12, 41],
+		popupAnchor: [1, -34],
+		shadowSize: [41, 41]
+	},
+	{
+		label:"greenIcon",
+		iconUrl: 'icons/marker-icon-green.png',
+		shadowUrl: 'icons/marker-shadow.png',
+		iconSize: [25, 41],
+		iconAnchor: [12, 41],
+		popupAnchor: [1, -34],
+		shadowSize: [41, 41]
+	},
+	{
+		label:"greyIcon",
+		iconUrl: 'icons/marker-icon-grey.png',
+		shadowUrl: 'icons/marker-shadow.png',
+		iconSize: [25, 41],
+		iconAnchor: [12, 41],
+		popupAnchor: [1, -34],
+		shadowSize: [41, 41]
+	},
+	{
+		label:"orangeIcon",
+		iconUrl: 'icons/marker-icon-orange.png',
+		shadowUrl: 'icons/marker-shadow.png',
+		iconSize: [25, 41],
+		iconAnchor: [12, 41],
+		popupAnchor: [1, -34],
+		shadowSize: [41, 41]
+	},
+	{
+		label:"violetIcon",
+		iconUrl: 'icons/marker-icon-violet.png',
+		shadowUrl: 'icons/marker-shadow.png',
+		iconSize: [25, 41],
+		iconAnchor: [12, 41],
+		popupAnchor: [1, -34],
+		shadowSize: [41, 41]
+	},
+	{
+		label:"yellowIcon",
+		iconUrl: 'icons/marker-icon-yellow.png',
+		shadowUrl: 'icons/marker-shadow.png',
+		iconSize: [25, 41],
+		iconAnchor: [12, 41],
+		popupAnchor: [1, -34],
+		shadowSize: [41, 41]
+	},
+];
 
-const blueIcon = new L.Icon({
-	iconUrl: 'icons/marker-icon-blue.png',
-	shadowUrl: 'icons/marker-shadow.png',
-	iconSize: [25, 41],
-	iconAnchor: [12, 41],
-	popupAnchor: [1, -34],
-	shadowSize: [41, 41]
+const waypoints_icons = {};
+
+waypoints_iconsList.forEach(function(icon) {
+	waypoints_icons[icon.label] = new L.Icon(icon);
 });
 
 // -----------------------------------------------------------------
@@ -68,7 +138,7 @@ const Waypoint = function(initial) {
 	this.timestamp = 					initial.timestamp || (new Date().getTime());
 	this.label = 						initial.label || 	null;
 	this.markerIsDisplayedOnTheMap = 	initial.markerIsDisplayedOnTheMap || true;
-	this.markerIcon = 					initial.markerIcon || blueIcon;
+	this.markerIcon = 					initial.markerIcon || "blueIcon";
 	// Should be private -------------------------------------------
 	this.myMapMarker = 					null;		// Leaflet current position marker handler
 	this.isTarget = 					false;
@@ -100,7 +170,7 @@ Waypoint.prototype.refreshMap = function() {
 		// Add currentPosition marker
 		this.myMapMarker = L.marker(
 			this.coords,
-			{icon:this.markerIcon}
+			{icon:waypoints_icons[this.markerIcon]}
 		).addTo(app.myMap);
 		// Display optionnally markers names -------------------
 		if (app.options.waypointsNameAreDisplayed) {
@@ -230,6 +300,11 @@ let waypoints_options_list = [
 		label:"Itinéraire vers ce point",
 		rotatorType:"MENU",
 		state:"itineraryToThisPoint"
+	},
+	{	
+		label:"Changer d'icône",
+		rotatorType:"MENU",
+		state:"changeIcon"
 	}
 ];
 
@@ -241,3 +316,28 @@ const waypoints_options_options = {
 
 
 const waypoints_options = new Rotator(waypoints_options_list,waypoints_options_options);
+
+// -----------------------------------------------------------------
+// icons TABLE ROTATOR
+// -----------------------------------------------------------------
+
+let waypoints_iconsRotatorList = waypoints_iconsList.map(function(icon) {return {value:icon.label,iconUrl:icon.iconUrl};});
+
+let waypoints_iconsRotatorOptions = {
+	"selectedItemIdPrefix" : 		"waypoints_icons",
+	"targetDomSelector" : 			"#menuTarget_1",
+	"initialSelectionIndex" : function() {
+		let initialSelectionIndex = 0;
+		waypoints_iconsRotatorList.forEach((option,index) => {
+			if (option.value === waypoints.currentItem().rotatorIcon) initialSelectionIndex = index;
+		});
+		return initialSelectionIndex;
+	},
+	"cellHtmlContent": function(element,index,selectedItemIdPrefix) {
+		return '<div id="' 
+			+ selectedItemIdPrefix + index 
+			+ '" class="tableRotator iconsRotator"><img class="waypointsIconsRotator" src="' + element.iconUrl + '" /></div>';
+	}
+};
+
+let waypoints_iconsRotator = new TableRotator(waypoints_iconsRotatorList,waypoints_iconsRotatorOptions);

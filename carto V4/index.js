@@ -17,7 +17,7 @@ let app = {
 	// Current poistion -----------------------------------------
 	currentPosition :			new Waypoint({
 		coords :				null,
-		markerIcon : 			redIcon,
+		markerIcon : 			"redIcon",
 		label:					"Position actuelle",
 		markerIsDisplayedOnTheMap:true
 	}),
