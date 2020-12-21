@@ -1,0 +1,30 @@
+{
+  "version": "1.0.0",
+  "name": "Carto V4",
+  "description": "App template",
+  "type": "privileged",
+  "launch_path": "/index.html",
+  "icons": {
+    "56": "/icons/icon-56.png",
+    "112": "/icons/icon-112.png"
+  },
+  "theme_color": "#008080",
+  "developer": {
+    "name": "KaiOS Team",
+    "url": "https://www.kaiostech.com"
+  },
+  "fullscreen":"true",
+  "permissions": {
+	"geolocation": {"description": "Get location"},
+	"device-storage:sdcard":{ "access": "readwrite" }
+  },
+  "locales": {
+    "fr-FR": {
+      "name": "Carto V4",
+      "subtitle": "Carto V4",
+      "description": "Carto V4"
+    }
+  },
+  "default_locale": "fr-FR",
+  "ime_default_softkey_bar": true
+}

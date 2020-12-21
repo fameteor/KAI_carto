@@ -3,10 +3,12 @@
 // =================================================================
 
 let tracks_initialList = [
+/*
 	{label:"Drau radweg Autriche",coords:drauRadweg,color:'red',trackIsDisplayedOnTheMap:true,type:"ITINERARY",rotatorIcon:'fas fa-bicycle'},
 	{label:"Drau radweg Slovenie",coords:drauSlovenia,color:'orange',trackIsDisplayedOnTheMap:true,type:"ITINERARY",rotatorIcon:'fas fa-bicycle'},
 	{label:"Mur radweg Autriche",coords:mur,color:'green',trackIsDisplayedOnTheMap:true,type:"ITINERARY",rotatorIcon:'fas fa-bicycle'},
 	{label:"Mur radweg Slovenie",coords:murCroatia,color:'blue',trackIsDisplayedOnTheMap:true,type:"ITINERARY",rotatorIcon:'fas fa-bicycle'},
+	*/
 ];
 
 
@@ -238,14 +240,7 @@ Track.prototype.writeToSD = function() {
 						"segmentsDuration",
 						"segmentsSpeed",
 						"dbAltitudes",
-						"rotatorIcon",
-						// For raw data 
-						"altitude",
-						"accuracy",
-						"altitudeAccuracy",
-						"heading",
-						"speed",
-						"timestamp"
+						"rotatorIcon"
 					]
 				)
 			], 

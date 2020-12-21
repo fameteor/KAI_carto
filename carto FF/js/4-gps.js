@@ -287,15 +287,7 @@ const gps = {
 
 		const gpsWatchOnSuccess = function(position) {
 			// Record raw data if requested --------------------------------
-			if (app.options.recordRawCoords) app.currentTrack.rawPositions.push({
-				coords:				[position.coords.latitude,position.coords.longitude],
-				altitude:			position.coords.altitude,
-				accuracy:			position.coords.accuracy,
-				altitudeAccuracy:	position.coords.altitudeAccuracy,
-				heading:			position.coords.heading,
-				speed:				position.coords.speed,
-				timestamp: 			position.timestamp
-			});
+			if (app.options.recordRawCoords) app.currentTrack.rawPosition.push(position);
 			// Only if different GPS point ---------------------------------
 			if (!(position.coords.latitude === app.currentPosition.coords[0] && position.coords.longitude === app.currentPosition.coords[1])) {
 				console.log(position);
