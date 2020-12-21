@@ -214,7 +214,7 @@ let optionsList = [
 			}
 		},
 		rotatorInfos: function() {
-			return "1 position/s moyennées toutes les 5s";
+			return "1 position/s moyennées toutes les 10s (accuracy < 50)";
 		}
 	},
 	{	

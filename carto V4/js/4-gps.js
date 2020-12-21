@@ -296,8 +296,8 @@ const gps = {
 				speed:				position.coords.speed,
 				timestamp: 			position.timestamp
 			});
-			// Only if different GPS point ---------------------------------
-			if (!(position.coords.latitude === app.currentPosition.coords[0] && position.coords.longitude === app.currentPosition.coords[1])) {
+			// Only if accuracy less than 50 -------------------------------
+			if (position.coords.accuracy < 50) {
 				console.log(position);
 				if (!app.options.gpsPostProcessingisOn) {
 					// Set current position --------------------------------
@@ -323,11 +323,12 @@ const gps = {
 					app.currentTrack.refreshMap();
 				}
 				else {
+					// Push in the averaging array ---------------------
+					gpsPoints.push(position);
 					gpsPointsNb += 1;
 					// Mean calculation every n seconds
 					if (gpsPointsNb >= 10) {
 						gpsPointsNb = 0;
-						gpsPoints.push(position);
 						// Average position calculation --------------------
 						let latitude = 0;
 						let longitude = 0;
@@ -365,8 +366,6 @@ const gps = {
 						app.currentTrack.refreshMap();
 					}
 					else {
-						// Push in the averaging array ---------------------
-						gpsPoints.push(position);
 						// We display the flashing tracing led -------------
 						$("#tracing_orange").show();
 						setTimeout(function(){ $("#tracing_orange").hide(); }, 500);
