@@ -164,6 +164,7 @@ const Track = function(initial) {
 	this.rawPositions = 					initial.rawPositions ||	[];
 	
 	this.segmentsLength = 				initial.segmentsLength || [];
+	this.segmentsBearing = 				initial.segmentsBearing || [];
 	this.segmentsCumulatedLength = 		initial.segmentsCumulatedLength || [];
 	this.segmentsDuration = 			initial.segmentsDuration || [];
 	this.segmentsSpeed = 				initial.segmentsSpeed || [];
@@ -234,6 +235,7 @@ Track.prototype.writeToSD = function() {
 						"label",
 						"color",
 						"segmentsLength",
+						"segmentsBearing",
 						"segmentsCumulatedLength",
 						"segmentsDuration",
 						"segmentsSpeed",
@@ -271,18 +273,21 @@ Track.prototype.writeToSD = function() {
 };
 
 // analyseSegments ------------------------------------------------------
+/*
 Track.prototype.analyseSegments = function() {
 	if (this.segmentsLength.length === 0) {
 		let that = this;
 		this.coords.forEach(function(coord,index){
 			if (index === 0) {
 				that.segmentsLength.push(0);
+				that.segmentsBearing.push(null);
 				that.segmentsCumulatedLength.push(0);
 				that.segmentsDuration.push(null);
 				that.segmentsSpeed.push(null);
 			}
 			else {
 				that.segmentsLength.push(gps.distance(that.coords[index], that.coords[index - 1]) / 1000); // In km
+				that.segmentsBearing.push(gps.initialBearing(that.coords[index], that.coords[index - 1]));
 				that.segmentsCumulatedLength.push(that.segmentsCumulatedLength[index - 1] + that.segmentsLength[index]); // In km
 				that.segmentsDuration.push((that.timestamps[index] - that.timestamps[index - 1]) / 1000); // In s
 				that.segmentsSpeed.push((that.segmentsLength[index] / that.segmentsDuration[index]) * 3600);
@@ -290,10 +295,11 @@ Track.prototype.analyseSegments = function() {
 		});
 	}
 };
+*/
 
 // getProfile ------------------------------------------------------
 Track.prototype.getDbAltitudes = function() {
-	this.analyseSegments();
+	// this.analyseSegments();
 	let that = this;
 
 	if (this.dbAltitudes.length === 0) {

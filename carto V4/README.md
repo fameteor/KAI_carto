@@ -4,7 +4,7 @@ There is one Javascript file per application tab, containing one object whose na
 
 ## `track` tab
 
-The `track object type can be :
+The `track` object type can be :
 * `ITINERARY`
 * `RECORD`
 
@@ -34,18 +34,18 @@ The available rotators are :
 ## Code
 	
 * Améliorer TOASTR pour multiples infos et pour mettre les questions en modal.
-* Gérer dans les TRACKS les arrays : `segmentDistance`, `segmentSpeed`, `segmentBearing`.
 * Afficher un ou plusieurs onglets info pour les TRACKS permettant d'afficher : date de début et de fin, nombre de points, distance totale, temps de parcours, vitesse moyenne, vitesse de pointe.
 * Calcul de l'ETA.
 * Echelle à afficher selon l'unité.
 * Bug : quand on change de fond de carte, il se trouve dessus l'éventuel layer affiché.
-* Recherche de lieux : optimiser le choix de la source pour avoir des données optimales
+* Recherche de lieux : optimiser (et choix en option) le choix de la source pour avoir des données optimales
 * Recherche de lieux : gérer les pbs réseaux et codes erreurs serveur.
 * Bug : le positionnement automatique du menu sélectionné n'est pas toujours correct.
 * Gestion des erreurs : afficher message si pas de réseau ou si nb de points trops grand pour API.
 * Gérer le nombre de points trop grands pour l'obtention de la courbe de niveau.
 * Bug rotator et tableRotator : la sélection de la valeur adapté au menu précédent n'est bonne que pour le démarrage generateHtml !
 * En mode trace, quand il y a des pbs de réception, doublon de positions GPS avec un timestamp non synchonisé sur la seconde juste.
+* Gérer le mode avion ou pb réseau.
 
 ## Fonctionnalités
 

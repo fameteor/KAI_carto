@@ -237,6 +237,7 @@ const gps = {
 			// Update Speed, bearing and EAT if available
 			if ((app.gpsWatchHandler != null) && (app.currentTrack.coords.length > 1)) {
 				// currentSpeed, currentBearing and ETA calculus
+				/*
 				const lastPointCoords = app.currentTrack.coords[app.currentTrack.coords.length - 1];
 				const pointBeforeLastPointCoords = app.currentTrack.coords[app.currentTrack.coords.length - 2];
 				const distanceInKm = this.distance(pointBeforeLastPointCoords,lastPointCoords) / 1000;
@@ -247,8 +248,9 @@ const gps = {
 				console.log("pointBeforeLastPointTimestamp : " + pointBeforeLastPointTimestamp)
 				const deltaTimeInHour = (lastPointTimestamp - pointBeforeLastPointTimestamp) / (1000 * 3600);
 				console.log("deltaTimeInHour : " + deltaTimeInHour)
-				const speed = distanceInKm / deltaTimeInHour;
-				const currentBearing = this.initialBearing(pointBeforeLastPointCoords,lastPointCoords);
+				*/
+				const speed = 			app.currentTrack.segmentsSpeed[app.currentTrack.coords.length - 1];
+				const currentBearing = 	app.currentTrack.segmentsBearing[app.currentTrack.coords.length - 1];
 				// Speed display
 				let unit = "";
 				switch(app.options.units) {
@@ -358,6 +360,22 @@ const gps = {
 						app.currentTrack.coords.push([latitude,longitude]);
 						app.currentTrack.altitudes.push(altitude);
 						app.currentTrack.timestamps.push(timestamp);
+						// Segment calculation -----------------------------
+						if (app.currentTrack.coords.length === 1) {
+							app.currentTrack.segmentsLength.push(0);
+							app.currentTrack.segmentsBearing.push(null);
+							app.currentTrack.segmentsCumulatedLength.push(0);
+							app.currentTrack.segmentsDuration.push(null);
+							app.currentTrack.segmentsSpeed.push(null);
+						}
+						else {
+							let index = app.currentTrack.coords.length - 1;
+							app.currentTrack.segmentsLength.push(gps.distance(app.currentTrack.coords[index], app.currentTrack.coords[index - 1]) / 1000); // In km
+							app.currentTrack.segmentsBearing.push(gps.initialBearing(app.currentTrack.coords[index - 1], app.currentTrack.coords[index]));
+							app.currentTrack.segmentsCumulatedLength.push(app.currentTrack.segmentsCumulatedLength[index - 1] + app.currentTrack.segmentsLength[index]); // In km
+							app.currentTrack.segmentsDuration.push((app.currentTrack.timestamps[index] - app.currentTrack.timestamps[index - 1]) / 1000); // In s
+							app.currentTrack.segmentsSpeed.push((app.currentTrack.segmentsLength[index] / app.currentTrack.segmentsDuration[index]) * 3600);
+						}
 						// We display the flashing tracing led -------------
 						$("#tracing_green").show();
 						setTimeout(function(){ $("#tracing_green").hide(); }, 500);
