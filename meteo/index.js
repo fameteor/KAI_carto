@@ -103,7 +103,10 @@ let init = function() {
 	displayPage();
 	displayPlace();
 	displayDateLabel();
-	getMeteoData(places[placeIndex].location);
+	if (navigator.onLine) {
+		getMeteoData(places[placeIndex].location);
+	}
+	else toastr.warning("Données non raffraîchies : pas d'Internet disponible.")
 	// App visibility check ----------------------------------------
 	document.addEventListener("visibilitychange", function () {
 		if (document.hidden) {
@@ -111,7 +114,10 @@ let init = function() {
 		} 
 		else {
 			appHasFocus = true;
-			getMeteoData(places[placeIndex].location);
+			if (navigator.onLine) {
+				getMeteoData(places[placeIndex].location);
+			}
+			else toastr.warning("Données non raffraîchies : pas d'Internet disponible.")
 		} 
 	});
 }

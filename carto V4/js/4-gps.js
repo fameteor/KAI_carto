@@ -329,7 +329,7 @@ const gps = {
 					gpsPoints.push(position);
 					gpsPointsNb += 1;
 					// Mean calculation every n seconds
-					if (gpsPointsNb >= 10) {
+					if (gpsPointsNb >= 5) {
 						gpsPointsNb = 0;
 						// Average position calculation --------------------
 						let latitude = 0;

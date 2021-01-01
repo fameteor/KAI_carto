@@ -932,6 +932,22 @@ const states = {
 			},
 		},
 		keysActions : {
+			ArrowLeft: function(event) {
+				event.preventDefault();
+				document.getElementById("root").scrollTo({
+					left: 0,
+					behavior: 'smooth'
+				});
+				event.stopPropagation();
+			},
+			ArrowRight: function(event) {
+				event.preventDefault();
+				document.getElementById("root").scrollTo({
+					left: 200,
+					behavior: 'smooth'
+				});
+				event.stopPropagation();
+			},
 			SoftRight: function(event) {
 				event.preventDefault();
 				state.tracks_actions = false;

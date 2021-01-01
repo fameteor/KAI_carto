@@ -3,10 +3,12 @@
 // =================================================================
 
 let tracks_initialList = [
+/*
 	{label:"Drau radweg Autriche",coords:drauRadweg,color:'red',trackIsDisplayedOnTheMap:true,type:"ITINERARY",rotatorIcon:'fas fa-bicycle'},
 	{label:"Drau radweg Slovenie",coords:drauSlovenia,color:'orange',trackIsDisplayedOnTheMap:true,type:"ITINERARY",rotatorIcon:'fas fa-bicycle'},
 	{label:"Mur radweg Autriche",coords:mur,color:'green',trackIsDisplayedOnTheMap:true,type:"ITINERARY",rotatorIcon:'fas fa-bicycle'},
 	{label:"Mur radweg Slovenie",coords:murCroatia,color:'blue',trackIsDisplayedOnTheMap:true,type:"ITINERARY",rotatorIcon:'fas fa-bicycle'},
+	*/
 ];
 
 
@@ -81,8 +83,8 @@ function drawChart(data) {
 			x:false,
 			y:false
 		},
-		width: 230,
-		height: 158,
+		width: 710,
+		height: 200,
 		legend : {
 			show:false
 		},
@@ -98,7 +100,7 @@ function drawChart(data) {
 				scale: "altitude",
 				// series style
 				stroke: "blue",
-				width: 2,
+				width: 4,
 			},
 			{
 				// initial toggled state (optional)
@@ -108,8 +110,8 @@ function drawChart(data) {
 				scale: "altitude",
 				// series style
 				stroke: "red",
-				dash:[10,10],
-				width: 1,
+				//dash:[10,10],
+				width: 2,
 			},
 			{
 				// initial toggled state (optional)
@@ -161,7 +163,7 @@ const Track = function(initial) {
 	this.altitudes = 					initial.altitudes || [];
 	this.timestamps = 					initial.timestamps || [];
 	
-	this.rawPositions = 					initial.rawPositions ||	[];
+	this.rawPositions = 				initial.rawPositions ||	[];
 	
 	this.segmentsLength = 				initial.segmentsLength || [];
 	this.segmentsBearing = 				initial.segmentsBearing || [];
@@ -272,73 +274,86 @@ Track.prototype.writeToSD = function() {
 	else console.log("Ecriture non supportée sur cet appareil.");					
 };
 
-// analyseSegments ------------------------------------------------------
-/*
-Track.prototype.analyseSegments = function() {
+// calculateSegmentsCumulatedLength -------------------------------------
+Track.prototype.calculateSegmentsCumulatedLength = function() {
 	if (this.segmentsLength.length === 0) {
 		let that = this;
 		this.coords.forEach(function(coord,index){
 			if (index === 0) {
 				that.segmentsLength.push(0);
-				that.segmentsBearing.push(null);
 				that.segmentsCumulatedLength.push(0);
-				that.segmentsDuration.push(null);
-				that.segmentsSpeed.push(null);
 			}
 			else {
 				that.segmentsLength.push(gps.distance(that.coords[index], that.coords[index - 1]) / 1000); // In km
-				that.segmentsBearing.push(gps.initialBearing(that.coords[index], that.coords[index - 1]));
 				that.segmentsCumulatedLength.push(that.segmentsCumulatedLength[index - 1] + that.segmentsLength[index]); // In km
-				that.segmentsDuration.push((that.timestamps[index] - that.timestamps[index - 1]) / 1000); // In s
-				that.segmentsSpeed.push((that.segmentsLength[index] / that.segmentsDuration[index]) * 3600);
 			}
 		});
 	}
 };
-*/
 
 // getProfile ------------------------------------------------------
 Track.prototype.getDbAltitudes = function() {
-	// this.analyseSegments();
+	// If not yet available, calculate the segmentsCumulatedLength
+	this.calculateSegmentsCumulatedLength();
 	let that = this;
-
-	if (this.dbAltitudes.length === 0) {
+	// If the dbAltitudes has not been found yet -------------------
+	if (this.dbAltitudes.length != this.coords.length) {
+		// We reverse lat/long for adaptation to API
 		let reverseCoords = this.coords.map(function(coord){return [coord[1],coord[0]]});
-		let httpRequest = new XMLHttpRequest();
-		httpRequest.open('POST', 'https://api.openrouteservice.org/elevation/line');
-		httpRequest.setRequestHeader('Accept', 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8');
-		httpRequest.setRequestHeader('Content-Type', 'application/json');
-		httpRequest.setRequestHeader('Authorization', keys.openRouteService);
+		// We split the array in array of 2000 points max (to suit the API limitations)
+		let splittedArray = [];
+		while(reverseCoords.length) {
+			splittedArray.push(reverseCoords.splice(0,2000));
+		}
+		let checksum = 0;
+		let checkTotal = 0;
+		let dbAltitudes = new Array(this.coords.length);
+		// We get the dbAltitudes for each array -------------------
+		splittedArray.forEach(function(coords,index) {
+			let httpRequest = new XMLHttpRequest();
+			httpRequest.open('POST', 'https://api.openrouteservice.org/elevation/line');
+			httpRequest.setRequestHeader('Accept', 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8');
+			httpRequest.setRequestHeader('Content-Type', 'application/json');
+			httpRequest.setRequestHeader('Authorization', keys.openRouteService);
 
-		httpRequest.onreadystatechange = function () {
-			if (httpRequest.readyState === XMLHttpRequest.DONE) {
-				if (httpRequest.status === 200) {
-					const data = JSON.parse(httpRequest.responseText);
-					console.log("httpRequest.response --------------");
-					console.log(data);
-					that.dbAltitudes = data.geometry.coordinates.map(function(point) {return point[2]});
-					// We draw the map
-					let resultData = [];
-					// We build the cumulated length for the x axe
-					resultData.push(that.segmentsCumulatedLength);
-					resultData.push(that.dbAltitudes);
-					resultData.push(that.altitudes);
-					resultData.push(that.segmentsSpeed);
-					console.log("resultData ------------------------");
-					console.log(resultData);
-					drawChart(resultData);
-				} else {
-					console.log('Il y a eu un problème avec la requête : ' + httpRequest.status);
-					console.log(httpRequest.responseText);
+			httpRequest.onreadystatechange = function () {
+				if (httpRequest.readyState === XMLHttpRequest.DONE) {
+					if (httpRequest.status === 200) {
+						const data = JSON.parse(httpRequest.responseText);
+						let altitudesResult = data.geometry.coordinates.map(function(point) {return point[2]});
+						// We add the result
+						dbAltitudes.splice(2000 * index, altitudesResult.length, ...altitudesResult);
+						checksum += index + 1;
+						checkTotal += altitudesResult.length;
+						// UNIQUEMENT pour le dernier et si DONNEES COMPLETES !!
+						if (	(checksum === splittedArray.length * (splittedArray.length + 1) / 2) && 
+								(checkTotal === that.coords.length)) {
+							that.dbAltitudes = dbAltitudes;
+							// We draw the map
+							let resultData = [];
+							// We build the cumulated length for the x axe
+							resultData.push(that.segmentsCumulatedLength);
+							resultData.push(that.dbAltitudes);
+							resultData.push(that.altitudes);
+							resultData.push(that.segmentsSpeed);
+							console.log("resultData ------------------------");
+							console.log(resultData);
+							drawChart(resultData);
+						}						
+					} else {
+						console.log('Il y a eu un problème avec la requête : ' + httpRequest.status);
+						console.log(httpRequest.responseText);
+					}
 				}
-			}
-		};
-		const body = JSON.stringify({
-			"format_in":	"polyline",
-			"dataset":		"srtm",			// Elevation dataset to use
-			"geometry":		reverseCoords
+			};
+			const body = JSON.stringify({
+				"format_in":	"polyline",
+				"dataset":		"srtm",			// Elevation dataset to use
+				"geometry":		coords
+			});
+			httpRequest.send(body);
+			
 		});
-		httpRequest.send(body);
 	}
 	else {
 		// We draw the map
@@ -377,7 +392,23 @@ const tracksOptions = {
 tracks_initialList = tracks_initialList.map(function(track) {
 	return new Track(track);
 });
-tracks_initialList.push(new Track(casa));
+// tracks_initialList.push(new Track(casa));
+tracks_initialList.push(new Track(mur_1));
+tracks_initialList.push(new Track(mur_2));
+tracks_initialList.push(new Track(mur_3));
+tracks_initialList.push(new Track(mur_4));
+tracks_initialList.push(new Track(mur_5));
+tracks_initialList.push(new Track(mur_6));
+tracks_initialList.push(new Track(mur_7));
+tracks_initialList.push(new Track(mur_8));
+
+tracks_initialList.push(new Track(drau_1));
+tracks_initialList.push(new Track(drau_2));
+tracks_initialList.push(new Track(drau_3));
+tracks_initialList.push(new Track(drau_4));
+tracks_initialList.push(new Track(drau_5));
+tracks_initialList.push(new Track(drau_6));
+tracks_initialList.push(new Track(drau_7));
 
 // -----------------------------------------------------------------
 // tracks ROTATOR

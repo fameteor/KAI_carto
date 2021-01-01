@@ -3,33 +3,140 @@
 // -----------------------------------------------------------------
 let waypoints_initialList = [
 	{
-		coords :						[46.8087531,-2.0362527],
+		coords :						[46.72417,12.22766],
 		altitude :						null,
 		timestamp :						0,
-		label :							"essai",
-		markerIsDisplayedOnTheMap : 	false
-	},
-	{
-		coords :						[46.589187,15.0133661],
-		altitude :						null,
-		timestamp :						0,
-		label :							"Dravograd",
+		label :							"Toblach",
+		markerIcon:						"violetIcon",
 		markerIsDisplayedOnTheMap : 	true
 	},
 	{
-		coords :						[46.6311885,14.9407725],
+		coords :						[46.825335,12.766398],
 		altitude :						null,
 		timestamp :						0,
-		label :							"Gästehaus Rettl - Lavamünd",
-		phone : 						"+436602206688",
+		label :							"Lienz",
+		markerIcon:						"violetIcon",
 		markerIsDisplayedOnTheMap : 	true
 	},
 	{
-		coords :						[46.61194146405841, 15.170627071798565],
+		coords :						[46.795653,13.488621],
 		altitude :						null,
 		timestamp :						0,
-		label :							"Gostilna Pri Lipi - Muta",
-		phone : 						"+38628766090",
+		label :							"Spittal",
+		markerIcon:						"violetIcon",
+		markerIsDisplayedOnTheMap : 	true
+	},
+	{
+		coords :						[46.614855,13.849669],
+		altitude :						null,
+		timestamp :						0,
+		label :							"Villach",
+		markerIcon:						"violetIcon",
+		markerIsDisplayedOnTheMap : 	true
+	},
+	{
+		coords :						[46.54387,14.306486],
+		altitude :						null,
+		timestamp :						0,
+		label :							"Ferlach",
+		markerIcon:						"violetIcon",
+		markerIsDisplayedOnTheMap : 	true
+	},
+	{
+		coords :						[46.641187,14.942265],
+		altitude :						null,
+		timestamp :						0,
+		label :							"Lavamünd",
+		markerIcon:						"violetIcon",
+		markerIsDisplayedOnTheMap : 	true
+	},
+	{
+		coords :						[46.554764,15.660798],
+		altitude :						null,
+		timestamp :						0,
+		label :							"Maribor",
+		markerIcon:						"violetIcon",
+		markerIsDisplayedOnTheMap : 	true
+	},
+	{
+		coords :						[46.3134,16.349522],
+		altitude :						null,
+		timestamp :						0,
+		label :							"Varaždin",
+		markerIcon:						"violetIcon",
+		markerIsDisplayedOnTheMap : 	true
+	},
+	// MUR -----------------------------------------------------
+	{
+		coords :						[47.148736,13.378732],
+		altitude :						null,
+		timestamp :						0,
+		label :							"Sticklerhütte",
+		markerIcon:						"violetIcon",
+		markerIsDisplayedOnTheMap : 	true
+	},
+	{
+		coords :						[47.095605,13.637058],
+		altitude :						null,
+		timestamp :						0,
+		label :							"St Michael",
+		markerIcon:						"violetIcon",
+		markerIsDisplayedOnTheMap : 	true
+	},
+	{
+		coords :						[47.110458,14.171264],
+		altitude :						null,
+		timestamp :						0,
+		label :							"Murau",
+		markerIcon:						"violetIcon",
+		markerIsDisplayedOnTheMap : 	true
+	},
+	{
+		coords :						[47.16918,14.66101],
+		altitude :						null,
+		timestamp :						0,
+		label :							"Judenburg",
+		markerIcon:						"violetIcon",
+		markerIsDisplayedOnTheMap : 	true
+	},
+	{
+		coords :						[47.380576,15.094564],
+		altitude :						null,
+		timestamp :						0,
+		label :							"Leoben",
+		markerIcon:						"violetIcon",
+		markerIsDisplayedOnTheMap : 	true
+	},
+	{
+		coords :						[47.070969,15.435523],
+		altitude :						null,
+		timestamp :						0,
+		label :							"Graz",
+		markerIcon:						"violetIcon",
+		markerIsDisplayedOnTheMap : 	true
+	},
+	{
+		coords :						[46.780006,15.530333],
+		altitude :						null,
+		timestamp :						0,
+		label :							"Leibnitz",
+		markerIcon:						"violetIcon",
+		markerIsDisplayedOnTheMap : 	true
+	},
+	{
+		coords :						[46.686891,15.979026],
+		altitude :						null,
+		timestamp :						0,
+		label :							"Bad Radkersburg",
+		markerIcon:						"violetIcon",
+		markerIsDisplayedOnTheMap : 	true
+	},
+	{
+		coords :						[46.296484,16.854487],
+		altitude :						null,
+		timestamp :						0,
+		label :							"Legrad",
+		markerIcon:						"violetIcon",
 		markerIsDisplayedOnTheMap : 	true
 	}
 ];
