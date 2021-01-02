@@ -21,7 +21,6 @@ let app = {
 		label:					"Position actuelle",
 		markerIsDisplayedOnTheMap:true
 	}),
-	fromPosition : 				null,
 	// Current track --------------------------------------------
 	currentTrack : 				new Track({}),
 	

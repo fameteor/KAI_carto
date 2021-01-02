@@ -249,6 +249,7 @@ const Waypoint = function(initial) {
 	// Should be private -------------------------------------------
 	this.myMapMarker = 					null;		// Leaflet current position marker handler
 	this.isTarget = 					false;
+	this.isItineraryStart =				false;
 	// For Rotator usage only --------------------------------------
 	this.rotatorType = 					initial.rotatorType || "BOOLEAN";
 	this.rotatorIcon = 					initial.rotatorIcon ||"fas fa-map-marker";
@@ -264,7 +265,9 @@ const Waypoint = function(initial) {
 	};
 	this.rotatorInfos = 				initial.rotatorInfos || function() {
 		let target = "";
-		if (this.isTarget) target = '<i class="fas fa-bullseye green"></i>';
+		if (this.isItineraryStart) 	target += '<i class="fas fa-flag-checkered green"></i>';
+		if (this.isTarget) 			target += ' <i class="fas fa-bullseye green"></i>';
+					
 		return target + " ( lat : " + format_coords[app.options.coordinatesFormat](this.coords[0]) + ", lon :" + format_coords[app.options.coordinatesFormat](this.coords[1]) + " )";
 	};
 }
@@ -369,6 +372,23 @@ waypoints.target = function(targetWaypoint) {
 	}
 }
 
+waypoints.itineraryStart = function(targetWaypoint) {
+	if (targetWaypoint != undefined) {
+		// Setter :
+		this.list.forEach(function(waypoint){
+			if (waypoint === targetWaypoint) 	waypoint.isItineraryStart = true;
+			else 								waypoint.isItineraryStart = false;
+		});
+	}
+	else {
+		// Getter
+		const value = this.list.find(waypoint => {
+			return waypoint.isItineraryStart;
+		});
+		return value;
+	}
+}
+
 // -----------------------------------------------------------------
 // waypoints_options ROTATOR
 // -----------------------------------------------------------------
@@ -415,7 +435,7 @@ let waypoints_options_list = [
 	},
 	{	
 		label: function() {
-			return "Itinéraire de " + ((app.fromPosition) ? app.fromPosition.label : "?") + " vers ce point.";
+			return "Itinéraire de " + ((waypoints.itineraryStart()) ? waypoints.itineraryStart().label : "?") + " vers ce point.";
 		},
 		rotatorType:"MENU",
 		state:"itineraryFromStartingPointToThisPoint"

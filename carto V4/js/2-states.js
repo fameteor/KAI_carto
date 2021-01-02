@@ -515,11 +515,12 @@ const states = {
 						break;
 					case "setAsStartingPoint":
 						// We set the starting point
-						app.fromPosition = waypoints.currentItem();
+						waypoints.itineraryStart(waypoints.currentItem());
 						// We exit from waypoints actions
 						state.waypoints_options = false;
 						waypoints.generateHtml();
 						displaySoftKeysLabels();
+						toastr.info("Point fixé comme point de départ");
 						break;
 					case "itineraryToThisPoint":
 						// We build and display itinerary
@@ -539,9 +540,9 @@ const states = {
 						displaySoftKeysLabels();
 						break;
 					case "itineraryFromStartingPointToThisPoint":
-						if (app.fromPosition) {
+						if (waypoints.itineraryStart()) {
 							// We build and display itinerary
-							search.displayItinerary(app.fromPosition.coords,waypoints.currentItem().coords,"De " + app.fromPosition.label + " vers " + waypoints.currentItem().label);
+							search.displayItinerary(waypoints.itineraryStart().coords,waypoints.currentItem().coords,"De " + waypoints.itineraryStart().label + " vers " + waypoints.currentItem().label);
 							// We disable the map centering on current position
 							app.options.mapIsCenteredOnGpsPosition = false;
 							options.generateHtml();
@@ -553,7 +554,7 @@ const states = {
 							$("#map").show();
 							$("#menu").hide();
 							$("#root").hide();
-							app.myMap.flyTo(app.fromPosition.coords,app.zoomLevel);
+							app.myMap.flyTo(waypoints.itineraryStart().coords,app.zoomLevel);
 							displaySoftKeysLabels();
 						}
 						else toastr.warning("Merci de fixer d'abord le point de départ");
@@ -2040,7 +2041,7 @@ const states = {
 						});
 						
 						waypoints.list.unshift(waypoint2);
-						app.fromPosition = waypoint2;
+						waypoints.itineraryStart(waypoint2);
 						// We select the new waypoint
 						waypoints.currentIndex = 0;
 						waypoints.generateHtml();
@@ -2068,9 +2069,9 @@ const states = {
 						displaySoftKeysLabels();
 						break;
 					case "itineraryFromStartingPointToThisPoint":
-						if (app.fromPosition) {
+						if (waypoints.itineraryStart()) {
 							// We build and display itinerary
-							search.displayItinerary(app.fromPosition.coords,search.resultRotator.currentItem().coords," De " + app.fromPosition.label + " vers " + search.resultRotator.currentItem().label);
+							search.displayItinerary(waypoints.itineraryStart().coords,search.resultRotator.currentItem().coords," De " + waypoints.itineraryStart().label + " vers " + search.resultRotator.currentItem().label);
 							// We disable the map centering on current position
 							app.options.mapIsCenteredOnGpsPosition = false;
 							options.generateHtml();
@@ -2082,7 +2083,7 @@ const states = {
 							$("#map").show();
 							$("#menu").hide();
 							$("#root").hide();
-							app.myMap.flyTo(app.fromPosition.coords,app.zoomLevel);
+							app.myMap.flyTo(waypoints.itineraryStart().coords,app.zoomLevel);
 							displaySoftKeysLabels();
 						}
 						else toastr.warning("Merci de fixer d'abord le point de départ");

@@ -47,9 +47,10 @@ The available rotators are :
 * En mode trace, quand il y a des pbs de réception, doublon de positions GPS avec un timestamp non synchonisé sur la seconde juste.
 * Gérer le mode avion ou pb réseau.
 * Afficher le nb de km en Toastr validable par OK en cas de calcul d'itinéraire et temps de parcours prévisionnel pour le mode de transport choisi.
-* Afficher le waypoint target et le Waypoint début d'itinéraire
+!* Afficher le waypoint target et le Waypoint début d'itinéraire
+! Afficher l'icone réel du waypoint dans la liste
 * Mettre le point actuel comme waypoint 0 non modifiable
-* Gérer des directory pour le stockage SD
+!* Gérer des directory pour le stockage SD
 * essayer une vraie carte SD
 
 ## Fonctionnalités
@@ -62,6 +63,7 @@ The available rotators are :
 * Obtenir le profil d'une track (via API Open route service) et l'enregistrer dans la track (voir sur SD si trace enregistrée).
 * Obtenir le profil d'un itinéraire.
 * Afficher des labels plus explicites pour les Profiles.
+* Pouvoir rajouter un waypoint à partir de la carte.
 	
 ## Utilitaire sur PC
 

@@ -53,7 +53,7 @@ search = {
 		},
 		{	
 			label: function() {
-				return "Itinéraire de " + ((app.fromPosition) ? app.fromPosition.label : "?") + " vers ce point.";
+				return "Itinéraire de " + ((waypoints.itineraryStart()) ? waypoints.itineraryStart().label : "?") + " vers ce point.";
 			},
 			rotatorType:"MENU",
 			value:"itineraryFromStartingPointToThisPoint"
