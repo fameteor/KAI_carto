@@ -42,14 +42,21 @@ search = {
 			value:"saveAsWaypoint"
 		},
 		{	
-			label:"Itinéraire à partir de ce point",
+			label:"Enregistrer et fixer comme point de départ",
 			rotatorType:"MENU",
-			value:"itineraryFromThisPoint"
+			value:"saveAndSetAsStartingPoint"
 		},
 		{	
-			label:"Itinéraire vers ce point",
+			label:"Itinéraire d'ici vers ce point",
 			rotatorType:"MENU",
 			value:"itineraryToThisPoint"
+		},
+		{	
+			label: function() {
+				return "Itinéraire de " + ((app.fromPosition) ? app.fromPosition.label : "?") + " vers ce point.";
+			},
+			rotatorType:"MENU",
+			value:"itineraryFromStartingPointToThisPoint"
 		}
 	],
 

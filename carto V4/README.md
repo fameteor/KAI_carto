@@ -46,10 +46,14 @@ The available rotators are :
 * Bug rotator et tableRotator : la sélection de la valeur adapté au menu précédent n'est bonne que pour le démarrage generateHtml !
 * En mode trace, quand il y a des pbs de réception, doublon de positions GPS avec un timestamp non synchonisé sur la seconde juste.
 * Gérer le mode avion ou pb réseau.
+* Afficher le nb de km en Toastr validable par OK en cas de calcul d'itinéraire et temps de parcours prévisionnel pour le mode de transport choisi.
+* Afficher le waypoint target et le Waypoint début d'itinéraire
+* Mettre le point actuel comme waypoint 0 non modifiable
+* Gérer des directory pour le stockage SD
+* essayer une vraie carte SD
 
 ## Fonctionnalités
 
-* Gérer les itinéraires depuis un point qui n'est pas le point actuel.
 * Gérer le temps de parcourt prévisionnel et la distance totale des Itinéraires.
 * Analyser une trace sur l'écran en la déroulant et en affichant : date et heure, vitesse, cap éventuellement et photos proches au cas ou.
 * Permettre une sauvegarde complète des données sur la carte SD et permettre de les recharger. Possibilité de nommer ce fichier sauvegarde.

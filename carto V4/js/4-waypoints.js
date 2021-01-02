@@ -404,9 +404,21 @@ let waypoints_options_list = [
 		state:"positionMap"
 	},
 	{	
-		label:"Itinéraire vers ce point",
+		label:"Fixer comme point de départ",
+		rotatorType:"MENU",
+		state:"setAsStartingPoint"
+	},
+	{	
+		label:"Itinéraire d'ici vers ce point",
 		rotatorType:"MENU",
 		state:"itineraryToThisPoint"
+	},
+	{	
+		label: function() {
+			return "Itinéraire de " + ((app.fromPosition) ? app.fromPosition.label : "?") + " vers ce point.";
+		},
+		rotatorType:"MENU",
+		state:"itineraryFromStartingPointToThisPoint"
 	},
 	{	
 		label:"Changer d'icône",

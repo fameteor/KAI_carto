@@ -513,6 +513,14 @@ const states = {
 						app.myMap.flyTo(waypoints.currentItem().coords,app.zoomLevel);
 						displaySoftKeysLabels();
 						break;
+					case "setAsStartingPoint":
+						// We set the starting point
+						app.fromPosition = waypoints.currentItem();
+						// We exit from waypoints actions
+						state.waypoints_options = false;
+						waypoints.generateHtml();
+						displaySoftKeysLabels();
+						break;
 					case "itineraryToThisPoint":
 						// We build and display itinerary
 						search.displayItinerary(app.currentPosition.coords,waypoints.currentItem().coords,"Vers " + waypoints.currentItem().label);
@@ -529,6 +537,26 @@ const states = {
 						$("#root").hide();
 						app.myMap.flyTo(app.currentPosition.coords,app.zoomLevel);
 						displaySoftKeysLabels();
+						break;
+					case "itineraryFromStartingPointToThisPoint":
+						if (app.fromPosition) {
+							// We build and display itinerary
+							search.displayItinerary(app.fromPosition.coords,waypoints.currentItem().coords,"De " + app.fromPosition.label + " vers " + waypoints.currentItem().label);
+							// We disable the map centering on current position
+							app.options.mapIsCenteredOnGpsPosition = false;
+							options.generateHtml();
+							// We exit from waypoints actions
+							state.waypoints_options = false;
+							waypoints.generateHtml();
+							// We display the map
+							state.map = true;
+							$("#map").show();
+							$("#menu").hide();
+							$("#root").hide();
+							app.myMap.flyTo(app.fromPosition.coords,app.zoomLevel);
+							displaySoftKeysLabels();
+						}
+						else toastr.warning("Merci de fixer d'abord le point de départ");
 						break;
 					case "changeIcon":
 						// We use the icon tableRotator here
@@ -2002,6 +2030,26 @@ const states = {
 						state.search_state = "result";
 						search.resultRotator.generateHtml();
 						break;
+					case "saveAndSetAsStartingPoint":
+						// Add new waypoint ---------------------------------
+						let waypoint2 = new Waypoint({
+							coords : 	search.resultRotator.currentItem().coords,
+							altitude : 	0,
+							timestamp : new Date().getTime(),
+							label : 	search.resultRotator.currentItem().label
+						});
+						
+						waypoints.list.unshift(waypoint2);
+						app.fromPosition = waypoint2;
+						// We select the new waypoint
+						waypoints.currentIndex = 0;
+						waypoints.generateHtml();
+						waypoints.refreshMap();
+						toastr.info("Point enregistré et fixé comme point de départ");
+						// We return to the result state
+						state.search_state = "result";
+						search.resultRotator.generateHtml();
+						break;
 					case "itineraryToThisPoint":
 						// We build and display itinerary
 						search.displayItinerary(app.currentPosition.coords,search.resultRotator.currentItem().coords,"Vers " + search.resultRotator.currentItem().label);
@@ -2018,6 +2066,26 @@ const states = {
 						$("#root").hide();
 						app.myMap.flyTo(app.currentPosition.coords,app.zoomLevel);
 						displaySoftKeysLabels();
+						break;
+					case "itineraryFromStartingPointToThisPoint":
+						if (app.fromPosition) {
+							// We build and display itinerary
+							search.displayItinerary(app.fromPosition.coords,search.resultRotator.currentItem().coords," De " + app.fromPosition.label + " vers " + search.resultRotator.currentItem().label);
+							// We disable the map centering on current position
+							app.options.mapIsCenteredOnGpsPosition = false;
+							options.generateHtml();
+							// We return to the result state
+							state.search_state = "result";
+							search.resultRotator.generateHtml();
+							// We display the map
+							state.map = true;
+							$("#map").show();
+							$("#menu").hide();
+							$("#root").hide();
+							app.myMap.flyTo(app.fromPosition.coords,app.zoomLevel);
+							displaySoftKeysLabels();
+						}
+						else toastr.warning("Merci de fixer d'abord le point de départ");
 						break;
 				}
 				event.stopPropagation();

@@ -274,7 +274,7 @@ Rotator.prototype.refreshHTML = function() {
 					</td>				
 				 </tr>`;
 		const id = that.options.selectedItemIdPrefix + index;
-		const label = option.label;
+		const label = (option.label instanceof Function) ? option.label() : option.label;
 		let itemsNumbered = "";
 		if (that.options.itemsNumbered === "reverse") itemsNumbered = '<br/><span class="info">' + (that.list.length - index) + '</span>';
 		let type = "";
