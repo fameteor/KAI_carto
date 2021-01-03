@@ -21,6 +21,7 @@ let app = {
 		label:					"Position actuelle",
 		markerIsDisplayedOnTheMap:true
 	}),
+	screenWidthScroll:			0,
 	// Current track --------------------------------------------
 	currentTrack : 				new Track({}),
 	

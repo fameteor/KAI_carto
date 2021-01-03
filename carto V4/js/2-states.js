@@ -888,7 +888,7 @@ const states = {
 				displaySoftKeysLabels();
 				switch(tracks_actions.currentItem().value) {
 					case "infos":
-						tracks.currentItem().getDbAltitudes();
+						tracks.currentItem().displayInfos1();
 						break;
 					case "rename":
 						console.log("ok")
@@ -956,25 +956,37 @@ const states = {
 		softKeysLabels : {
 			fr : {
 					SoftLeft :	'',
-					Center : 	'',
+					Center : 	'<i class="fas fa-chevron-down"></i>',
 					SoftRight :	'Fermer'
 			},
 		},
 		keysActions : {
 			ArrowLeft: function(event) {
 				event.preventDefault();
+				if (app.screenWidthScroll != 0) app.screenWidthScroll -= 200;
 				document.getElementById("root").scrollTo({
-					left: 0,
+					left: app.screenWidthScroll,
 					behavior: 'smooth'
 				});
 				event.stopPropagation();
 			},
 			ArrowRight: function(event) {
 				event.preventDefault();
+				if (app.screenWidthScroll != 800) app.screenWidthScroll += 200;
 				document.getElementById("root").scrollTo({
-					left: 200,
+					left: app.screenWidthScroll,
 					behavior: 'smooth'
 				});
+				event.stopPropagation();
+			},
+			ArrowUp: function(event) {
+				event.preventDefault();
+				tracks.currentItem().displayInfos1();
+				event.stopPropagation();
+			},
+			ArrowDown: function(event) {
+				event.preventDefault();
+				tracks.currentItem().getDbAltitudes();
 				event.stopPropagation();
 			},
 			SoftRight: function(event) {

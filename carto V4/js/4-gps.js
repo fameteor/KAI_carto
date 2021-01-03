@@ -12,6 +12,24 @@ const format_xxDigits = function(number) {
 }
 
 // -----------------------------------------------------------------
+// format_duration
+// -----------------------------------------------------------------
+const format_duration = function(durationInSeconds) {
+	let seconds = durationInSeconds % 60 ;
+	let durationInMinutes = (durationInSeconds - seconds) / 60;
+	let minutes = durationInMinutes % 60;
+	let durationInHours = (durationInMinutes - minutes) / 60;
+	let hours = durationInHours % 24;
+	let days = (durationInHours - hours) / 24;
+	let result = "";
+	if (days) result += days + "j ";
+	if (days || hours) result += hours + "h ";
+	if (days || hours || minutes) result += minutes + "mn ";
+	if (days || hours || minutes || seconds) result += seconds + "s";
+	return	result;
+}
+
+// -----------------------------------------------------------------
 // Date like : 29/04/2020 12:23:45
 // -----------------------------------------------------------------
 const format_dateString = function(date) {

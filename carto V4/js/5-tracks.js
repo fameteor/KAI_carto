@@ -17,34 +17,39 @@ let tracks_initialList = [
 // =================================================================
 function drawChart(data) {
 	let template = `
-	<h1 id="trackInfoTitle"></h1>
+	<h2 id="trackInfoTitle"></h2>
 	<div class="table">
 		<div class="tr">
 			<div class="td">
-				<div class="info">Début de la trace</div>
+				<div class="info">Dénivelé</div>
 			</div>
 			<div class="td">
-				<div class="info"><b><span id="startDate">12/12/2020 12:12:12</span></b></div>
+				<div class="info text-center"><i class="fas fa-angle-double-up"></i></div>
+			</div>
+			<div class="td">
+				<div class="info text-center"><i class="fas fa-angle-double-down"></i></div>
 			</div>
 		</div>
 		<div class="tr">
-			<div class="td">
-				<div class="info">Fin de la trace</div>
+			<div class="td blue">
+				<div class="info">Source Web</div>
 			</div>
-			<div class="td">
-				<div class="info"><b><span id="stopDate">12/12/2020 12:12:12</span></b></div>
+			<div class="td blue">
+				<div class="info text-center"><b><span id="upMeters">+ 120 m</span> m</b></div>
+			</div>
+			<div class="td blue">
+				<div class="info text-center"><b><span id="downMeters">- 240 m</span> m</b></div>
 			</div>
 		</div>
-	</div>
-	<div class="table">
 		<div class="tr">
-			<div class="td">
-				<div class="info">Distance totale</div>
-				<div class="info"><b><span id="totalLength">54.2 km</span></b></div>
+			<div class="td red">
+				<div class="info">Source GPS</div>
 			</div>
-			<div class="td">
-				<div class="info">Dénivelé <i class="fas fa-angle-double-up"></i> / <i class="fas fa-angle-double-down"></i></div>
-				<div class="info"><b>+<span id="upMeters">+ 120 m</span> m / <span id="downMeters">- 240 m</span> m</b></div>
+			<div class="td red">
+				<div class="info text-center"><b><span id="upMetersGps">+ 120 m</span> m</b></div>
+			</div>
+			<div class="td red">
+				<div class="info text-center"><b><span id="downMetersGps">- 240 m</span> m</b></div>
 			</div>
 		</div>
 	</div>
@@ -52,28 +57,32 @@ function drawChart(data) {
 	document.getElementById("menuTarget_2").innerHTML = template;
 	// We set the title
 	document.getElementById("trackInfoTitle").innerHTML = tracks.currentItem().label;
-	// We set the starting/stopping date
-	document.getElementById("startDate").innerHTML = format_dateString(new Date(tracks.currentItem().timestamps[0]));
-	document.getElementById("stopDate").innerHTML = format_dateString(new Date(tracks.currentItem().timestamps[tracks.currentItem().timestamps.length - 1]));
-	// We set the total length
-	document.getElementById("totalLength").innerHTML = tracks.currentItem().segmentsCumulatedLength[tracks.currentItem().segmentsCumulatedLength.length - 1].toFixed(1) + " km";
 	// Ascend, descend calculation
 	let positiveSum = 0;
 	let negativeSum = 0;
 	tracks.currentItem().dbAltitudes.forEach(function(current,index, dbAltitudes) {
 		if (index != 0) {
 			// Ascend
-			if (current > dbAltitudes[index - 1]) {
-				positiveSum += current - dbAltitudes[index - 1];
-			}
+			if (current > dbAltitudes[index - 1]) 	positiveSum += current - dbAltitudes[index - 1];
 			// Descend
-			else if (current < dbAltitudes[index - 1]) {
-				negativeSum += - (dbAltitudes[index - 1] - current);
-			}
+			else									negativeSum += current - dbAltitudes[index - 1];
 		}
 	});
 	document.getElementById("upMeters").innerHTML = positiveSum;
 	document.getElementById("downMeters").innerHTML = negativeSum;
+	// For GPS data
+	let positiveSumGps = 0;
+	let negativeSumGps = 0;
+	tracks.currentItem().altitudes.forEach(function(current,index, altitudes) {
+		if (index != 0) {
+			// Ascend
+			if (current > altitudes[index - 1]) 	positiveSumGps += current - altitudes[index - 1];
+			// Descend
+			else									negativeSumGps += current - altitudes[index - 1];
+		}
+	});
+	document.getElementById("upMetersGps").innerHTML = positiveSumGps.toFixed(0);
+	document.getElementById("downMetersGps").innerHTML = negativeSumGps.toFixed(0);
 
 	let opts = {
 		title: null,
@@ -83,7 +92,7 @@ function drawChart(data) {
 			x:false,
 			y:false
 		},
-		width: 710,
+		width: 800,
 		height: 200,
 		legend : {
 			show:false
@@ -100,7 +109,7 @@ function drawChart(data) {
 				scale: "altitude",
 				// series style
 				stroke: "blue",
-				width: 4,
+				width: 2,
 			},
 			{
 				// initial toggled state (optional)
@@ -217,6 +226,141 @@ Track.prototype.refreshMap = function() {
 		this.myMapTrack = null;
 	}
 }
+
+// Display info1 on the track --------------------------------------
+Track.prototype.displayInfos1 = function() {
+	this.calculateSegmentsCumulatedLength();
+	let that = this;
+	// -------------------------------------------------------------
+	let template = `
+		<h2>{{label}}</h2>
+		{{#startingDate}}
+			<div class="table">
+				<div class="tr">
+					<div class="td text-center">
+						<div class="info">Date de début</div>
+					</div>
+				</div>
+				<div class="tr">
+					<div class="td text-center">
+						<div class="data">{{startingDate}}</div>
+					</div>
+				</div>
+			</div>
+		{{/startingDate}}
+		{{#endingDate}}
+			<div class="table">
+				<div class="tr">
+					<div class="td text-center">
+						<div class="info">Date de fin</div>
+					</div>
+				</div>
+				<div class="tr">
+					<div class="td text-center">
+						<div class="data">{{endingDate}}</div>
+					</div>
+				</div>
+			</div>
+		{{/endingDate}}
+		<div class="table">
+			<div class="tr">
+				<div class="td">
+					<div class="info">Nb de points</div>
+				</div>
+				<div class="td">
+					<div class="data">{{pointsNb}} {{#rawPointsNb}}<span class="info">({{rawPointsNb}} bruts)</span>{{/rawPointsNb}}</div>
+				</div>
+			</div>
+			{{#duration}}
+			<div class="tr">
+				<div class="td">
+					<div class="info">Durée</div>
+				</div>
+				<div class="td">
+					<div class="data">{{duration}}</div>
+				</div>
+			</div>
+			{{/duration}}
+			{{#distance}}
+			<div class="tr">
+				<div class="td">
+					<div class="info">Distance</div>
+				</div>
+				<div class="td">
+					<div class="data">{{distance}}</div>
+				</div>
+			</div>
+			{{/distance}}
+			{{#averageSpeed}}
+			<div class="tr">
+				<div class="td">
+					<div class="info">Vitesse moyenne</div>
+				</div>
+				<div class="td">
+					<div class="data">{{averageSpeed}}</div>
+				</div>
+			</div>
+			{{/averageSpeed}}
+			{{#maximumSpeed}}
+			<div class="tr">
+				<div class="td">
+					<div class="info red">Vitesse maximum</div>
+				</div>
+				<div class="td">
+					<div class="data red">{{maximumSpeed}}</div>
+				</div>
+			</div>
+			{{/maximumSpeed}}
+		</div>
+	`;
+	// --------------------------------------------------------------
+	let helpers = {};
+	helpers.label = function() {
+		return that.label;
+	};
+	helpers.pointsNb = function() {
+		return that.coords && that.coords.length;
+	};
+	helpers.rawPointsNb = function() {
+		return that.rawPositions && that.rawPositions.length;
+	};
+	helpers.startingDate = function() {
+		return 	that.timestamps &&
+				(that.timestamps.length > 0) &&
+				format_dateString(new Date(that.timestamps[0]));
+	};
+	helpers.endingDate = function() {
+		return 	that.timestamps &&
+				(that.timestamps.length > 0) &&
+				format_dateString(new Date(that.timestamps[that.timestamps.length - 1]));
+	};
+	helpers.duration = function() {
+		if (that.timestamps && (that.timestamps.length > 0)) {
+			return format_duration(Math.round((that.timestamps[that.timestamps.length - 1] - that.timestamps[0]) / 1000));
+		}
+	};
+	helpers.distance = function() {
+		return 	that.segmentsCumulatedLength &&
+				(that.segmentsCumulatedLength.length > 0) &&
+				(that.segmentsCumulatedLength[that.segmentsCumulatedLength.length - 1].toFixed(1) + " km");
+	};
+	helpers.averageSpeed = function() {
+		return 	that.segmentsCumulatedLength &&
+				(that.segmentsCumulatedLength.length > 0) &&
+				that.timestamps &&
+				(that.timestamps.length > 0) &&
+				(that.segmentsCumulatedLength.length === that.timestamps.length) &&
+				((that.segmentsCumulatedLength[that.segmentsCumulatedLength.length - 1]/(that.timestamps[that.timestamps.length - 1] - that.timestamps[0])*3600000).toFixed(1) + " km/h");
+	};
+	helpers.maximumSpeed = function() {
+		return 	that.segmentsSpeed &&
+				(that.segmentsSpeed.length > 0) &&
+				(Math.max(...that.segmentsSpeed).toFixed(1) + " km/h");
+	};
+	$("#menuTarget_2").html(Mustache.render(template,helpers));
+}
+
+
 
 // writeToDisk ------------------------------------------------------
 Track.prototype.writeToSD = function() {
@@ -352,7 +496,7 @@ Track.prototype.getDbAltitudes = function() {
 				"geometry":		coords
 			});
 			httpRequest.send(body);
-			
+			toastr.info("Recherche des données d'altitude.");
 		});
 	}
 	else {
@@ -392,7 +536,7 @@ const tracksOptions = {
 tracks_initialList = tracks_initialList.map(function(track) {
 	return new Track(track);
 });
-// tracks_initialList.push(new Track(casa));
+tracks_initialList.push(new Track(casa));
 tracks_initialList.push(new Track(mur_1));
 tracks_initialList.push(new Track(mur_2));
 tracks_initialList.push(new Track(mur_3));
