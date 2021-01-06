@@ -44,10 +44,12 @@ const states = {
 			},
 			SoftLeft: function(event) {
 				event.preventDefault();
-				if (app.zoomLevel > 0) {
+				if (app.zoomLevel > mapBackgrounds.activeItem().minZoom) {
 					app.zoomLevel = app.zoomLevel - 1;
 					app.myMap.setZoom(app.zoomLevel);
+					if (app.options.zoomLevelIsDisplayed) toastr.info("Niveau de zoom : " + app.zoomLevel);
 				}
+				else toastr.info("Niveau de zoom min atteint");
 				event.stopPropagation();
 			},
 			Enter: function(event) {
@@ -61,10 +63,12 @@ const states = {
 			},
 			SoftRight: function(event) {
 				event.preventDefault();
-				if (app.zoomLevel < 19) {
+				if (app.zoomLevel < mapBackgrounds.activeItem().maxZoom) {
 					app.zoomLevel = app.zoomLevel + 1;
 					app.myMap.setZoom(app.zoomLevel);
+					if (app.options.zoomLevelIsDisplayed) toastr.info("Niveau de zoom : " + app.zoomLevel);
 				}
+				else toastr.info("Niveau de zoom max atteint");
 				event.stopPropagation();
 			},
 			Backspace: function(event) {
@@ -957,7 +961,7 @@ const states = {
 			fr : {
 					SoftLeft :	'',
 					Center : 	'<i class="fas fa-chevron-down"></i>',
-					SoftRight :	'Fermer'
+					SoftRight :	''
 			},
 		},
 		keysActions : {
@@ -987,13 +991,6 @@ const states = {
 			ArrowDown: function(event) {
 				event.preventDefault();
 				tracks.currentItem().getDbAltitudes();
-				event.stopPropagation();
-			},
-			SoftRight: function(event) {
-				event.preventDefault();
-				state.tracks_actions = false;
-				tracks.generateHtml();
-				displaySoftKeysLabels();
 				event.stopPropagation();
 			},
 			Backspace: function(event) {

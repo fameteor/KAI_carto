@@ -554,6 +554,11 @@ tracks_initialList.push(new Track(drau_5));
 tracks_initialList.push(new Track(drau_6));
 tracks_initialList.push(new Track(drau_7));
 
+tracks_initialList.push(new Track(jonction_1));
+tracks_initialList.push(new Track(jonction_2));
+tracks_initialList.push(new Track(jonction_3));
+
+
 // -----------------------------------------------------------------
 // tracks ROTATOR
 // -----------------------------------------------------------------

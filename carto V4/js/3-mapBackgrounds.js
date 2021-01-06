@@ -3,6 +3,8 @@ let mapBackgroundsList = [
 		label:"web : photos IGN",
 		url:"https://wxs.ign.fr/pratique/geoportail/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=ORTHOIMAGERY.ORTHOPHOTOS&TILEMATRIXSET=PM&TILEMATRIX={z}&TILECOL={x}&TILEROW={y}&STYLE=normal&FORMAT=image/jpeg",
 		active:false,
+		maxZoom: 	20,
+		minZoom:	2,
 		rotatorType:"BOOLEAN",
 		rotatorIcon:"fas fa-globe",
 		rotatorValue:function(value) {
@@ -20,6 +22,8 @@ let mapBackgroundsList = [
 		label:"web : carte IGN",
 		url:"https://wxs.ign.fr/pratique/geoportail/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS&TILEMATRIXSET=PM&TILEMATRIX={z}&TILECOL={x}&TILEROW={y}&STYLE=normal&FORMAT=image/jpeg",
 		active:false,
+		maxZoom: 	19,
+		minZoom:	2,
 		rotatorType:"BOOLEAN",
 		rotatorIcon:"fas fa-globe",
 		rotatorValue:function(value) {
@@ -37,6 +41,8 @@ let mapBackgroundsList = [
 		label:"web : OpenStreetMap",
 		url:"https://a.tile.openstreetmap.org/{z}/{x}/{y}.png",
 		active:true,
+		maxZoom: 	19,
+		minZoom:	2,
 		rotatorType:"BOOLEAN",
 		rotatorIcon:"fas fa-globe",
 		rotatorValue:function(value) {
@@ -54,6 +60,8 @@ let mapBackgroundsList = [
 		label:"web : OpenCycleMap",
 		url:"https://tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=" + keys["openCycleMap" ],
 		active:false,
+		maxZoom: 	20,
+		minZoom:	2,
 		rotatorType:"BOOLEAN",
 		rotatorIcon:"fas fa-globe",
 		rotatorValue:function(value) {
@@ -71,6 +79,8 @@ let mapBackgroundsList = [
 		label:"web : Landscape",
 		url:"https://tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=" + keys["openCycleMap" ],
 		active:false,
+		maxZoom: 	20,
+		minZoom:	2,
 		rotatorType:"BOOLEAN",
 		rotatorIcon:"fas fa-globe",
 		rotatorValue:function(value) {
@@ -88,6 +98,8 @@ let mapBackgroundsList = [
 		label:"web : Outdoors",
 		url:"https://tile.thunderforest.com/outdoors/{z}/{x}/{y}.png?apikey=" + keys["openCycleMap" ],
 		active:false,
+		maxZoom: 	20,
+		minZoom:	2,
 		rotatorType:"BOOLEAN",
 		rotatorIcon:"fas fa-globe",
 		rotatorValue:function(value) {
@@ -102,9 +114,30 @@ let mapBackgroundsList = [
 		},
 	},
 	{
-		label:"local : IGN le Perrier Zoom 10",
-		url:"carteIgn/{z}/{x}/{y}.jpg",
+		label:"local : SHOM",
+		url:"localTiles/tilesShom/{z}/{x}/{y}.jpg",
 		active:false,
+		maxZoom: 	13,
+		minZoom:	8,
+		rotatorType:"BOOLEAN",
+		rotatorIcon:"fas fa-globe",
+		rotatorValue:function(value) {
+			if (value != undefined) {
+				// Setter
+				this.active = value;
+			}
+			else {
+				// Getter
+				return this.active;
+			}
+		},
+	},
+	{
+		label:"local : opencyclemapMurDrau",
+		url:"localTiles/opencyclemapMurDrau/{z}/{x}/{y}.png",
+		active:false,
+		maxZoom: 	17,
+		minZoom:	5,
 		rotatorType:"BOOLEAN",
 		rotatorIcon:"fas fa-globe",
 		rotatorValue:function(value) {
@@ -158,9 +191,11 @@ mapBackgrounds.refreshMap = function() {
 		mapBackgrounds.activeItem().url, 
 		{
 			attribution:  '',
-			maxZoom: 	19,
-			minZoom:	2,
-			id: 		'openStreetMap'
+			maxZoom: 	mapBackgrounds.activeItem().maxZoom,
+			minZoom:	mapBackgrounds.activeItem().minZoom,
+			id: 		''
 		}
 	).addTo(app.myMap);
+	if (app.zoomLevel > mapBackgrounds.activeItem().maxZoom) app.zoomLevel = mapBackgrounds.activeItem().maxZoom;
+	else if (app.zoomLevel < mapBackgrounds.activeItem().minZoom) app.zoomLevel = mapBackgrounds.activeItem().minZoom;
 }

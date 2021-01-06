@@ -33,6 +33,7 @@ let app = {
 	options : {
 		mapIsCenteredOnGpsPosition: true,
 		waypointsNameAreDisplayed: 	false,
+		zoomLevelIsDisplayed:		true,
 		gpsPostProcessingisOn: 		true,
 		recordRawCoords:			true,
 		itineraryProfile:			"cycling-regular",
@@ -197,6 +198,21 @@ let optionsList = [
 			else {
 				// Getter
 				return app.options.waypointsNameAreDisplayed;
+			}
+		}
+	},
+	{	
+		label:"Afficher le niveau de zoom en popup",
+		rotatorType:"BOOLEAN",
+		rotatorIcon:"fas fa-cog",
+		rotatorValue:function(value) {
+			if (value != undefined) {
+				// Setter
+				app.options.zoomLevelIsDisplayed = value;
+			}
+			else {
+				// Getter
+				return app.options.zoomLevelIsDisplayed;
 			}
 		}
 	},
