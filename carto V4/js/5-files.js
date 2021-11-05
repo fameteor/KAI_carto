@@ -17,6 +17,46 @@ const File = function(initial) {
 	};
 }
 
+const convertFromGpx = function(xmlText) {
+	const xsl = `<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:gpx="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+<xsl:output method="text" indent="yes" encoding="utf-8"/>
+<xsl:template match="/">
+    <xsl:text>{"coords":[</xsl:text>
+	<xsl:for-each select="/gpx:gpx/gpx:trk/gpx:trkseg/gpx:trkpt">
+        <xsl:value-of select="concat('[',@lat, ',', @lon, ']')"/>
+		<xsl:choose>
+			<xsl:when test="position() != last()">,</xsl:when>
+		</xsl:choose>
+    </xsl:for-each>
+	<xsl:text>],"label":"</xsl:text>
+	<xsl:for-each select="/gpx:gpx/gpx:trk/gpx:name">
+        <xsl:value-of select="."/>
+    </xsl:for-each>
+	<xsl:text>","altitudes":[</xsl:text>
+	<xsl:for-each select="/gpx:gpx/gpx:trk/gpx:trkseg/gpx:trkpt">
+        <xsl:value-of select="gpx:ele"/>
+		<xsl:choose>
+			<xsl:when test="position() != last()">,</xsl:when>
+		</xsl:choose>
+    </xsl:for-each>
+	<xsl:text>],"color":"#800080","rotatorIcon":"fas fa-bicycle","trackIsDisplayedOnTheMap":true,"type":"ITINERARY"}</xsl:text>
+</xsl:template>
+
+</xsl:stylesheet>`;
+	const parser = new DOMParser();
+	// Create the XSLT processor
+	const xsl_doc = parser.parseFromString(xsl, "application/xml");
+	const xsltProcessor = new XSLTProcessor();
+	xsltProcessor.importStylesheet(xsl_doc);
+	// Import xml data
+	const xml_doc = parser.parseFromString(xmlText, "application/xml");
+	// XSLT conversion
+	const fragment = xsltProcessor.transformToFragment(xml_doc, document);
+	// Convert to Object
+	return JSON.parse(fragment.childNodes[0].data);
+}
+
 // readFromSD ------------------------------------------------------
 File.prototype.readFromSD = function() {
 	const that = this;
@@ -35,11 +75,10 @@ File.prototype.readFromSD = function() {
 			// ??????????????????????????
 			
 			read.onloadend = function(){
-				let fileContentObject = JSON.parse(read.result);
-				console.log(fileContentObject);
-				console.log(that.fileExtension)
+				let fileContentObject;
 				switch (that.fileExtension) {
 					case "wpt":
+						fileContentObject = JSON.parse(read.result);
 						let newWaypoint = new Waypoint(fileContentObject);
 						console.log(newWaypoint);
 						waypoints.list.unshift(newWaypoint);
@@ -50,6 +89,7 @@ File.prototype.readFromSD = function() {
 						toastr.info("Point ajouté depuis la carte SD.")
 						break;
 					case "trk":
+						fileContentObject = JSON.parse(read.result);
 						const newTrack = new Track(fileContentObject);
 						tracks.list.unshift(newTrack);
 						// We select the new track
@@ -57,6 +97,21 @@ File.prototype.readFromSD = function() {
 						tracks.generateHtml();
 						tracks.refreshMap();
 						toastr.info("Trace ajoutée depuis la carte SD.")
+						break;
+					case "gpx":
+					case "GPX":
+						fileContentObject = convertFromGpx(read.result);
+						console.log(fileContentObject)
+						const newTrack1 = new Track(fileContentObject);
+						tracks.list.unshift(newTrack1);
+						// We select the new track
+						tracks.currentIndex = 0;
+						tracks.generateHtml();
+						tracks.refreshMap();
+						toastr.info("Trace ajoutée depuis la carte SD.")
+						break;
+					default:
+						toastr.info("Aucune action : extension ." + that.fileExtension +  " non supporté.")
 						break;
 				}
 			}
@@ -93,6 +148,7 @@ files.getAndDisplayFilesFromSD = function() {
 			if(cursor.result) {
 				const fileInfos = cursor.result;
 				const completePathName = fileInfos.name;
+				console.log(completePathName);
 				const splittedPath = fileInfos.name.split("/");
 				const name = splittedPath.pop();
 				const fileExtension = name.split(".").pop();
@@ -118,7 +174,7 @@ files.getAndDisplayFilesFromSD = function() {
 			console.log("No file found: " + this.error); 
 		}
 	}
-	else console.log("Accès aux fichiers non supporté sur PC.");	
+	else console.log("Accès aux fichiers non supporté sur PC.");
 }
 
 // We add the removeCurrentFileFromSdAndDisplay method ----------------------
