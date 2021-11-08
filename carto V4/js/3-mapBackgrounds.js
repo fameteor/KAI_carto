@@ -133,6 +133,25 @@ let mapBackgroundsList = [
 		},
 	},
 	{
+		label:"local : Munster",
+		url:"localTiles/munster/{z}/{x}/{y}.jpg",
+		active:false,
+		maxZoom: 	15,
+		minZoom:	11,
+		rotatorType:"BOOLEAN",
+		rotatorIcon:"fas fa-globe",
+		rotatorValue:function(value) {
+			if (value != undefined) {
+				// Setter
+				this.active = value;
+			}
+			else {
+				// Getter
+				return this.active;
+			}
+		},
+	},
+	{
 		label:"local : opencyclemapMurDrau",
 		url:"localTiles/opencyclemapMurDrau/{z}/{x}/{y}.png",
 		active:false,
