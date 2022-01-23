@@ -131,7 +131,7 @@ let displayDateLabel = function() {
 		const date = new Date(datesStructure[timeIndex].year,datesStructure[timeIndex].month - 1,datesStructure[timeIndex].day);
 		const dateLabel = 	datesStructure[timeIndex].day 
 							+ " " 
-							+ monthsLabels[datesStructure[timeIndex].month]
+							+ monthsLabels[parseInt(datesStructure[timeIndex].month)]
 							+ " " 
 							+ datesStructure[timeIndex].year
 		document.getElementById("dateLabel").innerHTML = daysLabels[date.getDay()] + " " + dateLabel;
@@ -144,7 +144,7 @@ let displayForecast = function() {
 		let innerHtml = '';
 		let innerHtml2 = '';
 		timesStructure.forEach(function(timeStructure) {
-			console.log(timeStructure.forecast)
+			// console.log(timeStructure.forecast)
 			// If data is not empty
 			if (timeStructure.forecast.pression["niveau_de_la_mer"] != 0) {
 				let innerHtmlFragment = `<div class="row">
